@@ -10,14 +10,12 @@ import {
   Fade,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import classnames from "classnames";
 
 // styles
 import useStyles from "./styles";
 
 // logo
 import logo from "./logo.svg";
-import google from "../../images/google.svg";
 
 // context
 import { useUserDispatch, loginUser } from "../../context/UserContext";
@@ -31,7 +29,9 @@ function Login(props) {
   // local
   var [isLoading, setIsLoading] = useState(false);
   var [error, setError] = useState(null);
-  var [activeTabId, setActiveTabId] = useState(0);
+  var [activeTabId, setActiveTabId] = useState(
+    props.match.params.ruta === "1" ? 1 : 0,
+  );
   var [nameValue, setNameValue] = useState("");
   var [loginValue, setLoginValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
@@ -53,8 +53,8 @@ function Login(props) {
             textColor="primary"
             centered
           >
-            <Tab label="Login" classes={{ root: classes.tab }} />
-            <Tab label="New User" classes={{ root: classes.tab }} />
+            <Tab label="Ingreso" classes={{ root: classes.tab }} />
+            <Tab label="Visitante" classes={{ root: classes.tab }} />
           </Tabs>
           {activeTabId === 0 && (
             <React.Fragment>
@@ -65,9 +65,9 @@ function Login(props) {
               <Typography className={classes.formDividerWord}>
                 Para ingresar escriba sus datos de acceso
               </Typography>
-              <Fade in={error}>
+              <Fade in={error !== null ? true : false}>
                 <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
+                  {error}
                 </Typography>
               </Fade>
               <TextField
@@ -142,13 +142,8 @@ function Login(props) {
               </Typography>
               <br />
               <Typography variant="h2" className={classes.subGreeting}>
-                Ingresa los siguientes datos para crear tu cuenta
+                Ingresa los siguientes datos para crear tu cuenta de visitante
               </Typography>
-              <Fade in={error}>
-                <Typography color="secondary" className={classes.errorMessage}>
-                  Something is wrong with your login or password :(
-                </Typography>
-              </Fade>
               <TextField
                 id="name"
                 InputProps={{

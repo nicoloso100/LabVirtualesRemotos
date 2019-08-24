@@ -1,4 +1,7 @@
 import React from "react";
+import { loginURLs } from "../constants/URLs";
+
+const axios = require("axios");
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
@@ -50,22 +53,28 @@ export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
 // ###########################################################
 
 function loginUser(dispatch, login, password, history, setIsLoading, setError) {
-  setError(false);
+  setError(null);
   setIsLoading(true);
 
   if (!!login && !!password) {
-    setTimeout(() => {
-      localStorage.setItem("id_token", "1");
-      dispatch({ type: "LOGIN_SUCCESS" });
-      setError(null);
-      setIsLoading(false);
-
-      history.push("/app/dashboard");
-    }, 2000);
+    axios
+      .post(loginURLs.getToken, { username: login, password: password })
+      .then(res => {
+        localStorage.setItem("id_token", res.token);
+        dispatch({ type: "LOGIN_SUCCESS" });
+        setError(null);
+        setIsLoading(false);
+        history.push("/app/dashboard");
+      })
+      .catch(err => {
+        console.log(err.response.data);
+        setError(err.response.data);
+        setIsLoading(false);
+      });
   } else {
-    dispatch({ type: "LOGIN_FAILURE" });
-    setError(true);
+    setError("Ha ocurrido un error, vuelve a intentarlo");
     setIsLoading(false);
+    dispatch({ type: "LOGIN_FAILURE" });
   }
 }
 
