@@ -25,7 +25,7 @@ export default function App() {
           render={() => <Redirect to="/app/dashboard" />}
         />
         <PrivateRoute path="/app" component={Layout} />
-        <PublicRoute path="/login" component={Login} />
+        <PublicRoute path="/ingreso" component={Login} />
         <Route component={Error} />
       </Switch>
     </HashRouter>
@@ -43,7 +43,7 @@ export default function App() {
           ) : (
             <Redirect
               to={{
-                pathname: "/login",
+                pathname: "/ingreso",
                 state: {
                   from: props.location,
                 },
