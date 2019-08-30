@@ -7,7 +7,6 @@ import {
   Tabs,
   Tab,
   TextField,
-  Fade,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
 
@@ -18,7 +17,7 @@ import useStyles from "./styles";
 import logo from "./logo.svg";
 
 // context
-import { useUserDispatch, loginUser } from "../../context/UserContext";
+import { useUserDispatch, loginUser, signIn } from "../../context/UserContext";
 
 function Login(props) {
   var classes = useStyles();
@@ -28,7 +27,6 @@ function Login(props) {
 
   // local
   var [isLoading, setIsLoading] = useState(false);
-  var [error, setError] = useState(null);
   var [activeTabId, setActiveTabId] = useState(
     props.match.params.ruta === "1" ? 1 : 0,
   );
@@ -65,11 +63,6 @@ function Login(props) {
               <Typography className={classes.formDividerWord}>
                 Para ingresar escriba sus datos de acceso
               </Typography>
-              <Fade in={error !== null ? true : false}>
-                <Typography color="secondary" className={classes.errorMessage}>
-                  {error}
-                </Typography>
-              </Fade>
               <TextField
                 id="email"
                 InputProps={{
@@ -115,7 +108,6 @@ function Login(props) {
                         passwordValue,
                         props.history,
                         setIsLoading,
-                        setError,
                       )
                     }
                     variant="contained"
@@ -156,7 +148,7 @@ function Login(props) {
                 onChange={e => setNameValue(e.target.value)}
                 margin="normal"
                 placeholder="Nombre Completo"
-                type="email"
+                type="text"
                 fullWidth
               />
               <TextField
@@ -195,14 +187,7 @@ function Login(props) {
                 ) : (
                   <Button
                     onClick={() =>
-                      loginUser(
-                        userDispatch,
-                        loginValue,
-                        passwordValue,
-                        props.history,
-                        setIsLoading,
-                        setError,
-                      )
+                      signIn(nameValue, loginValue, passwordValue, setIsLoading)
                     }
                     disabled={
                       loginValue.length === 0 ||
@@ -215,7 +200,7 @@ function Login(props) {
                     fullWidth
                     className={classes.createAccountButton}
                   >
-                    Create your account
+                    Crear cuenta
                   </Button>
                 )}
               </div>

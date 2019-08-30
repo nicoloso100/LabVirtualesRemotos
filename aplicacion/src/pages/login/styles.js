@@ -107,7 +107,7 @@ export default makeStyles(theme => ({
     height: 1,
     backgroundColor: theme.palette.text.hint + "40",
   },
-  errorMessage: {
+  resultMessage: {
     textAlign: "center",
   },
   textFieldUnderline: {

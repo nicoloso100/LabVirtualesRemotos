@@ -1,4 +1,7 @@
+const baseURL = "http://localhost:5000/api/";
+
 export const loginURLs = {
-  getToken: "http://localhost:5000/api/getToken",
+  getToken: baseURL + "getToken",
+  addUser: baseURL + "addUser",
 };
 export const singUpURLs = {};

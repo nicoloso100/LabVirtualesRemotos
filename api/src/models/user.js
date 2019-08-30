@@ -1,9 +1,9 @@
 const db = require("../utils/database/databaseConfig");
 
-const Usuarios = db.Model.extend({
+const User = db.Model.extend({
   idAttribute: false,
   tableName: "users",
   hasSecurePassword: true
 });
 
-module.exports = Usuarios;
+module.exports = User;

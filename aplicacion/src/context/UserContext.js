@@ -1,15 +1,20 @@
 import React from "react";
 import { loginURLs } from "../constants/URLs";
+import swal from "sweetalert";
 
 const axios = require("axios");
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
 
+const baseError = "Ha ocurrido un error, vuelve a intentarlo más tarde";
+
 function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN_SUCCESS":
       return { ...state, isAuthenticated: true };
+    case "LOGIN_FAILURE":
+      return { ...state, isAuthenticated: false };
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
     default: {
@@ -19,13 +24,14 @@ function userReducer(state, action) {
 }
 
 function UserProvider({ children }) {
-  var [state, dispatch] = React.useReducer(userReducer, {
+  var [state, loginDispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!localStorage.getItem("id_token"),
+    error: null,
   });
 
   return (
     <UserStateContext.Provider value={state}>
-      <UserDispatchContext.Provider value={dispatch}>
+      <UserDispatchContext.Provider value={loginDispatch}>
         {children}
       </UserDispatchContext.Provider>
     </UserStateContext.Provider>
@@ -48,38 +54,67 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch, loginUser, signOut };
+export {
+  UserProvider,
+  useUserState,
+  useUserDispatch,
+  loginUser,
+  signIn,
+  signOut,
+};
 
 // ###########################################################
 
-function loginUser(dispatch, login, password, history, setIsLoading, setError) {
-  setError(null);
+function loginUser(dispatch, login, password, history, setIsLoading) {
   setIsLoading(true);
-
   if (!!login && !!password) {
     axios
       .post(loginURLs.getToken, { username: login, password: password })
       .then(res => {
+        setIsLoading(false);
         localStorage.setItem("id_token", res.token);
         dispatch({ type: "LOGIN_SUCCESS" });
-        setError(null);
-        setIsLoading(false);
         history.push("/app/dashboard");
       })
       .catch(err => {
-        console.log(err.response.data);
-        setError(err.response.data);
         setIsLoading(false);
+        dispatch({ type: "LOGIN_FAILURE" });
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
       });
   } else {
-    setError("Ha ocurrido un error, vuelve a intentarlo");
     setIsLoading(false);
     dispatch({ type: "LOGIN_FAILURE" });
+    swal("Error!", baseError, "error");
+  }
+}
+
+function signIn(name, login, password, setIsLoading) {
+  setIsLoading(true);
+  if (!!login && !!password) {
+    axios
+      .post(loginURLs.addUser, {
+        name: name,
+        username: login,
+        password: password,
+      })
+      .then(res => {
+        setIsLoading(false);
+        swal("Bienvenido!", res.data, "success");
+      })
+      .catch(err => {
+        setIsLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  } else {
+    setIsLoading(false);
+    swal("Error!", baseError, "error");
   }
 }
 
 function signOut(dispatch, history) {
   localStorage.removeItem("id_token");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
-  history.push("/login");
+  history.push("/ingreso");
 }
