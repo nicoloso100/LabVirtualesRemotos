@@ -15,10 +15,6 @@ router.get(
 );
 router.post("/addUser", authController.add_user);
 router.post("/getToken", authController.get_token);
-router.get(
-  "/protected",
-  passport.authenticate("jwt", { session: false }),
-  authController.protected
-);
+router.post("/recoverPassword", authController.recover_password);
 
 module.exports = router;

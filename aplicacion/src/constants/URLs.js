@@ -4,5 +4,6 @@ const baseURL = "http://192.168.0.34:5000/api/";
 export const loginURLs = {
   getToken: baseURL + "getToken",
   addUser: baseURL + "addUser",
+  recoverPassword: baseURL + "recoverPassword",
+  sendSignInEmail: baseURL + "sendMail",
 };
-export const singUpURLs = {};

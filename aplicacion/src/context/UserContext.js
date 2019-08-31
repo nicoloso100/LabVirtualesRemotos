@@ -1,13 +1,7 @@
 import React from "react";
-import { loginURLs } from "../constants/URLs";
-import swal from "sweetalert";
-
-const axios = require("axios");
 
 var UserStateContext = React.createContext();
 var UserDispatchContext = React.createContext();
-
-const baseError = "Ha ocurrido un error, vuelve a intentarlo más tarde";
 
 function userReducer(state, action) {
   switch (action.type) {
@@ -52,76 +46,4 @@ function useUserDispatch() {
   return context;
 }
 
-export {
-  UserProvider,
-  useUserState,
-  useUserDispatch,
-  loginUser,
-  signIn,
-  signOut,
-};
-
-// ###########################################################
-
-function loginUser(
-  dispatch,
-  login,
-  password,
-  history,
-  setIsLoading,
-  setPasswordValue,
-) {
-  setIsLoading(true);
-  if (!!login && !!password) {
-    axios
-      .post(loginURLs.getToken, { username: login, password: password })
-      .then(res => {
-        setIsLoading(false);
-        localStorage.setItem("id_token", res.token);
-        dispatch({ type: "LOGIN_SUCCESS" });
-        history.push("/app/dashboard");
-      })
-      .catch(err => {
-        setIsLoading(false);
-        setPasswordValue("");
-        var error = err.response;
-        swal("Oops!", error ? error.data : baseError, "warning");
-      });
-  } else {
-    setIsLoading(false);
-    setPasswordValue("");
-    swal("Error!", baseError, "error");
-  }
-}
-
-function signIn(name, login, password, setIsLoading, setPasswordValue) {
-  setIsLoading(true);
-  if (!!login && !!password) {
-    axios
-      .post(loginURLs.addUser, {
-        name: name,
-        username: login,
-        password: password,
-      })
-      .then(res => {
-        setIsLoading(false);
-        swal("Bienvenido!", res.data, "success");
-      })
-      .catch(err => {
-        setIsLoading(false);
-        setPasswordValue("");
-        var error = err.response;
-        swal("Oops!", error ? error.data : baseError, "warning");
-      });
-  } else {
-    setIsLoading(false);
-    setPasswordValue("");
-    swal("Error!", baseError, "error");
-  }
-}
-
-function signOut(dispatch, history) {
-  localStorage.removeItem("id_token");
-  dispatch({ type: "SIGN_OUT_SUCCESS" });
-  history.push("/ingreso");
-}
+export { UserProvider, useUserState, useUserDispatch };

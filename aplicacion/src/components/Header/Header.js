@@ -33,7 +33,8 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch, signOut } from "../../context/UserContext";
+import { useUserDispatch } from "../../context/UserContext";
+import { signOut } from "../../services/loginServices";
 
 const messages = [
   {

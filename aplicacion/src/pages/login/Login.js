@@ -17,7 +17,7 @@ import useStyles from "./styles";
 import logo from "./logo.svg";
 
 // context
-import { useUserDispatch, loginUser, signIn } from "../../context/UserContext";
+import { useUserDispatch } from "../../context/UserContext";
 import LoginModal from "../../components/LoginModal/loginModal";
 import {
   IsValidEmail,
@@ -27,7 +27,12 @@ import {
 import {
   INVALID_EMAIL,
   INVALID_PASSWORD,
-} from "../../constants/notificacionConstanst";
+} from "../../constants/notificationConstanst";
+import {
+  loginUser,
+  signIn,
+  sendPasswordRecover,
+} from "../../services/loginServices";
 
 function Login(props) {
   var classes = useStyles();
@@ -37,11 +42,12 @@ function Login(props) {
 
   // local
   var [isLoading, setIsLoading] = useState(false);
+  var [isResetLoading, setIsResetLoading] = useState(false);
   var [activeTabId, setActiveTabId] = useState(
     props.match.params.ruta === "1" ? 1 : 0,
   );
   var [nameValue, setNameValue] = useState("");
-  var [loginValue, setLoginValue] = useState("");
+  var [emailValue, setEmailValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
 
   //Reset password modal
@@ -56,11 +62,11 @@ function Login(props) {
   };
 
   const loginUserAction = () => {
-    if (IsValidEmail(loginValue)) {
+    if (IsValidEmail(emailValue)) {
       if (IsValidPassword(passwordValue)) {
         loginUser(
           userDispatch,
-          loginValue,
+          emailValue,
           passwordValue,
           props.history,
           setIsLoading,
@@ -75,11 +81,11 @@ function Login(props) {
   };
 
   const signInUserAction = () => {
-    if (IsValidEmail(loginValue)) {
+    if (IsValidEmail(emailValue)) {
       if (IsValidPassword(passwordValue)) {
         signIn(
           nameValue,
-          loginValue,
+          emailValue,
           passwordValue,
           setIsLoading,
           setPasswordValue,
@@ -92,10 +98,22 @@ function Login(props) {
     }
   };
 
+  const handleSendPassword = email => {
+    if (IsValidEmail(email)) {
+      sendPasswordRecover(email, setIsResetLoading, handleClose);
+    } else {
+      ShowNotification(INVALID_EMAIL);
+    }
+  };
+
   return (
     <React.Fragment>
-      {console.log(loginValue)}
-      <LoginModal open={open} handleClose={handleClose} />
+      <LoginModal
+        open={open}
+        handleClose={handleClose}
+        handleSendPassword={handleSendPassword}
+        isResetLoading={isResetLoading}
+      />
       <Grid container className={classes.container}>
         <div className={classes.logotypeContainer}>
           <img src={logo} alt="logo" className={classes.logotypeImage} />
@@ -132,8 +150,8 @@ function Login(props) {
                       input: classes.textField,
                     },
                   }}
-                  value={loginValue}
-                  onChange={e => setLoginValue(e.target.value)}
+                  value={emailValue}
+                  onChange={e => setEmailValue(e.target.value)}
                   margin="normal"
                   placeholder="Correo electrónico"
                   type="email"
@@ -163,7 +181,7 @@ function Login(props) {
                   ) : (
                     <Button
                       disabled={
-                        loginValue.length === 0 || passwordValue.length === 0
+                        emailValue.length === 0 || passwordValue.length === 0
                       }
                       onClick={() => loginUserAction()}
                       variant="contained"
@@ -216,8 +234,8 @@ function Login(props) {
                       input: classes.textField,
                     },
                   }}
-                  value={loginValue}
-                  onChange={e => setLoginValue(e.target.value)}
+                  value={emailValue}
+                  onChange={e => setEmailValue(e.target.value)}
                   margin="normal"
                   placeholder="Correo Electrónico"
                   type="email"
@@ -245,7 +263,7 @@ function Login(props) {
                     <Button
                       onClick={() => signInUserAction()}
                       disabled={
-                        loginValue.length === 0 ||
+                        emailValue.length === 0 ||
                         passwordValue.length === 0 ||
                         nameValue.length === 0
                       }

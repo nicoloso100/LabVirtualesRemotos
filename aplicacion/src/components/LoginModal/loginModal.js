@@ -3,7 +3,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, CircularProgress } from "@material-ui/core";
 
 // styles
 import useStyles from "./styles";
@@ -11,7 +11,11 @@ import useStyles from "./styles";
 const LoginModal = props => {
   const classes = useStyles();
 
-  var [loginValue, setLoginValue] = useState("");
+  var [email, setLoginValue] = useState("");
+
+  const recoverPassword = () => {
+    props.handleSendPassword(email);
+  };
 
   return (
     <Modal
@@ -29,7 +33,7 @@ const LoginModal = props => {
         <div className={classes.paper}>
           <h2>Recuperar contraseña</h2>
           <p>
-            Para recuperar la contraseña escribe el correo o el nombre de
+            Para recuperar la contraseña escriba el correo o el nombre de
             usuario:
           </p>
           <TextField
@@ -40,7 +44,7 @@ const LoginModal = props => {
                 input: classes.textField,
               },
             }}
-            value={loginValue}
+            value={email}
             onChange={e => setLoginValue(e.target.value)}
             margin="normal"
             placeholder="Usuario o correo electrónico"
@@ -49,17 +53,21 @@ const LoginModal = props => {
           />
           <br />
           <br />
-          <Button
-            onClick={() => console.log(loginValue)}
-            disabled={loginValue.length === 0}
-            size="large"
-            variant="contained"
-            color="primary"
-            fullWidth
-            className={classes.createAccountButton}
-          >
-            Crear cuenta
-          </Button>
+          {props.isResetLoading ? (
+            <CircularProgress size={26} />
+          ) : (
+            <Button
+              onClick={() => recoverPassword()}
+              disabled={email.length === 0}
+              size="large"
+              variant="contained"
+              color="primary"
+              fullWidth
+              className={classes.createAccountButton}
+            >
+              Crear cuenta
+            </Button>
+          )}
         </div>
       </Fade>
     </Modal>

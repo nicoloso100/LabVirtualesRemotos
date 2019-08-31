@@ -1,6 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("users", t => {
-    t.string("username")
+    t.string("email")
       .notNull()
       .primary();
     t.string("name").notNull();
