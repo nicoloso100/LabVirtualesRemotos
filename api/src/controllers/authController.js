@@ -21,7 +21,7 @@ exports.add_user = (req, res) => {
         res.send("El usuario se ha creado correctamente!");
       });
     } else {
-      return res.status(500).send("El usuario ya existe!");
+      return res.status(500).send(`El usuario ${req.body.username} ya existe!`);
     }
   });
 };
@@ -34,7 +34,9 @@ exports.get_token = (req, res) => {
     .fetch()
     .then(result => {
       if (!result) {
-        return res.status(500).send("El usuario ingresado no existe");
+        return res
+          .status(500)
+          .send(`El correo ${req.body.username} no está registrado`);
       }
       result
         .authenticate(req.body.password)

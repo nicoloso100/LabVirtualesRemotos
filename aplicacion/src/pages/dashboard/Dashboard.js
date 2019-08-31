@@ -26,12 +26,12 @@ import useStyles from "./styles";
 
 // components
 import mock from "./mock";
-import Widget from "../../components/Widget";
-import PageTitle from "../../components/PageTitle";
-import { Typography } from "../../components/Wrappers";
+import Widget from "../../components/Widget/Widget";
+import PageTitle from "../../components/PageTitle/PageTitle";
+import { Typography } from "../../components/Wrappers/Wrappers";
 import Dot from "../../components/Sidebar/components/Dot";
-import Table from "./components/Table/Table";
-import BigStat from "./components/BigStat/BigStat";
+import Table from "../../pages/dashboard/components/Table/Table";
+import BigStat from "../../pages/dashboard/components/BigStat/BigStat";
 
 const mainChartData = getMainChartData();
 const PieChartData = [

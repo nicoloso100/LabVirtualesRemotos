@@ -9,12 +9,16 @@ import * as serviceWorker from "./serviceWorker";
 import { LayoutProvider } from "./context/LayoutContext";
 import { UserProvider } from "./context/UserContext";
 
+import "react-notifications/lib/notifications.css";
+import { NotificationContainer } from "react-notifications";
+
 ReactDOM.render(
   <LayoutProvider>
     <UserProvider>
       <ThemeProvider theme={Themes.default}>
         <CssBaseline />
         <App />
+        <NotificationContainer />
       </ThemeProvider>
     </UserProvider>
   </LayoutProvider>,

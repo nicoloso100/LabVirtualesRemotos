@@ -13,7 +13,7 @@ import useStyles from "./styles";
 // components
 import Widget from "../../components/Widget/Widget";
 import PageTitle from "../../components/PageTitle/PageTitle";
-import Notification from "../../components/Notification";
+import Notification from "../../components/Notification/Notification";
 import { Typography, Button } from "../../components/Wrappers/Wrappers";
 
 const positions = [

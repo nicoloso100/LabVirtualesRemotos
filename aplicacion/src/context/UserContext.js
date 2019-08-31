@@ -13,8 +13,6 @@ function userReducer(state, action) {
   switch (action.type) {
     case "LOGIN_SUCCESS":
       return { ...state, isAuthenticated: true };
-    case "LOGIN_FAILURE":
-      return { ...state, isAuthenticated: false };
     case "SIGN_OUT_SUCCESS":
       return { ...state, isAuthenticated: false };
     default: {
@@ -65,7 +63,14 @@ export {
 
 // ###########################################################
 
-function loginUser(dispatch, login, password, history, setIsLoading) {
+function loginUser(
+  dispatch,
+  login,
+  password,
+  history,
+  setIsLoading,
+  setPasswordValue,
+) {
   setIsLoading(true);
   if (!!login && !!password) {
     axios
@@ -78,18 +83,18 @@ function loginUser(dispatch, login, password, history, setIsLoading) {
       })
       .catch(err => {
         setIsLoading(false);
-        dispatch({ type: "LOGIN_FAILURE" });
+        setPasswordValue("");
         var error = err.response;
         swal("Oops!", error ? error.data : baseError, "warning");
       });
   } else {
     setIsLoading(false);
-    dispatch({ type: "LOGIN_FAILURE" });
+    setPasswordValue("");
     swal("Error!", baseError, "error");
   }
 }
 
-function signIn(name, login, password, setIsLoading) {
+function signIn(name, login, password, setIsLoading, setPasswordValue) {
   setIsLoading(true);
   if (!!login && !!password) {
     axios
@@ -104,11 +109,13 @@ function signIn(name, login, password, setIsLoading) {
       })
       .catch(err => {
         setIsLoading(false);
+        setPasswordValue("");
         var error = err.response;
         swal("Oops!", error ? error.data : baseError, "warning");
       });
   } else {
     setIsLoading(false);
+    setPasswordValue("");
     swal("Error!", baseError, "error");
   }
 }
