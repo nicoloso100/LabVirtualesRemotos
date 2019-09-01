@@ -21,12 +21,13 @@ import { useUserDispatch } from "../../context/UserContext";
 import LoginModal from "../../components/LoginModal/loginModal";
 import {
   IsValidEmail,
-  IsValidPassword,
   ShowNotification,
+  IsNotEmptyField,
 } from "../../utils/utils";
 import {
   INVALID_EMAIL,
   INVALID_PASSWORD,
+  INVALID_NAME,
 } from "../../constants/notificationConstanst";
 import {
   loginUser,
@@ -47,6 +48,7 @@ function Login(props) {
     props.match.params.ruta === "1" ? 1 : 0,
   );
   var [nameValue, setNameValue] = useState("");
+  var [surnameValue, setSurnameValue] = useState("");
   var [emailValue, setEmailValue] = useState("");
   var [passwordValue, setPasswordValue] = useState("");
 
@@ -63,7 +65,7 @@ function Login(props) {
 
   const loginUserAction = () => {
     if (IsValidEmail(emailValue)) {
-      if (IsValidPassword(passwordValue)) {
+      if (IsNotEmptyField(passwordValue)) {
         loginUser(
           userDispatch,
           emailValue,
@@ -82,14 +84,19 @@ function Login(props) {
 
   const signInUserAction = () => {
     if (IsValidEmail(emailValue)) {
-      if (IsValidPassword(passwordValue)) {
-        signIn(
-          nameValue,
-          emailValue,
-          passwordValue,
-          setIsLoading,
-          setPasswordValue,
-        );
+      if (IsNotEmptyField(passwordValue)) {
+        if (IsNotEmptyField(nameValue) && IsNotEmptyField(surnameValue)) {
+          signIn(
+            nameValue,
+            surnameValue,
+            emailValue,
+            passwordValue,
+            setIsLoading,
+            setPasswordValue,
+          );
+        } else {
+          ShowNotification(INVALID_NAME);
+        }
       } else {
         ShowNotification(INVALID_PASSWORD);
       }
@@ -222,7 +229,22 @@ function Login(props) {
                   value={nameValue}
                   onChange={e => setNameValue(e.target.value)}
                   margin="normal"
-                  placeholder="Nombre Completo"
+                  placeholder="Nombre"
+                  type="text"
+                  fullWidth
+                />
+                <TextField
+                  id="surname"
+                  InputProps={{
+                    classes: {
+                      underline: classes.textFieldUnderline,
+                      input: classes.textField,
+                    },
+                  }}
+                  value={surnameValue}
+                  onChange={e => setSurnameValue(e.target.value)}
+                  margin="normal"
+                  placeholder="Apellidos"
                   type="text"
                   fullWidth
                 />
@@ -265,7 +287,8 @@ function Login(props) {
                       disabled={
                         emailValue.length === 0 ||
                         passwordValue.length === 0 ||
-                        nameValue.length === 0
+                        nameValue.length === 0 ||
+                        surnameValue.length === 0
                       }
                       size="large"
                       variant="contained"

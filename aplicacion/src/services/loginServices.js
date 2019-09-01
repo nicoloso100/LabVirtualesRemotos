@@ -18,8 +18,14 @@ export const loginUser = (
       .post(loginURLs.getToken, { email: email, password: password })
       .then(res => {
         setIsLoading(false);
-        localStorage.setItem("id_token", res.token);
-        dispatch({ type: "LOGIN_SUCCESS" });
+        localStorage.setItem("id_token", res.data.token);
+        localStorage.setItem("id_name", res.data.name);
+        localStorage.setItem("id_email", res.data.email);
+        dispatch({
+          type: "LOGIN_SUCCESS",
+          name: res.data.name,
+          email: res.data.email,
+        });
         history.push("/app/dashboard");
       })
       .catch(err => {
@@ -37,6 +43,7 @@ export const loginUser = (
 
 export const signIn = (
   name,
+  surname,
   email,
   password,
   setIsLoading,
@@ -47,6 +54,7 @@ export const signIn = (
     axios
       .post(loginURLs.addUser, {
         name: name,
+        surname: surname,
         email: email,
         password: password,
       })
@@ -70,6 +78,8 @@ export const signIn = (
 
 export const signOut = (dispatch, history) => {
   localStorage.removeItem("id_token");
+  localStorage.removeItem("id_name");
+  localStorage.removeItem("id_email");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/ingreso");
 };

@@ -3,18 +3,16 @@ import {
   AppBar,
   Toolbar,
   IconButton,
-  InputBase,
   Menu,
   MenuItem,
-  Fab,
+  //Fab,
 } from "@material-ui/core";
 import {
   Menu as MenuIcon,
-  MailOutline as MailIcon,
+  //MailOutline as MailIcon,
   NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
-  Search as SearchIcon,
-  Send as SendIcon,
+  //Send as SendIcon,
   ArrowBack as ArrowBackIcon,
 } from "@material-ui/icons";
 import classNames from "classnames";
@@ -25,7 +23,7 @@ import useStyles from "./styles";
 // components
 import { Badge, Typography } from "../Wrappers/Wrappers";
 import Notification from "../Notification/Notification";
-import UserAvatar from "../UserAvatar/UserAvatar";
+//import UserAvatar from "../UserAvatar/UserAvatar";
 
 // context
 import {
@@ -33,39 +31,18 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch } from "../../context/UserContext";
+import { useUserDispatch, useUserState } from "../../context/UserContext";
 import { signOut } from "../../services/loginServices";
 
-const messages = [
-  {
-    id: 0,
-    variant: "warning",
-    name: "Jane Hew",
-    message: "Hey! How is it going?",
-    time: "9:32",
-  },
-  {
-    id: 1,
-    variant: "success",
-    name: "Lloyd Brown",
-    message: "Check out my new Dashboard",
-    time: "9:18",
-  },
-  {
-    id: 2,
-    variant: "primary",
-    name: "Mark Winstein",
-    message: "I want rearrange the appointment",
-    time: "9:15",
-  },
-  {
-    id: 3,
-    variant: "secondary",
-    name: "Liana Dutti",
-    message: "Good news from sale department",
-    time: "9:09",
-  },
-];
+// const messages = [
+//   {
+//     id: 0,
+//     variant: "warning",
+//     name: "Jane Hew",
+//     message: "Hey! How is it going?",
+//     time: "9:32",
+//   }
+// ];
 
 const notifications = [
   { id: 0, color: "warning", message: "Check out this awesome ticket" },
@@ -96,14 +73,14 @@ export default function Header(props) {
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
   var userDispatch = useUserDispatch();
+  var { name, email } = useUserState();
 
   // local
-  var [mailMenu, setMailMenu] = useState(null);
-  var [isMailsUnread, setIsMailsUnread] = useState(true);
+  // var [mailMenu, setMailMenu] = useState(null);
+  // var [isMailsUnread, setIsMailsUnread] = useState(true);
   var [notificationsMenu, setNotificationsMenu] = useState(null);
   var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   var [profileMenu, setProfileMenu] = useState(null);
-  var [isSearchOpen, setSearchOpen] = useState(false);
 
   return (
     <AppBar position="fixed" className={classes.appBar}>
@@ -137,30 +114,9 @@ export default function Header(props) {
           )}
         </IconButton>
         <Typography variant="h6" weight="medium" className={classes.logotype}>
-          React Material Admin
+          GLVR
         </Typography>
         <div className={classes.grow} />
-        <div
-          className={classNames(classes.search, {
-            [classes.searchFocused]: isSearchOpen,
-          })}
-        >
-          <div
-            className={classNames(classes.searchIcon, {
-              [classes.searchIconOpened]: isSearchOpen,
-            })}
-            onClick={() => setSearchOpen(!isSearchOpen)}
-          >
-            <SearchIcon classes={{ root: classes.headerIcon }} />
-          </div>
-          <InputBase
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-          />
-        </div>
         <IconButton
           color="inherit"
           aria-haspopup="true"
@@ -178,7 +134,7 @@ export default function Header(props) {
             <NotificationsIcon classes={{ root: classes.headerIcon }} />
           </Badge>
         </IconButton>
-        <IconButton
+        {/* <IconButton
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
@@ -194,7 +150,7 @@ export default function Header(props) {
           >
             <MailIcon classes={{ root: classes.headerIcon }} />
           </Badge>
-        </IconButton>
+        </IconButton> */}
         <IconButton
           aria-haspopup="true"
           color="inherit"
@@ -204,7 +160,7 @@ export default function Header(props) {
         >
           <AccountIcon classes={{ root: classes.headerIcon }} />
         </IconButton>
-        <Menu
+        {/* <Menu
           id="mail-menu"
           open={Boolean(mailMenu)}
           anchorEl={mailMenu}
@@ -258,7 +214,7 @@ export default function Header(props) {
             Send New Message
             <SendIcon className={classes.sendButtonIcon} />
           </Fab>
-        </Menu>
+        </Menu> */}
         <Menu
           id="notifications-menu"
           open={Boolean(notificationsMenu)}
@@ -288,15 +244,14 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              John Smith
+              {name}
             </Typography>
             <Typography
-              className={classes.profileMenuLink}
-              component="a"
+              className={classes.profileMenuNoLink}
+              component="span"
               color="primary"
-              href="https://flatlogic.com"
             >
-              Flalogic.com
+              {email}
             </Typography>
           </div>
           <MenuItem
@@ -305,23 +260,7 @@ export default function Header(props) {
               classes.headerMenuItem,
             )}
           >
-            <AccountIcon className={classes.profileMenuIcon} /> Profile
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Tasks
-          </MenuItem>
-          <MenuItem
-            className={classNames(
-              classes.profileMenuItem,
-              classes.headerMenuItem,
-            )}
-          >
-            <AccountIcon className={classes.profileMenuIcon} /> Messages
+            <AccountIcon className={classes.profileMenuIcon} /> Configuración
           </MenuItem>
           <div className={classes.profileMenuUser}>
             <Typography

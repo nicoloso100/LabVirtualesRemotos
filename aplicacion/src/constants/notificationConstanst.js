@@ -9,3 +9,8 @@ export const INVALID_PASSWORD = {
   type: "warning",
   message: "No se ha ingresado una contraseña",
 };
+
+export const INVALID_NAME = {
+  type: "warning",
+  message: "No se ha ingresado una nombre o apellido",
+};

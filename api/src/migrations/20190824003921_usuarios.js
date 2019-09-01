@@ -4,6 +4,7 @@ exports.up = function(knex, Promise) {
       .notNull()
       .primary();
     t.string("name").notNull();
+    t.string("surname").notNull();
     t.string("password_digest").notNull();
   });
 };

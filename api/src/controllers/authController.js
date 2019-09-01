@@ -16,8 +16,9 @@ exports.add_user = (req, res) => {
   new User({ email: req.body.email }).fetch().then(user => {
     if (user === null) {
       const user = new User({
-        email: req.body.email,
         name: req.body.name,
+        surname: req.body.surname,
+        email: req.body.email,
         password: req.body.password
       });
       user
@@ -51,7 +52,11 @@ exports.get_token = (req, res) => {
         .then(user => {
           const payload = { email: user.email };
           const token = jwt.sign(payload, process.env.SECRET_OR_KEY);
-          res.json({ token: token, user: req.body.email });
+          res.json({
+            token: token,
+            name: result.attributes.name,
+            email: result.attributes.email
+          });
         })
         .catch(err => {
           return res.status(500).send(authConstants().wrongPassword);

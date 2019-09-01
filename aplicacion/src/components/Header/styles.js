@@ -122,6 +122,10 @@ export default makeStyles(theme => ({
     marginRight: theme.spacing(2),
     color: theme.palette.text.hint,
   },
+  profileMenuNoLink: {
+    fontSize: 16,
+    textDecoration: "none",
+  },
   profileMenuLink: {
     fontSize: 16,
     textDecoration: "none",

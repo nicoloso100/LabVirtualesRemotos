@@ -7,8 +7,8 @@ export const IsValidEmail = email => {
   return re.test(String(email).toLowerCase());
 };
 
-export const IsValidPassword = password => {
-  return password !== null ? true : false;
+export const IsNotEmptyField = password => {
+  return password !== "" ? true : false;
 };
 
 export const ShowNotification = notification => {
