@@ -10,12 +10,13 @@ import Login from "../pages/login/Login";
 
 // context
 import { useUserState } from "../context/UserContext";
+import showLoading from "./loadingIcon/loading";
 
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
 
-  // useEffect(() => console.log("mounted"), []);
+  useEffect(() => {}, []);
 
   return (
     <HashRouter>
