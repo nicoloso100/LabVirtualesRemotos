@@ -31,7 +31,7 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch, useUserState } from "../../context/UserContext";
+import { useUserDispatch } from "../../context/UserContext";
 import { signOut } from "../../services/loginServices";
 
 // const messages = [
@@ -73,7 +73,6 @@ export default function Header(props) {
   var layoutState = useLayoutState();
   var layoutDispatch = useLayoutDispatch();
   var userDispatch = useUserDispatch();
-  var { name, email } = useUserState();
 
   // local
   // var [mailMenu, setMailMenu] = useState(null);
@@ -244,14 +243,14 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              {name}
+              NAME
             </Typography>
             <Typography
               className={classes.profileMenuNoLink}
               component="span"
               color="primary"
             >
-              {email}
+              ROL
             </Typography>
           </div>
           <MenuItem

@@ -19,7 +19,8 @@ exports.add_user = (req, res) => {
         name: req.body.name,
         surname: req.body.surname,
         email: req.body.email,
-        password: req.body.password
+        password: req.body.password,
+        rol: 1
       });
       user
         .save()
@@ -54,7 +55,6 @@ exports.get_token = (req, res) => {
           const token = jwt.sign(payload, process.env.SECRET_OR_KEY);
           res.json({
             token: token,
-            name: result.attributes.name,
             email: result.attributes.email
           });
         })

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // components
@@ -14,6 +14,8 @@ import { useUserState } from "../context/UserContext";
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
+
+  // useEffect(() => console.log("mounted"), []);
 
   return (
     <HashRouter>

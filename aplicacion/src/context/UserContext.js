@@ -9,11 +9,10 @@ function userReducer(state, action) {
       return {
         ...state,
         isAuthenticated: true,
-        name: action.name,
         email: action.email,
       };
     case "SIGN_OUT_SUCCESS":
-      return { ...state, isAuthenticated: false, name: "", email: "" };
+      return { ...state, isAuthenticated: false, email: "" };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
@@ -22,11 +21,9 @@ function userReducer(state, action) {
 
 function UserProvider({ children }) {
   const id_token = localStorage.getItem("id_token");
-  const id_name = localStorage.getItem("id_name");
   const id_email = localStorage.getItem("id_email");
   var [state, loginDispatch] = React.useReducer(userReducer, {
     isAuthenticated: !!id_token,
-    name: id_name ? id_name : "",
     email: id_email ? id_email : "",
   });
 

@@ -6,6 +6,10 @@ exports.up = function(knex, Promise) {
     t.string("name").notNull();
     t.string("surname").notNull();
     t.string("password_digest").notNull();
+    t.bigInteger("rol")
+      .notNull()
+      .references("id")
+      .inTable("roles");
   });
 };
 
