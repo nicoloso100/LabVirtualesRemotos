@@ -16,3 +16,7 @@ export const initialDataURLs = {
 export const dashboardURLs = {
   getLaboratorios: `${APIbaseURL}obtenerLaboratorios`,
 };
+
+export const infoURLs = {
+  sendInfo: `${APIbaseURL}enviarInfo`,
+};

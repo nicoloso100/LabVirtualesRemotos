@@ -14,3 +14,13 @@ export const INVALID_NAME = {
   type: "warning",
   message: "No se ha ingresado una nombre o apellido",
 };
+
+export const INVALID_FIELD = {
+  type: "warning",
+  message: "Debes llenar todos los datos",
+};
+
+export const OPERATION_SUCCESS = {
+  type: "success",
+  message: "Los datos se han enviado correctamente",
+};

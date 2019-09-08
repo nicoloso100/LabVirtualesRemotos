@@ -12,6 +12,10 @@ import Sidebar from "../Sidebar/Sidebar";
 // pages
 import Dashboard from "../../pages/dashboard/Dashboard";
 import Tables from "../../pages/tables/Tables";
+import Info from "../../pages/info/Info";
+
+//icons
+import { Home as HomeIcon, Announcement as InfoIcon } from "@material-ui/icons";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
@@ -39,11 +43,39 @@ function Layout(props) {
     }
   });
 
+  const structureBase = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+    ],
+    route: [{ path: "/app/dashboard", component: Dashboard }],
+  };
+
+  const structureVisitante = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+      { id: 2, label: "Información", link: "/app/info", icon: <InfoIcon /> },
+    ],
+    route: [
+      { path: "/app/dashboard", component: Dashboard },
+      { path: "/app/info", component: Info },
+    ],
+  };
+
+  const getStructure = () => {
+    switch (userInfo.rol) {
+      case "visitante":
+        return structureVisitante;
+
+      default:
+        return structureBase;
+    }
+  };
+
   return userInfo.rol !== "" ? (
     <div className={classes.root}>
       <>
         <Header history={props.history} />
-        <Sidebar />
+        <Sidebar structure={getStructure().slider} />
         <div
           className={classnames(classes.content, {
             [classes.contentShift]: layoutState.isSidebarOpened,
@@ -51,8 +83,15 @@ function Layout(props) {
         >
           <div className={classes.fakeToolbar} />
           <Switch>
-            <Route path="/app/dashboard" component={Dashboard} />
-            <Route path="/app/tables" component={Tables} />
+            {getStructure().route.map((route, index) => {
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  component={route.component}
+                />
+              );
+            })}
           </Switch>
         </div>
       </>

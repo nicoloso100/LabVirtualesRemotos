@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Drawer, IconButton, List } from "@material-ui/core";
-import {
-  Home as HomeIcon,
-  BorderAll as TableIcon,
-  ArrowBack as ArrowBackIcon,
-} from "@material-ui/icons";
-import { useTheme } from "@material-ui/styles";
+import { ArrowBack as ArrowBackIcon, PortraitSharp } from "@material-ui/icons";
+import { useTheme, getThemeProps } from "@material-ui/styles";
 import { withRouter } from "react-router-dom";
 import classNames from "classnames";
 
@@ -21,18 +17,15 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
+import { useInfoUserState } from "../../context/UserContext";
 
-const structure = [
-  { id: 0, label: "Dashboard", link: "/app/dashboard", icon: <HomeIcon /> },
-  { id: 2, label: "Tables", link: "/app/tables", icon: <TableIcon /> },
-];
-
-function Sidebar({ location }) {
+function Sidebar({ location, structure }) {
   var classes = useStyles();
   var theme = useTheme();
 
   // global
   var { isSidebarOpened } = useLayoutState();
+  var { rol } = useInfoUserState();
   var layoutDispatch = useLayoutDispatch();
 
   // local

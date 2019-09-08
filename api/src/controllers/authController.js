@@ -57,6 +57,9 @@ exports.add_user = (req, res) => {
       } else {
         return res.status(500).send(authConstants(req.body.email).userExists);
       }
+    })
+    .cath(err => {
+      return res.status(500).send(authConstants().systemError);
     });
 };
 

@@ -21,7 +21,7 @@ const PageTitle = withRouter(props => {
           variant="contained"
           size="large"
           color="secondary"
-          onClick={() => props.history.push("/app/tables")}
+          onClick={() => props.history.push("/app/info")}
         >
           {props.button}
         </Button>
