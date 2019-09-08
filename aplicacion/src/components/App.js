@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 // components
@@ -10,13 +10,10 @@ import Login from "../pages/login/Login";
 
 // context
 import { useUserState } from "../context/UserContext";
-import showLoading from "./loadingIcon/loading";
 
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
-
-  useEffect(() => {}, []);
 
   return (
     <HashRouter>

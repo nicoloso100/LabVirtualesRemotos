@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("peticionesProfesores", t => {
+  return knex.schema.createTable("peticionesDirectores", t => {
     t.string("email")
       .references("email")
       .inTable("visitantes")
@@ -11,5 +11,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("peticionesProfesores");
+  return knex.schema.dropTable("peticionesDirectores");
 };

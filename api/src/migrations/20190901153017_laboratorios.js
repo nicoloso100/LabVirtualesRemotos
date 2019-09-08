@@ -6,10 +6,12 @@ exports.up = function(knex, Promise) {
       .primary();
     t.string("nombre").notNull();
     t.string("descripcion").notNull();
+    t.string("link").notNull();
     t.bigInteger("tipo")
       .references("id")
-      .inTable("rolesLaboratorios")
+      .inTable("tiposLaboratorio")
       .notNull();
+    t.string("imagen").notNull();
   });
 };
 

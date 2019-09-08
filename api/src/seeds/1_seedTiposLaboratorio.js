@@ -1,10 +1,10 @@
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex("rolesLaboratorios")
+  return knex("tiposLaboratorio")
     .del()
     .then(function() {
       // Inserts seed entries
-      return knex("rolesLaboratorios").insert([
+      return knex("tiposLaboratorio").insert([
         { id: 1, descripcion: "virtual" },
         { id: 2, descripcion: "remoto" }
       ]);

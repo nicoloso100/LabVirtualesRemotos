@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Switch, withRouter } from "react-router-dom";
 import classnames from "classnames";
 
 // styles
@@ -11,23 +11,35 @@ import Sidebar from "../Sidebar/Sidebar";
 
 // pages
 import Dashboard from "../../pages/dashboard/Dashboard";
-import Typography from "../../pages/typography/Typography";
-import Notifications from "../../pages/notifications/Notifications";
-import Maps from "../../pages/maps/Maps";
 import Tables from "../../pages/tables/Tables";
-import Icons from "../../pages/icons/Icons";
-import Charts from "../../pages/charts/Charts";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
+import {
+  useInfoUserState,
+  useUserState,
+  useInfoUserDispatch,
+  useUserDispatch,
+} from "../../context/UserContext";
+import { getInitialData } from "../../services/initialDataServices";
 
 function Layout(props) {
   var classes = useStyles();
 
   // global
+  var infoUserDispatch = useInfoUserDispatch();
+  var userDispatch = useUserDispatch();
   var layoutState = useLayoutState();
+  var { email } = useUserState();
+  var userInfo = useInfoUserState();
 
-  return (
+  useEffect(() => {
+    if (email && userInfo.rol === "") {
+      getInitialData(email, infoUserDispatch, userDispatch, props.history);
+    }
+  });
+
+  return userInfo.rol !== "" ? (
     <div className={classes.root}>
       <>
         <Header history={props.history} />
@@ -40,22 +52,12 @@ function Layout(props) {
           <div className={classes.fakeToolbar} />
           <Switch>
             <Route path="/app/dashboard" component={Dashboard} />
-            <Route path="/app/typography" component={Typography} />
             <Route path="/app/tables" component={Tables} />
-            <Route path="/app/notifications" component={Notifications} />
-            <Route
-              exact
-              path="/app/ui"
-              render={() => <Redirect to="/app/ui/icons" />}
-            />
-            <Route path="/app/ui/maps" component={Maps} />
-            <Route path="/app/ui/icons" component={Icons} />
-            <Route path="/app/ui/charts" component={Charts} />
           </Switch>
         </div>
       </>
     </div>
-  );
+  ) : null;
 }
 
 export default withRouter(Layout);

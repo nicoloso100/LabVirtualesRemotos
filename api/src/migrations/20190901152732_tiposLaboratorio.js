@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("rolesLaboratorios", t => {
+  return knex.schema.createTable("tiposLaboratorio", t => {
     t.increments("id")
       .unsigned()
       .notNull()
@@ -9,5 +9,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("rolesLaboratorios");
+  return knex.schema.dropTable("tiposLaboratorio");
 };

@@ -16,6 +16,7 @@ app.use(cors(corsConfig));
 
 app.use("/", express.static("../PaginaPrincipal"));
 app.use("/static", express.static("../aplicacion/build/static"));
+app.use("/public", express.static("./public"));
 app.use("/app", express.static("../aplicacion/build/"));
 
 app.use("/api", routes);

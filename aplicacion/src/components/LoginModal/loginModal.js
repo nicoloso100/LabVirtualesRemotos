@@ -65,7 +65,7 @@ const LoginModal = props => {
               fullWidth
               className={classes.createAccountButton}
             >
-              Crear cuenta
+              Enviar
             </Button>
           )}
         </div>

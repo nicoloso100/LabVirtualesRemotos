@@ -1,21 +1,29 @@
-import { loginURLs } from "../constants/URLs";
+import { initialDataURLs } from "../constants/URLs";
 import swal from "sweetalert";
 import { baseError } from "../constants/notificationConstanst";
+import { signOut } from "./loginServices";
+import showLoading from "../components/loadingIcon/loading";
 
 const axios = require("axios");
 
-export const sendPasswordRecover = (email, setIsResetLoading, handleClose) => {
-  setIsResetLoading(true);
+export const getInitialData = (email, dispatch, errorDispatch, history) => {
+  showLoading(true);
   axios
-    .post(loginURLs.recoverPassword, { email: email })
+    .post(initialDataURLs.getInitialData, { email: email })
     .then(res => {
-      setIsResetLoading(false);
-      handleClose();
-      swal("Revisa tu correo!", res.data, "success");
+      showLoading(false);
+      dispatch({
+        type: "INFO_SUCCESS",
+        name: res.data.name,
+        surname: res.data.surname,
+        rol: res.data.rol,
+      });
     })
     .catch(err => {
-      setIsResetLoading(false);
+      showLoading(false);
       var error = err.response;
-      swal("Oops!", error ? error.data : baseError, "warning");
+      swal("Oops!", error ? error.data : baseError, "warning").then(() => {
+        signOut(errorDispatch, history);
+      });
     });
 };

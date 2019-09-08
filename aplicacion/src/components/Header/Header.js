@@ -31,7 +31,7 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch } from "../../context/UserContext";
+import { useUserDispatch, useInfoUserState } from "../../context/UserContext";
 import { signOut } from "../../services/loginServices";
 
 // const messages = [
@@ -71,6 +71,7 @@ export default function Header(props) {
 
   // global
   var layoutState = useLayoutState();
+  var infoUserState = useInfoUserState();
   var layoutDispatch = useLayoutDispatch();
   var userDispatch = useUserDispatch();
 
@@ -243,14 +244,14 @@ export default function Header(props) {
         >
           <div className={classes.profileMenuUser}>
             <Typography variant="h4" weight="medium">
-              NAME
+              {infoUserState.name}
             </Typography>
             <Typography
               className={classes.profileMenuNoLink}
               component="span"
               color="primary"
             >
-              ROL
+              {infoUserState.rol}
             </Typography>
           </div>
           <MenuItem
@@ -267,7 +268,7 @@ export default function Header(props) {
               color="primary"
               onClick={() => signOut(userDispatch, props.history)}
             >
-              Sign Out
+              Cerrar sesión
             </Typography>
           </div>
         </Menu>

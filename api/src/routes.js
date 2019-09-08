@@ -5,6 +5,7 @@ const passport = require("./utils/authentication/passport");
 const mailerController = require("./controllers/mailerController");
 const authController = require("./controllers/authController");
 const initialDataController = require("./controllers/initialDataController");
+const dashboardController = require("./controllers/dashboardController");
 
 //Mailer
 router.post("/sendMail", mailerController.send_email);
@@ -19,5 +20,7 @@ router.post("/getToken", authController.get_token);
 router.post("/recoverPassword", authController.recover_password);
 //Initial data
 router.post("/initialData", initialDataController.get_initialData);
+//dashboard
+router.post("/obtenerLaboratorios", dashboardController.get_laboratorios);
 
 module.exports = router;

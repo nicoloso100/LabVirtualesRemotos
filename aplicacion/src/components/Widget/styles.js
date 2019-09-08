@@ -5,6 +5,12 @@ export default makeStyles(theme => ({
     display: "flex",
     minHeight: "100%",
   },
+  widgetImage: {
+    width: "100%",
+    height: "150px",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  },
   widgetHeader: {
     padding: theme.spacing(3),
     paddingBottom: theme.spacing(1),
@@ -28,6 +34,13 @@ export default makeStyles(theme => ({
     flexDirection: "column",
     flexGrow: 1,
     overflow: "hidden",
+    cursor: "pointer",
+    transition: theme.transitions.create("all", {
+      duration: "0.2s",
+    }),
+    "&:hover": {
+      boxShadow: "5px 5px 16px -1px rgba(130,130,130,1)",
+    },
   },
   moreButton: {
     margin: -theme.spacing(1),

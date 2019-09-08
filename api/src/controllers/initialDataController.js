@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const User = require("../models/usuario");
 const initialDataConstats = require("../constants/initialDataConstats");
 
 exports.get_initialData = (req, res) => {
@@ -14,7 +14,6 @@ exports.get_initialData = (req, res) => {
       });
     })
     .catch(err => {
-      //return res.status(500).send(initialDataConstats().fetchError);
-      return res.status(500).send(err);
+      return res.status(500).send(initialDataConstats().fetchError);
     });
 };

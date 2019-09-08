@@ -1,10 +1,10 @@
-const db = require("../utils/database/databaseConfig");
-const Users = require("./user");
+const db = require("../utils/database/databaseBookshelfConfig");
+const Usuarios = require("./usuario");
 
 const Roles = db.Model.extend({
   tableName: "roles",
-  users: function() {
-    return this.hasMany(Users, "id");
+  usuarios: function() {
+    return this.hasMany(Usuarios, "id");
   }
 });
 

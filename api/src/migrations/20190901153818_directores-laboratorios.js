@@ -1,8 +1,8 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("administradores-laboratorios", t => {
+  return knex.schema.createTable("directores-laboratorios", t => {
     t.string("email")
       .references("email")
-      .inTable("administradores")
+      .inTable("directores")
       .notNull();
     t.bigInteger("laboratorio")
       .references("id")
@@ -12,5 +12,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("administradores-laboratorios");
+  return knex.schema.dropTable("directores-laboratorios");
 };

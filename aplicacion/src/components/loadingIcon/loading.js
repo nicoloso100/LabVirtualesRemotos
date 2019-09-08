@@ -1,5 +1,6 @@
-var body = document.body;
-var container = document.createElement("div");
+const body = document.body;
+const container = document.createElement("div");
+container.className = "loader";
 container.style.backgroundColor = "rgba(124, 124, 124, 0.44)";
 container.style.position = "fixed";
 container.style.display = "flex";
@@ -8,15 +9,16 @@ container.style.zIndex = "100000";
 container.style.width = "100%";
 container.style.height = "100%";
 
-var spinner = document.createElement("div");
+const spinner = document.createElement("div");
 spinner.className = "loaderSpinner";
 container.appendChild(spinner);
 
 const showLoading = loading => {
-  if (loading) {
+  var imported = document.querySelector(".loader");
+  if (loading && !document.body.contains(imported)) {
     body.appendChild(container);
-  } else {
-    body.removeChild(container);
+  } else if (document.body.contains(imported)) {
+    body.removeChild(imported);
   }
 };
 

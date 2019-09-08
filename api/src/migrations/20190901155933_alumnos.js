@@ -2,7 +2,7 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("alumnos", t => {
     t.string("email")
       .references("email")
-      .inTable("users")
+      .inTable("usuarios")
       .notNull()
       .primary();
   });

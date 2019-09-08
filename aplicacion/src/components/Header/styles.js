@@ -123,7 +123,7 @@ export default makeStyles(theme => ({
     color: theme.palette.text.hint,
   },
   profileMenuNoLink: {
-    fontSize: 16,
+    fontSize: 14,
     textDecoration: "none",
   },
   profileMenuLink: {

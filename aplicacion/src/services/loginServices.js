@@ -19,11 +19,9 @@ export const loginUser = (
       .then(res => {
         setIsLoading(false);
         localStorage.setItem("id_token", res.data.token);
-        localStorage.setItem("id_name", res.data.name);
         localStorage.setItem("id_email", res.data.email);
         dispatch({
           type: "LOGIN_SUCCESS",
-          name: res.data.name,
           email: res.data.email,
         });
         history.push("/app/dashboard");
@@ -78,7 +76,6 @@ export const signIn = (
 
 export const signOut = (dispatch, history) => {
   localStorage.removeItem("id_token");
-  localStorage.removeItem("id_name");
   localStorage.removeItem("id_email");
   dispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/ingreso");

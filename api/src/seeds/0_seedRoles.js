@@ -8,7 +8,8 @@ exports.seed = function(knex, Promise) {
         { id: 1, descripcion: "visitante" },
         { id: 2, descripcion: "estudiante" },
         { id: 3, descripcion: "profesor" },
-        { id: 4, descripcion: "administrador" }
+        { id: 4, descripcion: "director" },
+        { id: 5, descripcion: "administrador" }
       ]);
     });
 };

@@ -9,6 +9,8 @@ const AuthenticationConstants = param => {
     userCreated: "El usuario se ha creado correctamente!",
     errorUserCreate:
       "Ha ocurrido un error al crear el usuario, inténtalo más tarde",
+    criticalErrorUserCreate:
+      "Ha ocurrido un error al crear el usuario, por favor comuníquese con un administrador",
     resetPassword: "Hemos enviado a tu correo una nueva contraseña",
     errorResetPassword:
       "Ha ocurrido un error al generar una nueva contraseña, inténtalo más tarde",

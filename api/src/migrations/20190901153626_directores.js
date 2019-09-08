@@ -1,17 +1,17 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("visitantes", t => {
+  return knex.schema.createTable("directores", t => {
     t.string("email")
       .references("email")
       .inTable("usuarios")
       .notNull()
       .primary();
-    t.bigInteger("laboratorio")
+    t.bigInteger("institucion")
       .references("id")
-      .inTable("laboratorios")
+      .inTable("instituciones")
       .notNull();
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("visitantes");
+  return knex.schema.dropTable("directores");
 };
