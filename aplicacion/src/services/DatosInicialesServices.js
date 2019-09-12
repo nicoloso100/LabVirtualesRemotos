@@ -6,10 +6,10 @@ import showLoading from "../components/loadingIcon/loading";
 
 const axios = require("axios");
 
-export const getInitialData = (email, dispatch, errorDispatch, history) => {
+export const getDatosIniciales = (email, dispatch, errorDispatch, history) => {
   showLoading(true);
   axios
-    .post(initialDataURLs.getInitialData, { email: email })
+    .post(initialDataURLs.getDatosIniciales, { email: email })
     .then(res => {
       showLoading(false);
       dispatch({
@@ -26,4 +26,21 @@ export const getInitialData = (email, dispatch, errorDispatch, history) => {
         signOut(errorDispatch, history);
       });
     });
+};
+
+export const getUsuarios = () => {
+  showLoading(true);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(initialDataURLs.getUsuarios)
+      .then(res => {
+        showLoading(false);
+        resolve(res.data);
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
 };

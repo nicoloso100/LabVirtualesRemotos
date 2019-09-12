@@ -120,6 +120,8 @@ export default {
     MuiTableCell: {
       root: {
         borderBottom: "1px solid rgba(224, 224, 224, .5)",
+        padding: 0,
+        minWidth: "50%",
       },
       head: {
         fontSize: "0.95rem",

@@ -58,7 +58,7 @@ exports.add_user = (req, res) => {
         return res.status(500).send(authConstants(req.body.email).userExists);
       }
     })
-    .cath(err => {
+    .catch(err => {
       return res.status(500).send(authConstants().systemError);
     });
 };
@@ -103,6 +103,7 @@ exports.get_token = (req, res) => {
         });
     })
     .catch(err => {
+      console.log(err);
       return res.status(500).send(authConstants().systemError);
     });
 };

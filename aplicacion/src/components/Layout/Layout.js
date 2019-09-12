@@ -11,11 +11,15 @@ import Sidebar from "../Sidebar/Sidebar";
 
 // pages
 import Dashboard from "../../pages/dashboard/Dashboard";
-import Tables from "../../pages/tables/Tables";
 import Info from "../../pages/info/Info";
+import Admins from "../../pages/admins/admins";
 
 //icons
-import { Home as HomeIcon, Announcement as InfoIcon } from "@material-ui/icons";
+import {
+  Home as HomeIcon,
+  Announcement as InfoIcon,
+  SupervisedUserCircle as AdminsIcon,
+} from "@material-ui/icons";
 
 // context
 import { useLayoutState } from "../../context/LayoutContext";
@@ -25,7 +29,7 @@ import {
   useInfoUserDispatch,
   useUserDispatch,
 } from "../../context/UserContext";
-import { getInitialData } from "../../services/initialDataServices";
+import { getDatosIniciales } from "../../services/DatosInicialesServices";
 
 function Layout(props) {
   var classes = useStyles();
@@ -39,7 +43,7 @@ function Layout(props) {
 
   useEffect(() => {
     if (email && userInfo.rol === "") {
-      getInitialData(email, infoUserDispatch, userDispatch, props.history);
+      getDatosIniciales(email, infoUserDispatch, userDispatch, props.history);
     }
   });
 
@@ -50,10 +54,26 @@ function Layout(props) {
     route: [{ path: "/app/dashboard", component: Dashboard }],
   };
 
+  const structureAdministrador = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+      {
+        id: 1,
+        label: "Administradores",
+        link: "/app/admins",
+        icon: <AdminsIcon />,
+      },
+    ],
+    route: [
+      { path: "/app/dashboard", component: Dashboard },
+      { path: "/app/admins", component: Admins },
+    ],
+  };
+
   const structureVisitante = {
     slider: [
       { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
-      { id: 2, label: "Información", link: "/app/info", icon: <InfoIcon /> },
+      { id: 1, label: "Información", link: "/app/info", icon: <InfoIcon /> },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
@@ -65,6 +85,8 @@ function Layout(props) {
     switch (userInfo.rol) {
       case "visitante":
         return structureVisitante;
+      case "administrador":
+        return structureAdministrador;
 
       default:
         return structureBase;

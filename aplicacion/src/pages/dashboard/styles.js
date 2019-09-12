@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/styles";
 
 export default makeStyles(theme => ({
+  gridCard: {
+    justifyContent: "center",
+  },
   card: {
     minHeight: "100%",
     display: "flex",

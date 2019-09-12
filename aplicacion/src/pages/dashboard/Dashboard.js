@@ -42,11 +42,19 @@ export default function Dashboard(props) {
           userInfo.rol === "visitante" ? "Habilitar más laboratorios" : null
         }
       />
-      {laboratorios !== null &&
-        laboratorios.map(item => {
-          return (
-            <Grid key={item.id} container spacing={4}>
-              <Grid item lg={3} md={4} sm={6} xs={12}>
+      <Grid container spacing={4}>
+        {laboratorios !== null &&
+          laboratorios.map(item => {
+            return (
+              <Grid
+                key={item.id}
+                className={classes.gridCard}
+                item
+                lg={3}
+                md={4}
+                sm={6}
+                xs={12}
+              >
                 <Widget
                   title={item.nombre}
                   setOnClick={() => onClick(item.link)}
@@ -55,9 +63,9 @@ export default function Dashboard(props) {
                   className={classes.card}
                 ></Widget>
               </Grid>
-            </Grid>
-          );
-        })}
+            );
+          })}
+      </Grid>
     </>
   );
 }

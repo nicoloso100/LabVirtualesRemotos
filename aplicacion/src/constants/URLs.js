@@ -1,5 +1,5 @@
-//const baseURL = "http://54.237.245.2:5000/api/";
-export const baseURL = "http://192.168.0.34:5000";
+const baseURL = "http://54.237.245.2:5000/api/";
+//export const baseURL = "http://192.168.0.34:5000";
 const APIbaseURL = `${baseURL}/api/`;
 
 export const loginURLs = {
@@ -10,7 +10,8 @@ export const loginURLs = {
 };
 
 export const initialDataURLs = {
-  getInitialData: `${APIbaseURL}initialData`,
+  getDatosIniciales: `${APIbaseURL}datosIniciales`,
+  getUsuarios: `${APIbaseURL}obtenerUsuarios`,
 };
 
 export const dashboardURLs = {
@@ -19,4 +20,8 @@ export const dashboardURLs = {
 
 export const infoURLs = {
   sendInfo: `${APIbaseURL}enviarInfo`,
+};
+
+export const adminsURLs = {
+  getAdmins: `${APIbaseURL}obtenerAdmins`,
 };

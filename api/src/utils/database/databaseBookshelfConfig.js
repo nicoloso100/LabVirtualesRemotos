@@ -12,5 +12,6 @@ const knexDb = knex({
 const securePassword = require("bookshelf-secure-password");
 const db = require("bookshelf")(knexDb);
 db.plugin(securePassword);
+db.plugin("registry");
 
 module.exports = db;

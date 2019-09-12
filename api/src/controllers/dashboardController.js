@@ -1,10 +1,13 @@
 const knex = require("../utils/database/databaseConfig");
 
-const User = require("../models/usuario");
+const Usuario = require("../models/usuario");
+const Visitante = require("../models/visitante");
+const Laboratorio = require("../models/laboratorio");
+
 const dashboardConstants = require("../constants/dashboardConstants");
 
 exports.get_laboratorios = (req, res) => {
-  new User()
+  new Usuario()
     .where("email", req.body.email)
     .fetch()
     .then(model => {
@@ -12,6 +15,15 @@ exports.get_laboratorios = (req, res) => {
       switch (json.rol) {
         case "1":
           getVisitanteLboratorios(json.email)
+            .then(result => {
+              return res.send(result);
+            })
+            .catch(err => {
+              return res.status(500).send(err);
+            });
+          break;
+        case "5":
+          getAllLaboratorios()
             .then(result => {
               return res.send(result);
             })
@@ -30,20 +42,27 @@ exports.get_laboratorios = (req, res) => {
 
 getVisitanteLboratorios = email => {
   return new Promise((resolve, reject) => {
-    knex("visitantes")
-      .leftOuterJoin("laboratorios", function() {
-        this.on("visitantes.laboratorio", "laboratorios.id");
-      })
-      .leftOuterJoin("tiposLaboratorio", function() {
-        this.on("laboratorios.tipo", "tiposLaboratorio.id");
-      })
-      .select("laboratorios.*", "tiposLaboratorio.descripcion AS tipo")
-      .where("visitantes.email", "=", email)
-      .then(res => {
-        resolve(res);
+    new Visitante()
+      .where("email", email)
+      .fetch({ withRelated: ["laboratorio", "laboratorio.tipo"] })
+      .then(labVisitante => {
+        resolve([labVisitante.toJSON().laboratorio]);
       })
       .catch(err => {
-        reject(dashboardConstants().visitanteError);
+        reject(dashboardConstants().labsError);
+      });
+  });
+};
+
+getAllLaboratorios = () => {
+  return new Promise((resolve, reject) => {
+    new Laboratorio()
+      .fetchAll({ withRelated: ["tipo"] })
+      .then(laboratorios => {
+        resolve(laboratorios);
+      })
+      .catch(err => {
+        reject(dashboardConstants().labsError);
       });
   });
 };

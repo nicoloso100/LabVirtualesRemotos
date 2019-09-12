@@ -1,17 +1,17 @@
 const db = require("../utils/database/databaseBookshelfConfig");
-const Roles = require("./rol");
-const Visitantes = require("./visitante");
+require("./rol");
+require("./administrador");
 
-const User = db.Model.extend({
-  idAttribute: false,
+const Usuario = db.Model.extend({
+  idAttribute: "email",
   tableName: "usuarios",
   hasSecurePassword: true,
-  roles() {
-    return this.belongsTo(Roles, "rol");
+  rol() {
+    return this.belongsTo("Rol", "rol");
   },
-  visitante() {
-    return this.hasMany(Visitantes, "email");
+  administrador: function() {
+    return this.hasMany("Administrador", "email");
   }
 });
 
-module.exports = User;
+module.exports = db.model("Usuario", Usuario);
