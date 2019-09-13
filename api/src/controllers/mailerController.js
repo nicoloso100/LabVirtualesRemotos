@@ -1,14 +1,13 @@
-const mailConstants = require("../constants/emailConstants");
-const mailTemplate = require("../utils/mailSender/mailTemplate");
-const sendMail = require("../utils/mailSender/mailSender");
+//Services
+const mailService = require("../applicationServices/mailService");
 
 exports.send_email = (req, res) => {
-  const { email, name, title, text } = req.body;
-  sendMail(email, mailConstants().subject, mailTemplate(name, title, text))
-    .then(() => {
-      res.status(200).send(mailConstants().sentSuccess);
+  mailService
+    .sendMail(req.body)
+    .then(response => {
+      return res.send(response);
     })
-    .catch(() => {
-      res.status(500).send(mailConstants().sentError);
+    .catch(err => {
+      return res.status(500).send(err);
     });
 };

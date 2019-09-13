@@ -1,33 +1,24 @@
-const Usuario = require("../models/usuario");
-const initialDataConstats = require("../constants/initialDataConstats");
+//Services
+const usuarioService = require("../applicationServices/usuarioService");
 
 exports.get_initialData = (req, res) => {
-  new Usuario()
-    .where("email", req.body.email)
-    .fetch({ withRelated: ["rol"] })
-    .then(model => {
-      let json = model.toJSON();
-      return res.send({
-        name: json.name,
-        surname: json.surname,
-        rol: json.rol.descripcion
-      });
+  usuarioService
+    .getUsuario(req.body.email)
+    .then(result => {
+      return res.send(result);
     })
     .catch(err => {
-      return res.status(500).send(initialDataConstats().fetchError);
+      return res.status(500).send(err);
     });
 };
 
 exports.get_users = (req, res) => {
-  new Usuario()
-    .query(function(qb) {
-      qb.select("email", "name", "surname", "rol");
-    })
-    .fetchAll({ withRelated: ["rol"] })
-    .then(model => {
-      return res.send(model.toJSON());
+  usuarioService
+    .getUsuariosList()
+    .then(result => {
+      return res.send(result);
     })
     .catch(err => {
-      return res.status(500).send(initialDataConstats().fetchError);
+      return res.status(500).send(err);
     });
 };

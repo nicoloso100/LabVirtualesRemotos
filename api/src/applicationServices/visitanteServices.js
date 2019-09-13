@@ -1,22 +1,44 @@
-const adminsController = require("../controllers/");
+//Models
+const Visitante = require("../models/visitante");
+//Constants
+const authConstants = require("../constants/authenticationConstants");
+const dashboardConstants = require("../constants/dashboardConstants");
 
-exports.deleteVisitante = email => {
+exports.addVisitante = email => {
   return new Promise((resolve, reject) => {
-    new Administrador()
-      .fetchAll({
-        withRelated: [
-          {
-            usuario: function(qb) {
-              qb.select("email", "name", "surname");
-            }
-          }
-        ]
-      })
-      .then(admins => {
-        res.send(admins.toJSON());
+    Visitante.where("email", email)
+      .fetch()
+      .then(visitante => {
+        if (visitante === null) {
+          const visitante = new Visitante({
+            email: email,
+            laboratorio: 1
+          });
+          visitante
+            .save(null, { method: "insert" })
+            .then(() => {
+              resolve(authConstants().userCreated);
+            })
+            .catch(err => {
+              reject(authConstants().errorUserCreate);
+            });
+        } else {
+          reject(authConstants(email).userExists);
+        }
+      });
+  });
+};
+
+exports.getVisitanteLaboratorios = email => {
+  return new Promise((resolve, reject) => {
+    new Visitante()
+      .where("email", email)
+      .fetch({ withRelated: ["laboratorio", "laboratorio.tipo"] })
+      .then(labVisitante => {
+        resolve([labVisitante.toJSON().laboratorio]);
       })
       .catch(err => {
-        console.log(err);
+        reject(dashboardConstants().labsError);
       });
   });
 };

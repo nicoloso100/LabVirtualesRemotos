@@ -1,5 +1,5 @@
-const baseURL = "http://54.237.245.2:5000/api/";
-//export const baseURL = "http://192.168.0.34:5000";
+//export const baseURL = "http://54.237.245.2:5000/api/";
+export const baseURL = "http://192.168.0.34:5000";
 const APIbaseURL = `${baseURL}/api/`;
 
 export const loginURLs = {

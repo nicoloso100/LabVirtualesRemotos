@@ -31,7 +31,11 @@ import {
   useLayoutDispatch,
   toggleSidebar,
 } from "../../context/LayoutContext";
-import { useUserDispatch, useInfoUserState } from "../../context/UserContext";
+import {
+  useUserDispatch,
+  useInfoUserState,
+  useInfoUserDispatch,
+} from "../../context/UserContext";
 import { signOut } from "../../services/loginServices";
 
 // const messages = [
@@ -74,6 +78,7 @@ export default function Header(props) {
   var infoUserState = useInfoUserState();
   var layoutDispatch = useLayoutDispatch();
   var userDispatch = useUserDispatch();
+  var infoUserDispatch = useInfoUserDispatch();
 
   // local
   // var [mailMenu, setMailMenu] = useState(null);
@@ -266,7 +271,9 @@ export default function Header(props) {
             <Typography
               className={classes.profileMenuLink}
               color="primary"
-              onClick={() => signOut(userDispatch, props.history)}
+              onClick={() =>
+                signOut(userDispatch, infoUserDispatch, props.history)
+              }
             >
               Cerrar sesión
             </Typography>

@@ -33,6 +33,8 @@ function userInfoReducer(state, action) {
         surname: "",
         rol: "",
       };
+    case "SIGN_OUT_SUCCESS":
+      return { name: "", surname: "", rol: "" };
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
