@@ -1,8 +1,7 @@
 //Models
 const Visitante = require("../models/visitante");
 //Constants
-const authConstants = require("../constants/authenticationConstants");
-const dashboardConstants = require("../constants/dashboardConstants");
+const visitanteConstants = require("../constants/visitanteConstants");
 
 exports.addVisitante = email => {
   return new Promise((resolve, reject) => {
@@ -17,13 +16,13 @@ exports.addVisitante = email => {
           visitante
             .save(null, { method: "insert" })
             .then(() => {
-              resolve(authConstants().userCreated);
+              resolve(visitanteConstants().userCreated);
             })
             .catch(err => {
-              reject(authConstants().errorUserCreate);
+              reject(visitanteConstants().errorUserCreate);
             });
         } else {
-          reject(authConstants(email).userExists);
+          reject(visitanteConstants(email).userExists);
         }
       });
   });
@@ -31,14 +30,26 @@ exports.addVisitante = email => {
 
 exports.getVisitanteLaboratorios = email => {
   return new Promise((resolve, reject) => {
-    new Visitante()
-      .where("email", email)
+    Visitante.where("email", email)
       .fetch({ withRelated: ["laboratorio", "laboratorio.tipo"] })
       .then(labVisitante => {
         resolve([labVisitante.toJSON().laboratorio]);
       })
       .catch(err => {
-        reject(dashboardConstants().labsError);
+        reject(visitanteConstants().getlabsError);
+      });
+  });
+};
+
+exports.deleteVisitante = email => {
+  return new Promise((resolve, reject) => {
+    Visitante.where("email", email)
+      .destroy()
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        reject(visitanteConstants().visitanteNotFound);
       });
   });
 };

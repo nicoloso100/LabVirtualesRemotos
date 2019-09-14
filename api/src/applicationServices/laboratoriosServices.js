@@ -1,7 +1,7 @@
 //Models
 const Laboratorio = require("../models/laboratorio");
 //Constants
-const dashboardConstants = require("../constants/dashboardConstants");
+const laboratoriosConstants = require("../constants/laboratoriosConstants");
 
 exports.getAllLaboratorios = () => {
   return new Promise((resolve, reject) => {
@@ -11,7 +11,7 @@ exports.getAllLaboratorios = () => {
         resolve(laboratorios);
       })
       .catch(err => {
-        reject(dashboardConstants().labsError);
+        reject(laboratoriosConstants().labsError);
       });
   });
 };

@@ -21,3 +21,20 @@ export const getAdmins = () => {
       });
   });
 };
+
+export const addAdmin = (email, setIsLoading) => {
+  setIsLoading(true);
+  return new Promise(resolve => {
+    axios
+      .post(adminsURLs.getAdmins)
+      .then(res => {
+        setIsLoading(false);
+        resolve(res.data);
+      })
+      .catch(err => {
+        setIsLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
+};

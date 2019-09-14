@@ -3,12 +3,11 @@ const uuid = require("uuid/v1");
 //Models
 const Usuario = require("../models/usuario");
 //Constants
-const authConstants = require("../constants/authenticationConstants");
-const dashboardConstants = require("../constants/dashboardConstants");
+const usuarioConstants = require("../constants/usuarioConstants");
 //Services
-const visitanteService = require("../applicationServices/visitanteServices");
-const mailService = require("../applicationServices/mailService");
-const laboratoriosService = require("../applicationServices/laboratoriosService");
+const visitanteService = require("./visitanteServices");
+const mailService = require("./emailServices");
+const laboratoriosService = require("./laboratoriosServices");
 
 exports.getUsuario = email => {
   return new Promise((resolve, reject) => {
@@ -23,7 +22,7 @@ exports.getUsuario = email => {
         });
       })
       .catch(err => {
-        reject(initialDataConstats().fetchError);
+        reject(usuarioConstants().getUsuarioError);
       });
   });
 };
@@ -38,7 +37,7 @@ exports.getUsuariosList = () => {
         resolve(model.toJSON());
       })
       .catch(err => {
-        reject(initialDataConstats().fetchError);
+        reject(usuarioConstants().getUsuariosListError);
       });
   });
 };
@@ -67,22 +66,22 @@ exports.addUsuario = params => {
                 .catch(err => {
                   this.deleteUsuario(params.email)
                     .then(result => {
-                      reject(authConstants().errorUserCreate);
+                      reject(usuarioConstants().errorUserCreate);
                     })
                     .catch(err => {
-                      reject(authConstants().criticalErrorUserCreate);
+                      reject(usuarioConstants().criticalErrorUserCreate);
                     });
                 });
             })
             .catch(err => {
-              reject(authConstants().errorUserCreate);
+              reject(usuarioConstants().errorUserCreate);
             });
         } else {
-          reject(authConstants(params.email).userExists);
+          reject(usuarioConstants(params.email).userExists);
         }
       })
       .catch(err => {
-        reject(authConstants().systemError);
+        reject(usuarioConstants().systemError);
       });
   });
 };
@@ -106,7 +105,7 @@ exports.getToken = params => {
       .fetch()
       .then(result => {
         if (!result) {
-          reject(authConstants(params.email).unregisteredEmail);
+          reject(usuarioConstants(params.email).unregisteredEmail);
         }
         result
           .authenticate(params.password)
@@ -119,11 +118,11 @@ exports.getToken = params => {
             });
           })
           .catch(err => {
-            reject(authConstants().wrongPassword);
+            reject(usuarioConstants().wrongPassword);
           });
       })
       .catch(err => {
-        reject(authConstants().systemError);
+        reject(usuarioConstants().systemError);
       });
   });
 };
@@ -134,7 +133,7 @@ exports.recoverPassword = params => {
       .fetch()
       .then(result => {
         if (!result) {
-          reject(authConstants(params.email).unregisteredEmail);
+          reject(usuarioConstants(params.email).unregisteredEmail);
         }
         const newPassword = uuid().split("-")[0];
         result
@@ -148,23 +147,23 @@ exports.recoverPassword = params => {
             mailService
               .sendMail(
                 params.email,
-                authConstants().resetPasswordSubject,
+                usuarioConstants().resetPasswordSubject,
                 result.toJSON().name,
-                authConstants(newPassword).resetPasswordBody
+                usuarioConstants(newPassword).resetPasswordBody
               )
               .then(() => {
-                resolve(authConstants().resetPassword);
+                resolve(usuarioConstants().resetPassword);
               })
               .catch(err => {
-                reject(authConstants().errorResetPassword);
+                reject(usuarioConstants().errorResetPassword);
               });
           })
           .catch(err => {
-            reject(authConstants().errorResetPassword);
+            reject(usuarioConstants().errorResetPassword);
           });
       })
       .catch(err => {
-        reject(authConstants().systemError);
+        reject(usuarioConstants().systemError);
       });
   });
 };
@@ -198,11 +197,24 @@ exports.getUsuariosLaboratorios = email => {
               });
             break;
           default:
-            reject(dashboardConstants().noRol);
+            reject(usuarioConstants().noRol);
         }
       })
       .catch(err => {
-        reject(dashboardConstants().fetchError);
+        reject(usuarioConstants().fetchError);
+      });
+  });
+};
+
+exports.changeUsuarioRol = (email, rol) => {
+  return new Promise((resolve, reject) => {
+    Usuario.where({ email: email })
+      .save({ rol: rol }, { method: "update" }, { patch: true })
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        reject();
       });
   });
 };

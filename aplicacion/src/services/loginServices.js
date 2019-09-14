@@ -85,8 +85,8 @@ export const signOut = (userDispatch, infoUserDispatch, history) => {
 export const sendRegistratioEmail = (email, name) => {
   axios.post(loginURLs.sendSignInEmail, {
     email: email,
+    subject: "Tu registro ha sido exitoso!",
     name: name,
-    title: "Tu registro ha sido exitoso!",
     text:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac turpis tincidunt, convallis lorem consectetur, varius ipsum. Quisque mauris sem, tempus sit amet massa ac, efficitur tristique turpis. Aliquam maximus aliquam odio non facilisis. Mauris pellentesque blandit posuere.",
   });

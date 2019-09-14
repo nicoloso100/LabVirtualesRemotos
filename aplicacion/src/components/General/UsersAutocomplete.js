@@ -18,13 +18,17 @@ import {
   DialogContentText,
   DialogActions,
   Slide,
+  CircularProgress,
 } from "@material-ui/core";
+import { addAdmin } from "../../services/adminsServices";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const UsersAutocomplete = () => {
+  // local
+  var [isLoading, setIsLoading] = useState(false);
   var classes = useStyles();
 
   const [selected, setSelected] = useState("");
@@ -53,7 +57,11 @@ const UsersAutocomplete = () => {
     }
   }, [originalList, selected, value]);
 
-  const createAdmin = () => {};
+  const createAdmin = () => {
+    console.log(selected);
+    //addAdmin(selected, setIsLoading);
+    setOpenDialog(false);
+  };
 
   const getSuggestionValue = suggestion => {
     setSelected(suggestion.email);
@@ -101,7 +109,7 @@ const UsersAutocomplete = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} color="primary">
+          <Button onClick={() => createAdmin()} color="primary">
             SI
           </Button>
           <Button onClick={() => setOpenDialog(false)} color="primary">
@@ -123,15 +131,19 @@ const UsersAutocomplete = () => {
       </div>
       <div className={classes.inputText}>
         <SaveAlt />
-        <Button
-          disabled={selected === "" ? true : false}
-          variant="contained"
-          color="primary"
-          className={classes.button}
-          onClick={() => setOpenDialog(true)}
-        >
-          Agregar
-        </Button>
+        {isLoading ? (
+          <CircularProgress size={26} />
+        ) : (
+          <Button
+            disabled={selected === "" ? true : false}
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            onClick={() => setOpenDialog(true)}
+          >
+            Agregar
+          </Button>
+        )}
       </div>
       <br />
     </React.Fragment>

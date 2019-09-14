@@ -1,7 +1,7 @@
 //Constants
-const authConstants = require("../constants/authenticationConstants");
+const generalConstants = require("../constants/generalConstants");
 //Services
-const usuarioService = require("../applicationServices/usuarioService");
+const usuarioService = require("../applicationServices/usuarioServices");
 
 exports.get_user = (req, res) => {
   return res.send(req.user);
@@ -9,7 +9,7 @@ exports.get_user = (req, res) => {
 
 exports.add_user = (req, res) => {
   if (!req.body.email || !req.body.password) {
-    return res.status(500).send(authConstants().missingFields);
+    return res.status(500).send(generalConstants().missingFields);
   }
   usuarioService
     .addUsuario(req.body)
@@ -23,7 +23,7 @@ exports.add_user = (req, res) => {
 
 exports.get_token = (req, res) => {
   if (!req.body.email || !req.body.password) {
-    return res.status(500).send(authConstants().missingFields);
+    return res.status(500).send(generalConstants().missingFields);
   }
   usuarioService
     .getToken(req.body)
@@ -37,7 +37,7 @@ exports.get_token = (req, res) => {
 
 exports.recover_password = (req, res) => {
   if (!req.body.email) {
-    return res.status(500).send(authConstants().missingFields);
+    return res.status(500).send(generalConstants().missingFields);
   }
   usuarioService
     .recoverPassword(req.body)
