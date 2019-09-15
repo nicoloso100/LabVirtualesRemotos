@@ -2,7 +2,6 @@ import { adminsURLs } from "../constants/URLs";
 import swal from "sweetalert";
 import { baseError } from "../constants/notificationConstanst";
 import showLoading from "../components/loadingIcon/loading";
-import { rejects } from "assert";
 import { createMessageList } from "../utils/utils";
 
 const axios = require("axios");

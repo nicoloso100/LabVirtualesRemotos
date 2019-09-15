@@ -9,7 +9,8 @@ const PeticionesDirectorConstants = param => {
     deleteError:
       "Ha ocurrido un error al borrar la petición a director registrada con esta cuenta",
     deleteOk: "Se ha borrado exitosamente la petición a director",
-    noPeticiones: "No se han encontrado peticiones asociadas a esta cuenta"
+    noPeticiones: "No se han encontrado peticiones asociadas a esta cuenta",
+    getAllError: "No se ha podido obtener la lista de peticiones"
   };
 };
 

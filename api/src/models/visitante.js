@@ -4,9 +4,9 @@ require("./laboratorio");
 require("./peticionesDirector");
 
 const Visitante = db.Model.extend({
-  idAttribute: false,
+  idAttribute: "email",
   tableName: "visitantes",
-  usuarios() {
+  usuario() {
     return this.belongsTo("Usuario", "email");
   },
   laboratorio() {

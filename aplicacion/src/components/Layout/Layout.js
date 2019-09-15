@@ -66,7 +66,7 @@ function Layout(props) {
         icon: <AdminsIcon />,
       },
       {
-        id: 0,
+        id: 2,
         label: "Peticiones",
         link: "/app/peticiones",
         icon: <PendingIcon />,

@@ -10,7 +10,7 @@ import {
   deleteAdmin,
 } from "../../services/adminsServices";
 import { ShowNotification } from "../../utils/utils";
-import DataTable from "../../components/DataTable/DataTable";
+import DataTableComponent from "../../components/DataTable/DataTable";
 
 const Admins = () => {
   const [adminArray, setAdminArray] = useState(null);
@@ -77,7 +77,8 @@ const Admins = () => {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           {adminArray !== null && (
-            <DataTable
+            <DataTableComponent
+              title="Lista de administradores"
               data={adminArray}
               columns={columns}
               selectedEvent={delAdmin}

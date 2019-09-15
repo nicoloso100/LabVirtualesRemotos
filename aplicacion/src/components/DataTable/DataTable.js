@@ -13,7 +13,7 @@ import {
   Slide,
 } from "@material-ui/core";
 import DataTable, { memoize } from "react-data-table-component";
-import { Delete as DeleteIcon } from "@material-ui/icons";
+import { Delete as DeleteIcon, GroupAdd as AddIcon } from "@material-ui/icons";
 import matchSorter from "match-sorter";
 //styles
 import useStyles from "./styles";
@@ -22,10 +22,17 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const contextActions = memoize(handleClick => (
-  <IconButton onClick={() => handleClick()}>
-    <DeleteIcon />
-  </IconButton>
+const contextActions = memoize((handleClick, acceptButton) => (
+  <React.Fragment>
+    {acceptButton && (
+      <IconButton onClick={() => handleClick(1)}>
+        <AddIcon />
+      </IconButton>
+    )}
+    <IconButton onClick={() => handleClick(0)}>
+      <DeleteIcon />
+    </IconButton>
+  </React.Fragment>
 ));
 
 const BootstrapInput = withStyles(theme => ({
@@ -88,10 +95,17 @@ const CheckBox = forwardRef((checkboxProps, ref) => {
   );
 });
 
-const DataTableComponent = ({ data, columns, selectedEvent }) => {
+const DataTableComponent = ({
+  title,
+  data,
+  columns,
+  selectedEvent,
+  acceptButton = false,
+}) => {
   const [selectedRows, setSelectedRows] = useState([]);
   const [filterText, setFilterText] = React.useState("");
   const [openDialog, setOpenDialog] = useState(false);
+  const [option, setOption] = useState(0);
   const [clearRows, setClearRows] = useState(false);
 
   const handleChange = useCallback(state => {
@@ -99,11 +113,11 @@ const DataTableComponent = ({ data, columns, selectedEvent }) => {
     setSelectedRows(state.selectedRows);
   }, []);
 
-  const getSelectedRows = () => {
+  const getSelectedRows = op => {
     const rows = selectedRows.map(r => r.email);
     setClearRows(true);
     setOpenDialog(false);
-    selectedEvent(rows);
+    selectedEvent(rows, op);
   };
 
   const filteredItems =
@@ -112,6 +126,11 @@ const DataTableComponent = ({ data, columns, selectedEvent }) => {
           keys: ["email"],
         })
       : [];
+
+  const contextActionEvent = option => {
+    setOption(option);
+    setOpenDialog(true);
+  };
 
   return (
     <React.Fragment>
@@ -126,11 +145,13 @@ const DataTableComponent = ({ data, columns, selectedEvent }) => {
         <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            ¿Estás seguro que borrar los registros seleccionados?
+            {option === 0
+              ? "¿Estás seguro que borrar los registros seleccionados?"
+              : "¿Estás seguro que deseas aceptar los registros seleccionados?"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => getSelectedRows()} color="primary">
+          <Button onClick={() => getSelectedRows(option)} color="primary">
             SI
           </Button>
           <Button onClick={() => setOpenDialog(false)} color="primary">
@@ -140,15 +161,18 @@ const DataTableComponent = ({ data, columns, selectedEvent }) => {
       </Dialog>
 
       <DataTable
-        title="Lista de administradores"
+        title={title}
         data={filteredItems}
         columns={columns}
         onRowSelected={handleChange}
-        contextActions={contextActions(() => setOpenDialog(true))}
+        contextActions={contextActions(
+          option => contextActionEvent(option),
+          acceptButton,
+        )}
         contextTitle={
           selectedRows.length === 1
-            ? `${selectedRows.length} Administrador seleccionado`
-            : `${selectedRows.length} Administradores seleccionados`
+            ? `${selectedRows.length} registro seleccionado`
+            : `${selectedRows.length} registros seleccionados`
         }
         paginationComponentOptions={{
           rowsPerPageText: "Filas por página:",
@@ -159,7 +183,7 @@ const DataTableComponent = ({ data, columns, selectedEvent }) => {
         fixedHeaderScrollHeight="300px"
         subHeader
         subHeaderComponent={<Filter onFilter={value => setFilterText(value)} />}
-        selectableRows
+        selectableRows={selectedEvent ? true : false}
         selectableRowsComponent={CheckBox}
         clearSelectedRows={clearRows}
         pagination

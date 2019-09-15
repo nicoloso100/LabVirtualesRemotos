@@ -4,7 +4,27 @@ const PeticionDirector = require("../models/peticionesDirector");
 const peticionesDirectorConstants = require("../constants/peticionesDirectorConstants");
 
 exports.getPeticiones = () => {
-  return new Promise((resolve, reject) => {});
+  return new Promise((resolve, reject) => {
+    PeticionDirector.fetchAll({
+      withRelated: [
+        {
+          visitante: function(qb) {
+            qb.select("email");
+          },
+          "visitante.usuario": function(qb) {
+            qb.select("email", "name", "surname");
+          }
+        }
+      ]
+    })
+      .then(model => {
+        resolve(model.toJSON());
+      })
+      .catch(err => {
+        console.log(err);
+        reject(peticionesDirectorConstants().getAllError);
+      });
+  });
 };
 
 exports.addPeticionesDirector = params => {
@@ -19,11 +39,12 @@ exports.addPeticionesDirector = params => {
             mensaje: params.mensaje
           });
           peticionDirector
-            .save()
+            .save(null, { method: "insert" })
             .then(() => {
               resolve(peticionesDirectorConstants().OK);
             })
             .catch(err => {
+              console.log(err);
               reject(peticionesDirectorConstants().error);
             });
         } else {
