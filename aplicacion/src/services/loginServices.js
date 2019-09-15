@@ -77,8 +77,8 @@ export const signIn = (
 export const signOut = (userDispatch, infoUserDispatch, history) => {
   localStorage.removeItem("id_token");
   localStorage.removeItem("id_email");
-  infoUserDispatch({ type: "SIGN_OUT_SUCCESS" });
   userDispatch({ type: "SIGN_OUT_SUCCESS" });
+  infoUserDispatch({ type: "SIGN_OUT_SUCCESS" });
   history.push("/ingreso");
 };
 

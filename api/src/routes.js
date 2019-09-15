@@ -8,6 +8,7 @@ const initialDataController = require("./controllers/initialDataController");
 const dashboardController = require("./controllers/dashboardController");
 const infoController = require("./controllers/infoController");
 const adminsController = require("./controllers/adminsController");
+const peticionesDirectorController = require("./controllers/peticionesDirectorController");
 
 //Mailer
 router.post("/sendMail", emailController.send_email);
@@ -31,5 +32,10 @@ router.post("/enviarInfo", infoController.send_info);
 router.post("/obtenerAdmins", adminsController.get_admins);
 router.post("/crearAdmin", adminsController.add_admin);
 router.post("/eliminarAdmin", adminsController.rollback_admin);
+//Peticiones
+router.post(
+  "/consultarPeticiones",
+  peticionesDirectorController.get_peticiones
+);
 
 module.exports = router;

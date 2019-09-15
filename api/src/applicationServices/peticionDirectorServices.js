@@ -3,6 +3,10 @@ const PeticionDirector = require("../models/peticionesDirector");
 //Constants
 const peticionesDirectorConstants = require("../constants/peticionesDirectorConstants");
 
+exports.getPeticiones = () => {
+  return new Promise((resolve, reject) => {});
+};
+
 exports.addPeticionesDirector = params => {
   return new Promise((resolve, reject) => {
     PeticionDirector.where("email", params.email)

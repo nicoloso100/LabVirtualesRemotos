@@ -19,6 +19,7 @@ import {
   Home as HomeIcon,
   Announcement as InfoIcon,
   SupervisedUserCircle as AdminsIcon,
+  NotificationsActive as PendingIcon,
 } from "@material-ui/icons";
 
 // context
@@ -30,6 +31,7 @@ import {
   useUserDispatch,
 } from "../../context/UserContext";
 import { getDatosIniciales } from "../../services/DatosInicialesServices";
+import Peticiones from "../../pages/peticiones/peticiones";
 
 function Layout(props) {
   var classes = useStyles();
@@ -43,7 +45,7 @@ function Layout(props) {
 
   useEffect(() => {
     if (email && userInfo.rol === "") {
-      getDatosIniciales(email, infoUserDispatch, userDispatch, props.history);
+      getDatosIniciales(email, userDispatch, infoUserDispatch, props.history);
     }
   });
 
@@ -63,10 +65,17 @@ function Layout(props) {
         link: "/app/admins",
         icon: <AdminsIcon />,
       },
+      {
+        id: 0,
+        label: "Peticiones",
+        link: "/app/peticiones",
+        icon: <PendingIcon />,
+      },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/admins", component: Admins },
+      { path: "/app/peticiones", component: Peticiones },
     ],
   };
 

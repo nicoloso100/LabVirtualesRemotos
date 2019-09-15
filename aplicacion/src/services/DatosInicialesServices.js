@@ -6,13 +6,18 @@ import showLoading from "../components/loadingIcon/loading";
 
 const axios = require("axios");
 
-export const getDatosIniciales = (email, dispatch, errorDispatch, history) => {
+export const getDatosIniciales = (
+  email,
+  userDispatch,
+  infoUserDispatch,
+  history,
+) => {
   showLoading(true);
   axios
     .post(initialDataURLs.getDatosIniciales, { email: email })
     .then(res => {
       showLoading(false);
-      dispatch({
+      infoUserDispatch({
         type: "INFO_SUCCESS",
         name: res.data.name,
         surname: res.data.surname,
@@ -23,7 +28,7 @@ export const getDatosIniciales = (email, dispatch, errorDispatch, history) => {
       showLoading(false);
       var error = err.response;
       swal("Oops!", error ? error.data : baseError, "warning").then(() => {
-        signOut(errorDispatch, history);
+        signOut(userDispatch, infoUserDispatch, history);
       });
     });
 };

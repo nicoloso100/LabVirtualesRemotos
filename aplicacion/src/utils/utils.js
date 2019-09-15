@@ -29,3 +29,19 @@ export const ShowNotification = notification => {
       break;
   }
 };
+
+export const createMessageList = (list, message) => {
+  let div = document.createElement("div");
+  let span = document.createElement("span");
+  span.innerHTML = message ? message : "";
+  div.appendChild(span);
+  let ul = document.createElement("ul");
+  list.forEach(item => {
+    let li = document.createElement("li");
+    li.innerHTML = item;
+    li.style.textAlign = "left";
+    ul.appendChild(li);
+  });
+  div.appendChild(ul);
+  return div;
+};

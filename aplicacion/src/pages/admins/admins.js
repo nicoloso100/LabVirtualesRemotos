@@ -3,16 +3,16 @@ import UsersAutocomplete from "../../components/UsersAutoComplete/UsersAutocompl
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { Grid, Typography } from "@material-ui/core";
 
-//styles
-import useStyles from "./styles";
-
 //Services
-import { getAdmins, addAdmin } from "../../services/adminsServices";
+import {
+  getAdmins,
+  addAdmin,
+  deleteAdmin,
+} from "../../services/adminsServices";
 import { ShowNotification } from "../../utils/utils";
 import DataTable from "../../components/DataTable/DataTable";
 
 const Admins = () => {
-  var classes = useStyles();
   const [adminArray, setAdminArray] = useState(null);
 
   const columns = useMemo(
@@ -37,11 +37,15 @@ const Admins = () => {
     [],
   );
 
+  const fillAdmins = () => {
+    getAdmins().then(res => {
+      setAdminArray(res);
+    });
+  };
+
   useEffect(() => {
     if (adminArray === null) {
-      getAdmins().then(res => {
-        setAdminArray(res);
-      });
+      fillAdmins();
     }
   }, [adminArray]);
 
@@ -49,6 +53,13 @@ const Admins = () => {
     addAdmin(selected, setIsLoading).then(response => {
       ShowNotification({ type: "success", message: response });
       setValue("");
+      fillAdmins();
+    });
+  };
+
+  const delAdmin = adminList => {
+    deleteAdmin(adminList).then(() => {
+      fillAdmins();
     });
   };
 
@@ -66,7 +77,11 @@ const Admins = () => {
       <Grid container spacing={4}>
         <Grid item xs={12}>
           {adminArray !== null && (
-            <DataTable data={adminArray} columns={columns} />
+            <DataTable
+              data={adminArray}
+              columns={columns}
+              selectedEvent={delAdmin}
+            />
           )}
         </Grid>
       </Grid>

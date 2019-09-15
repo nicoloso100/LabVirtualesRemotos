@@ -18,7 +18,6 @@ exports.add_admin = (req, res) => {
   if (!req.body.email) {
     return res.status(500).send(generalConstants().missingFields);
   }
-
   administradorService
     .addAdmin(req.body.email)
     .then(result => {
