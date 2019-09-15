@@ -26,7 +26,9 @@ export const addAdmin = (email, setIsLoading) => {
   setIsLoading(true);
   return new Promise(resolve => {
     axios
-      .post(adminsURLs.getAdmins)
+      .post(adminsURLs.addAdmin, {
+        email: email,
+      })
       .then(res => {
         setIsLoading(false);
         resolve(res.data);

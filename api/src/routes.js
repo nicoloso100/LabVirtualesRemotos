@@ -30,6 +30,6 @@ router.post("/enviarInfo", infoController.send_info);
 //Admins
 router.post("/obtenerAdmins", adminsController.get_admins);
 router.post("/crearAdmin", adminsController.add_admin);
-router.post("/quitarAdmin", adminsController.rollback_admin);
+router.post("/eliminarAdmin", adminsController.rollback_admin);
 
 module.exports = router;

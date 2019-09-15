@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/styles";
 
 export default makeStyles(theme => ({
-  inputText: {
+  inputContainer: {
     width: "100%",
     display: "flex",
     flexDirection: "row",
@@ -12,6 +12,9 @@ export default makeStyles(theme => ({
   button: {
     width: "100%",
     maxWidth: "300px",
+    marginLeft: "15px",
+  },
+  loading: {
     marginLeft: "15px",
   },
 }));

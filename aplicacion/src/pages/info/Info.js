@@ -29,10 +29,7 @@ import {
 } from "@material-ui/icons";
 import { useUserState } from "../../context/UserContext";
 import { IsNotEmptyField, ShowNotification } from "../../utils/utils";
-import {
-  INVALID_FIELD,
-  OPERATION_SUCCESS,
-} from "../../constants/notificationConstanst";
+import { INVALID_FIELD } from "../../constants/notificationConstanst";
 
 const Info = props => {
   //local

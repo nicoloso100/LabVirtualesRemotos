@@ -19,14 +19,54 @@ import {
   DialogActions,
   Slide,
   CircularProgress,
+  InputBase,
+  withStyles,
 } from "@material-ui/core";
-import { addAdmin } from "../../services/adminsServices";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const UsersAutocomplete = () => {
+const BootstrapInput = withStyles(theme => ({
+  root: {
+    width: "100%",
+    maxWidth: "300px",
+    "label + &": {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.common.white,
+    border: "1px solid #ced4da",
+    fontSize: 12,
+    width: "100%",
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}))(InputBase);
+
+const renderInputComponent = inputProps => {
+  return <BootstrapInput {...inputProps} />;
+};
+
+const UsersAutocomplete = ({ event }) => {
   // local
   var [isLoading, setIsLoading] = useState(false);
   var classes = useStyles();
@@ -43,7 +83,9 @@ const UsersAutocomplete = () => {
 
     return inputLength === 0
       ? []
-      : matchSorter(originalList, value, { keys: ["email"] });
+      : matchSorter(originalList, value, {
+          keys: ["email"],
+        });
   };
 
   useEffect(() => {
@@ -57,9 +99,8 @@ const UsersAutocomplete = () => {
     }
   }, [originalList, selected, value]);
 
-  const createAdmin = () => {
-    console.log(selected);
-    //addAdmin(selected, setIsLoading);
+  const onEvent = () => {
+    event(selected, setIsLoading, setValue);
     setOpenDialog(false);
   };
 
@@ -87,7 +128,7 @@ const UsersAutocomplete = () => {
   };
 
   const inputProps = {
-    placeholder: "Escriba el correo",
+    placeholder: "Ingrese el email",
     value,
     onChange: onChange,
   };
@@ -109,7 +150,7 @@ const UsersAutocomplete = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => createAdmin()} color="primary">
+          <Button onClick={() => onEvent()} color="primary">
             SI
           </Button>
           <Button onClick={() => setOpenDialog(false)} color="primary">
@@ -118,7 +159,7 @@ const UsersAutocomplete = () => {
         </DialogActions>
       </Dialog>
 
-      <div className={classes.inputText}>
+      <div className={classes.inputContainer}>
         <PlaylistAdd />
         <Autosuggest
           suggestions={suggestions}
@@ -126,13 +167,14 @@ const UsersAutocomplete = () => {
           onSuggestionsClearRequested={onSuggestionsClearRequested}
           getSuggestionValue={getSuggestionValue}
           renderSuggestion={renderSuggestion}
+          renderInputComponent={renderInputComponent}
           inputProps={inputProps}
         />
       </div>
-      <div className={classes.inputText}>
+      <div className={classes.inputContainer}>
         <SaveAlt />
         {isLoading ? (
-          <CircularProgress size={26} />
+          <CircularProgress className={classes.loading} size={26} />
         ) : (
           <Button
             disabled={selected === "" ? true : false}
