@@ -9,7 +9,11 @@ const dashboardController = require("./controllers/dashboardController");
 const infoController = require("./controllers/infoController");
 const adminsController = require("./controllers/adminsController");
 const peticionesDirectorController = require("./controllers/peticionesDirectorController");
+const institucionesController = require("./controllers/institucionesController");
 
+//General
+router.post("/obtenerUsuarios", initialDataController.get_users);
+router.post("/obtenerInstituciones", institucionesController.get_instituciones);
 //Mailer
 router.post("/sendMail", emailController.send_email);
 //Authentication
@@ -23,7 +27,6 @@ router.post("/getToken", authController.get_token);
 router.post("/recoverPassword", authController.recover_password);
 //Initial data
 router.post("/datosIniciales", initialDataController.get_initialData);
-router.post("/obtenerUsuarios", initialDataController.get_users);
 //Dashboard
 router.post("/obtenerLaboratorios", dashboardController.get_laboratorios);
 //Info
@@ -37,5 +40,10 @@ router.post(
   "/consultarPeticiones",
   peticionesDirectorController.get_peticiones
 );
+router.post(
+  "/rechazaPeticiones",
+  peticionesDirectorController.reject_peticiones
+);
+router.post("/agregarInstitucion", institucionesController.add_instituciones);
 
 module.exports = router;

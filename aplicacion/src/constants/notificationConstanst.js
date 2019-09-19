@@ -24,3 +24,8 @@ export const OPERATION_SUCCESS = {
   type: "success",
   message: "Los datos se han enviado correctamente",
 };
+
+export const INSTITUCION_ADD_SUCCESS = {
+  type: "success",
+  message: "La institución se ha agregado correctamente",
+};

@@ -1,11 +1,11 @@
 //Constants
 const generalConstants = require("../constants/generalConstants");
 //Services
-const peticionDirectorServices = require("../applicationServices/peticionDirectorServices");
+const institucionesServices = require("../applicationServices/institucionesServices");
 
-exports.get_peticiones = (req, res) => {
-  peticionDirectorServices
-    .getPeticiones()
+exports.get_instituciones = (req, res) => {
+  institucionesServices
+    .getInstituciones()
     .then(result => {
       return res.send(result);
     })
@@ -14,12 +14,13 @@ exports.get_peticiones = (req, res) => {
     });
 };
 
-exports.reject_peticiones = (req, res) => {
-  if (!req.body.email || !req.body.mensaje) {
+exports.add_instituciones = (req, res) => {
+  if (!req.body.nombre) {
     return res.status(500).send(generalConstants().missingFields);
   }
-  peticionDirectorServices
-    .rejectPeticiones(req.body.email, req.body.mensaje)
+
+  institucionesServices
+    .addInstitucion(req.body.nombre)
     .then(result => {
       return res.send(result);
     })

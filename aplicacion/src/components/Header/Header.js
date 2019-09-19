@@ -10,7 +10,7 @@ import {
 import {
   Menu as MenuIcon,
   //MailOutline as MailIcon,
-  NotificationsNone as NotificationsIcon,
+  //NotificationsNone as NotificationsIcon,
   Person as AccountIcon,
   //Send as SendIcon,
   ArrowBack as ArrowBackIcon,
@@ -21,7 +21,7 @@ import classNames from "classnames";
 import useStyles from "./styles";
 
 // components
-import { Badge, Typography } from "../Wrappers/Wrappers";
+import { Typography } from "../Wrappers/Wrappers";
 import Notification from "../Notification/Notification";
 //import UserAvatar from "../UserAvatar/UserAvatar";
 
@@ -84,7 +84,7 @@ export default function Header(props) {
   // var [mailMenu, setMailMenu] = useState(null);
   // var [isMailsUnread, setIsMailsUnread] = useState(true);
   var [notificationsMenu, setNotificationsMenu] = useState(null);
-  var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
+  //var [isNotificationsUnread, setIsNotificationsUnread] = useState(true);
   var [profileMenu, setProfileMenu] = useState(null);
 
   return (
@@ -122,7 +122,7 @@ export default function Header(props) {
           GLVR
         </Typography>
         <div className={classes.grow} />
-        <IconButton
+        {/* <IconButton
           color="inherit"
           aria-haspopup="true"
           aria-controls="mail-menu"
@@ -138,7 +138,7 @@ export default function Header(props) {
           >
             <NotificationsIcon classes={{ root: classes.headerIcon }} />
           </Badge>
-        </IconButton>
+        </IconButton> */}
         {/* <IconButton
           color="inherit"
           aria-haspopup="true"

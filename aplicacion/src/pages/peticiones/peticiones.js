@@ -5,72 +5,87 @@ import { getPeticiones } from "../../services/peticionesServices";
 import DataTableComponent from "../../components/DataTable/DataTable";
 // styles
 import useStyles from "./styles";
-import PeticionesModals from "../../components/PeticionesModals/peticiones";
+import PeticionesModals from "../../components/PeticionesModals/peticionesModals";
+import { rejectPeticiones } from "../../services/peticionesServices";
 
 const Peticiones = () => {
   var classes = useStyles();
   const [peticionesArray, setPeticionesArray] = useState(null);
-  const [openModal, setOpenModal] = useState({ open: false, option: 0 });
+  const [openModal, setOpenModal] = useState({
+    open: false,
+    option: 0,
+    list: [],
+  });
 
-  const columns = useMemo(
-    () => [
-      {
-        name: "Email",
-        selector: "email",
-        sortable: true,
-        cell: row => <p className={classes.wrapText}>{row.email}</p>,
-      },
-      {
-        name: "Nombres",
-        selector: "visitante.usuario.name",
-        sortable: true,
-        cell: row => (
-          <p className={classes.wrapText}>{row.visitante.usuario.name}</p>
-        ),
-      },
-      {
-        name: "Apellidos",
-        selector: "visitante.usuario.surname",
-        sortable: true,
-        cell: row => (
-          <p className={classes.wrapText}>{row.visitante.usuario.surname}</p>
-        ),
-      },
-      {
-        name: "Institución",
-        selector: "institucion",
-        sortable: true,
-        cell: row => <p className={classes.wrapText}>{row.institucion}</p>,
-      },
-      {
-        name: "Mensaje",
-        selector: "mensaje",
-        sortable: false,
-        grow: 2,
-        cell: row => <p className={classes.wrapText}>{row.mensaje}</p>,
-      },
-    ],
-    [],
-  );
+  const cols = [
+    {
+      name: "Email",
+      selector: "email",
+      sortable: true,
+      cell: row => <p className={classes.wrapText}>{row.email}</p>,
+    },
+    {
+      name: "Nombres",
+      selector: "visitante.usuario.name",
+      sortable: true,
+      cell: row => (
+        <p className={classes.wrapText}>{row.visitante.usuario.name}</p>
+      ),
+    },
+    {
+      name: "Apellidos",
+      selector: "visitante.usuario.surname",
+      sortable: true,
+      cell: row => (
+        <p className={classes.wrapText}>{row.visitante.usuario.surname}</p>
+      ),
+    },
+    {
+      name: "Institución",
+      selector: "institucion",
+      sortable: true,
+      cell: row => <p className={classes.wrapText}>{row.institucion}</p>,
+    },
+    {
+      name: "Mensaje",
+      selector: "mensaje",
+      sortable: false,
+      grow: 2,
+      cell: row => <p className={classes.wrapText}>{row.mensaje}</p>,
+    },
+  ];
+
+  const columns = useMemo(() => cols, [cols]);
+
+  const getPeticionesRequest = () => {
+    getPeticiones().then(result => {
+      setPeticionesArray(result);
+    });
+  };
 
   useEffect(() => {
     if (peticionesArray === null) {
-      getPeticiones().then(result => {
-        setPeticionesArray(result);
-      });
+      getPeticionesRequest();
     }
   }, [peticionesArray]);
 
   const peticionesSelected = (list, option) => {
-    setOpenModal({ open: true, option });
+    setOpenModal({ open: true, option, list });
+  };
+
+  const rejectPeticionesEvt = list => {
+    rejectPeticiones(list).then(() => {
+      getPeticionesRequest();
+    });
   };
 
   return (
     <React.Fragment>
       <PeticionesModals
-        open={openModal.open}
+        data={peticionesArray}
+        params={openModal}
         setOpen={setOpenModal}
-        option={openModal.option}
+        request={rejectPeticionesEvt}
       />
 
       <PageTitle title="Peticiones para director" />

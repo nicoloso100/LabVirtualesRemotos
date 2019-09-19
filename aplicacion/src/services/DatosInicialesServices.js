@@ -49,3 +49,20 @@ export const getUsuarios = () => {
       });
   });
 };
+
+export const getInstituciones = () => {
+  showLoading(true);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(initialDataURLs.getInstituciones)
+      .then(res => {
+        showLoading(false);
+        resolve(res.data);
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
+};

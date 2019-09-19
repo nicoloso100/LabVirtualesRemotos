@@ -10,7 +10,10 @@ const PeticionesDirectorConstants = param => {
       "Ha ocurrido un error al borrar la petición a director registrada con esta cuenta",
     deleteOk: "Se ha borrado exitosamente la petición a director",
     noPeticiones: "No se han encontrado peticiones asociadas a esta cuenta",
-    getAllError: "No se ha podido obtener la lista de peticiones"
+    getAllError: "No se ha podido obtener la lista de peticiones",
+    subjectMail: "Notificación de tu peticion para convertirte en Director",
+    textMail: `Lamentablemente hemos rechazado tu petición: ${param}`,
+    rejectPetitionOk: `La petición para promover a director al usuario ${param} ha sido rechazada`
   };
 };
 

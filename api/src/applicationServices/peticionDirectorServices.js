@@ -2,6 +2,9 @@
 const PeticionDirector = require("../models/peticionesDirector");
 //Constants
 const peticionesDirectorConstants = require("../constants/peticionesDirectorConstants");
+//Services
+const emailServices = require("../applicationServices/emailServices");
+const usuarioServices = require("../applicationServices/usuarioServices");
 
 exports.getPeticiones = () => {
   return new Promise((resolve, reject) => {
@@ -21,8 +24,38 @@ exports.getPeticiones = () => {
         resolve(model.toJSON());
       })
       .catch(err => {
-        console.log(err);
         reject(peticionesDirectorConstants().getAllError);
+      });
+  });
+};
+
+exports.rejectPeticiones = (email, mensaje) => {
+  return new Promise((resolve, reject) => {
+    usuarioServices
+      .getUsuario(email)
+      .then(response => {
+        this.deletePeticionDirector(email)
+          .then(() => {
+            emailServices
+              .sendMail(
+                email,
+                peticionesDirectorConstants().subjectMail,
+                response.name,
+                mensaje
+              )
+              .then(() => {
+                resolve(peticionesDirectorConstants(email).rejectPetitionOk);
+              })
+              .catch(err => {
+                reject(err);
+              });
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
+      .catch(err => {
+        reject(err);
       });
   });
 };
@@ -44,7 +77,6 @@ exports.addPeticionesDirector = params => {
               resolve(peticionesDirectorConstants().OK);
             })
             .catch(err => {
-              console.log(err);
               reject(peticionesDirectorConstants().error);
             });
         } else {
