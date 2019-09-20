@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { Typography } from "@material-ui/core";
-import { getPeticiones } from "../../services/peticionesServices";
+import {
+  getPeticiones,
+  acceptPeticiones,
+} from "../../services/peticionesServices";
 import DataTableComponent from "../../components/DataTable/DataTable";
 // styles
 import useStyles from "./styles";
@@ -73,8 +76,14 @@ const Peticiones = () => {
     setOpenModal({ open: true, option, list });
   };
 
-  const rejectPeticionesEvt = list => {
-    rejectPeticiones(list).then(() => {
+  const rejectPeticionesEvt = (list, option) => {
+    let petition;
+    if (option === 0) {
+      petition = rejectPeticiones(list);
+    } else {
+      petition = acceptPeticiones(list);
+    }
+    petition.then(() => {
       getPeticionesRequest();
     });
   };

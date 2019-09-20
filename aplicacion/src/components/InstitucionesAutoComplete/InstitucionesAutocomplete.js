@@ -81,6 +81,7 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
   };
 
   const getSuggestionValue = suggestion => {
+    event(suggestion.id);
     setSelected(suggestion.nombre);
     return suggestion.nombre;
   };

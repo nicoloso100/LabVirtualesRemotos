@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Button,
-  Modal,
-  Fade,
-  Backdrop,
   TextField,
   Table,
   TableHead,
@@ -16,8 +13,6 @@ import {
   DialogContentText,
   DialogActions,
   CircularProgress,
-  useMediaQuery,
-  useTheme,
 } from "@material-ui/core";
 //
 
@@ -41,29 +36,41 @@ const RemoveMessage = ({ index, item, itemList, setItem, classes }) => {
   };
 
   return (
-    <div className={classes.correosList}>
-      <label className={classes.ListField}>{item.email}</label>
-      <TextField
-        id="filled-multiline-flexible"
-        label="Mensaje..."
-        multiline
-        value={item.mensaje}
-        onChange={arg => onItemChanged(arg.target.value)}
-        className={classes.ListField}
-        margin="normal"
-        variant="filled"
-      />
-    </div>
+    <TableRow>
+      <TableCell>{item.email}</TableCell>
+      <TableCell>
+        <TextField
+          id="filled-multiline-flexible"
+          label="Mensaje..."
+          multiline
+          value={item.mensaje}
+          onChange={arg => onItemChanged(arg.target.value)}
+          className={classes.ListField}
+          margin="normal"
+          variant="filled"
+          fullWidth
+        />
+      </TableCell>
+    </TableRow>
   );
 };
 
-const AddMessage = ({ data, instituciones, item, classes }) => {
+const AddMessage = ({
+  data,
+  instituciones,
+  item,
+  itemList,
+  index,
+  setItem,
+}) => {
   const getInstitucion = email => {
     return data.find(item => item.email === email);
   };
 
   const getSelected = selected => {
-    console.log(selected);
+    let setItemList = [...itemList];
+    setItemList[index] = { ...item, institucion: selected };
+    setItem(setItemList);
   };
 
   return (
@@ -81,31 +88,34 @@ const AddMessage = ({ data, instituciones, item, classes }) => {
   );
 };
 
-const constructDeleteList = list => {
+const constructDeleteList = params => {
   let constList = [];
-  list.forEach(element => {
-    constList.push({ email: element, mensaje: "" });
+  params.list.forEach(element => {
+    if (params.option === 0) {
+      constList.push({ email: element, mensaje: "" });
+    } else {
+      constList.push({ email: element, institucion: null });
+    }
   });
   return constList;
 };
 
 const PeticionesModals = ({ data, params, setOpen, request }) => {
   var classes = useStyles();
-  const fullScreen = useMediaQuery(useTheme().breakpoints.down("xl"));
   const [list, setList] = useState([]);
   const [instituciones, setInstituciones] = useState(null);
   const [addInstitucion, setAddInstitucion] = useState(false);
   const [newInstValue, setNewInstValue] = useState("");
-  var [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setList(constructDeleteList(params.list));
+    setList(constructDeleteList(params));
     if (instituciones === null) {
       getInstituciones().then(res => {
         setInstituciones(res);
       });
     }
-  }, [instituciones, params.list]);
+  }, [instituciones, params]);
 
   const postSaveInstitucion = () => {
     if (newInstValue !== "") {
@@ -120,14 +130,31 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
     setNewInstValue("");
   };
 
+  const validateExtraInfo = (list, option) => {
+    let correct = true;
+    if (option === 0) {
+      list.forEach(element => {
+        if (element.mensaje === "") {
+          correct = false;
+        }
+      });
+    } else {
+      list.forEach(element => {
+        if (element.institucion === null) {
+          correct = false;
+        }
+      });
+    }
+    if (correct) {
+      request(list, option);
+    } else {
+      ShowNotification(INVALID_FIELD);
+    }
+  };
+
   return (
     <React.Fragment>
-      <Dialog
-        open={addInstitucion}
-        onClose={() => setAddInstitucion(false)}
-        fullScreen={true}
-        maxWidth={"xl"}
-      >
+      <Dialog open={addInstitucion} onClose={() => setAddInstitucion(false)}>
         <DialogTitle id="form-dialog-title">Agregar institución</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -159,6 +186,9 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
       <Dialog
         open={params.open}
         onClose={() => setOpen({ ...params, open: false })}
+        fullWidth={true}
+        maxWidth={"md"}
+        scroll={"body"}
       >
         <DialogContent>
           {params.option === 0 ? (
@@ -169,23 +199,33 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
               <p id="transition-modal-description">
                 Los usuarios recibirán por correo elecrónico el mensaje:
               </p>
-              {list.map((item, index) => {
-                return (
-                  <RemoveMessage
-                    key={index}
-                    classes={classes}
-                    index={index}
-                    item={item}
-                    itemList={list}
-                    setItem={setList}
-                  />
-                );
-              })}
+              <Table className={classes.table}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="center">Email</TableCell>
+                    <TableCell align="center">Mensaje</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {list.map((item, index) => {
+                    return (
+                      <RemoveMessage
+                        key={index}
+                        classes={classes}
+                        index={index}
+                        item={item}
+                        itemList={list}
+                        setItem={setList}
+                      />
+                    );
+                  })}
+                </TableBody>
+              </Table>
               <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                onClick={() => request(list)}
+                onClick={() => validateExtraInfo(list, params.option)}
               >
                 Enviar
                 <SendIcon />
@@ -221,86 +261,11 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
                       <AddMessage
                         key={index}
                         data={data}
-                        classes={classes}
                         item={item}
+                        itemList={list}
                         instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
-                      />
-                    );
-                  })}
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        classes={classes}
-                        item={item}
-                        instituciones={instituciones}
+                        setItem={setList}
+                        index={index}
                       />
                     );
                   })}
@@ -310,7 +275,7 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
                 variant="contained"
                 color="primary"
                 className={classes.button}
-                //onClick={() => request(list)}
+                onClick={() => validateExtraInfo(list, params.option)}
               >
                 Enviar
                 <SendIcon />
