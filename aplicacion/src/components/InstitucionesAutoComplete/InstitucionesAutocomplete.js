@@ -94,6 +94,7 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
 
   const onBlur = () => {
     if (selected === "" && withStrict) {
+      event(null);
       setValue("");
     }
   };

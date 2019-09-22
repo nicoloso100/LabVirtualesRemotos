@@ -1,5 +1,6 @@
 //Models
 const PeticionDirector = require("../models/peticionesDirector");
+const Director = require("../models/director");
 //Constants
 const peticionesDirectorConstants = require("../constants/peticionesDirectorConstants");
 //Services
@@ -56,6 +57,68 @@ exports.rejectPeticiones = (email, mensaje) => {
       })
       .catch(err => {
         reject(err);
+      });
+  });
+};
+
+exports.acceptPeticiones = (email, institucion) => {
+  return new Promise((resolve, reject) => {
+    new Usuario()
+      .where("email", email)
+      .fetch({ withRelated: ["rol"] })
+      .then(result => {
+        if (result === null) {
+          reject(peticionesDirectorConstants(email).userNotFound);
+        }
+        let usuario = result.toJSON();
+        if (usuario.rol.id === 4) {
+          reject(peticionesDirectorConstants(email).alreadyDirector);
+        } else if (usuario.rol.id !== 1) {
+          reject(
+            peticionesDirectorConstants(email, usuario.rol.descripcion)
+              .notSupportedRol
+          );
+        }
+        peticionDirectorServices
+          .deletePeticionDirector(email)
+          .then(() => {
+            visitanteService
+              .deleteVisitante(email)
+              .then(() => {
+                usuarioServices
+                  .changeUsuarioRol(email, 4)
+                  .then(() => {
+                    const director = new Director({
+                      email: email,
+                      institucion: institucion
+                    });
+                    director
+                      .save(null, { method: "insert" })
+                      .then(() => {
+                        resolve(
+                          peticionesDirectorConstants(email).addDirectorOk
+                        );
+                      })
+                      .catch(err => {
+                        reject(
+                          peticionesDirectorConstants().directorErrorCreate
+                        );
+                      });
+                  })
+                  .catch(err => {
+                    reject(err);
+                  });
+              })
+              .catch(err => {
+                reject(err);
+              });
+          })
+          .catch(err => {
+            reject(err);
+          });
+      })
+      .catch(err => {
+        reject(peticionesDirectorConstants().getDirectorError);
       });
   });
 };

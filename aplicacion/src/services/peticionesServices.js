@@ -63,6 +63,7 @@ export const acceptPeticiones = peticiones => {
   showLoading(true);
   return new Promise(resolve => {
     console.log(peticiones);
+    resolve();
     // let promises = [];
     // let results = [];
     // peticiones.forEach(peticion => {

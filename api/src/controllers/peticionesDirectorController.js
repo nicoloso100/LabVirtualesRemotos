@@ -27,3 +27,17 @@ exports.reject_peticiones = (req, res) => {
       return res.status(500).send(err);
     });
 };
+
+exports.accept_peticiones = (req, res) => {
+  if (!req.body.email || !req.body.institucion) {
+    return res.status(500).send(generalConstants().missingFields);
+  }
+  peticionDirectorServices
+    .acceptPeticiones(req.body.email, req.body.institucion)
+    .then(result => {
+      return res.send(result);
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
+};

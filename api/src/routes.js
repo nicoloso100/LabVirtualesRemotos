@@ -44,6 +44,10 @@ router.post(
   "/rechazaPeticiones",
   peticionesDirectorController.reject_peticiones
 );
+router.post(
+  "/aceptarPeticiones",
+  peticionesDirectorController.accept_peticiones
+);
 router.post("/agregarInstitucion", institucionesController.add_instituciones);
 
 module.exports = router;
