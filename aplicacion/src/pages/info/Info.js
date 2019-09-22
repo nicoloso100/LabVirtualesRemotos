@@ -23,13 +23,14 @@ import {
   AssignmentInd as DirectorIcon,
   AccountCircle as ProfesorIcon,
   Face as EstudianteIcon,
-  School as InstitucionIcon,
   Message as MensajeIcon,
   Send as EnviarIcon,
 } from "@material-ui/icons";
 import { useUserState } from "../../context/UserContext";
 import { IsNotEmptyField, ShowNotification } from "../../utils/utils";
 import { INVALID_FIELD } from "../../constants/notificationConstanst";
+import InstitucionesAutocomplete from "../../components/InstitucionesAutoComplete/InstitucionesAutocomplete";
+import { getInstituciones } from "../../services/DatosInicialesServices";
 
 const Info = props => {
   //local
@@ -137,6 +138,7 @@ const SoyDirector = () => {
   //Local
   const classes = useStyles();
   var [institucion, setInstitucion] = useState("");
+  var [instituciones, setInstituciones] = useState(null);
   var [mensaje, setMensaje] = useState("");
   var [isLoading, setIsLoading] = useState(false);
 
@@ -152,6 +154,14 @@ const SoyDirector = () => {
     }
   };
 
+  useEffect(() => {
+    if (instituciones === null) {
+      getInstituciones().then(res => {
+        setInstituciones(res);
+      });
+    }
+  }, [instituciones]);
+
   return (
     <React.Fragment>
       <Typography>
@@ -163,16 +173,11 @@ const SoyDirector = () => {
         1) Ingresa el nombre de la institución a la que perteneces:
       </Typography>
       <Grid container spacing={1} alignItems="flex-end" justify="flex-start">
-        <Grid item>
-          <InstitucionIcon />
-        </Grid>
         <Grid item xs={10} sm={6}>
-          <TextField
-            id="input-with-icon-grid"
-            placeholder="Institución"
-            value={institucion}
-            onChange={arg => setInstitucion(arg.target.value)}
-            fullWidth
+          <InstitucionesAutocomplete
+            list={instituciones}
+            onChangeEvent={setInstitucion}
+            withStrict={false}
           />
         </Grid>
       </Grid>

@@ -1,5 +1,5 @@
 //export const baseURL = "http://54.237.245.2:5000";
-export const baseURL = "http://192.168.0.34:5000";
+export const baseURL = "http://192.168.0.19:5000";
 const APIbaseURL = `${baseURL}/api/`;
 
 export const loginURLs = {
@@ -32,5 +32,6 @@ export const adminsURLs = {
 export const peticionesURLs = {
   getAdmins: `${APIbaseURL}consultarPeticiones`,
   rejectPeticiones: `${APIbaseURL}rechazaPeticiones`,
+  acceptPeticiones: `${APIbaseURL}aceptarPeticiones`,
   saveInstitucion: `${APIbaseURL}agregarInstitucion`,
 };

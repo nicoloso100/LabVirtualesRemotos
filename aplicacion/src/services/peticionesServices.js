@@ -62,38 +62,36 @@ export const rejectPeticiones = peticiones => {
 export const acceptPeticiones = peticiones => {
   showLoading(true);
   return new Promise(resolve => {
-    console.log(peticiones);
-    resolve();
-    // let promises = [];
-    // let results = [];
-    // peticiones.forEach(peticion => {
-    //   promises.push(
-    //     axios.post(peticionesURLs.rejectPeticiones, {
-    //       email: peticion.email,
-    //       mensaje: peticion.mensaje,
-    //     }),
-    //   );
-    // });
-    // axios
-    //   .all(promises)
-    //   .then(res => {
-    //     res.forEach(result => {
-    //       results.push(result.data);
-    //     });
-    //     showLoading(false);
-    //     swal({
-    //       title: "Resultado de la operación:",
-    //       content: createMessageList(results),
-    //       type: "success",
-    //       icon: "success",
-    //     });
-    //     resolve();
-    //   })
-    //   .catch(err => {
-    //     showLoading(false);
-    //     var error = err.response;
-    //     swal("Oops!", error ? error.data : baseError, "warning");
-    //   });
+    let promises = [];
+    let results = [];
+    peticiones.forEach(peticion => {
+      promises.push(
+        axios.post(peticionesURLs.acceptPeticiones, {
+          email: peticion.email,
+          institucion: peticion.institucion,
+        }),
+      );
+    });
+    axios
+      .all(promises)
+      .then(res => {
+        res.forEach(result => {
+          results.push(result.data);
+        });
+        showLoading(false);
+        swal({
+          title: "Resultado de la operación:",
+          content: createMessageList(results),
+          type: "success",
+          icon: "success",
+        });
+        resolve();
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
   });
 };
 

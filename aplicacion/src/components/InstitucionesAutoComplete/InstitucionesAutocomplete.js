@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 //Autosuggest
 import Autosuggest from "react-autosuggest";
@@ -8,7 +8,7 @@ import matchSorter from "match-sorter";
 import useStyles from "./styles";
 
 //icons
-import { PlaylistAddCheck } from "@material-ui/icons";
+import { School as InstitucionIcon } from "@material-ui/icons";
 import { InputBase, withStyles } from "@material-ui/core";
 
 const BootstrapInput = withStyles(theme => ({
@@ -51,7 +51,13 @@ const renderInputComponent = inputProps => {
   return <BootstrapInput {...inputProps} />;
 };
 
-const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
+const InstitucionesAutocomplete = ({
+  list,
+  event,
+  onChangeEvent,
+  withStrict,
+  defaultValue,
+}) => {
   // local
   var classes = useStyles();
 
@@ -59,15 +65,6 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
   const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [originalList, setOriginalList] = useState(null);
-
-  useEffect(() => {
-    if (selected !== "" && selected !== value) {
-      setSelected("");
-    }
-    if (originalList !== list) {
-      setOriginalList(list);
-    }
-  }, [selected, value, withStrict, list, originalList]);
 
   const getSuggestions = value => {
     const inputValue = value.trim().toLowerCase();
@@ -80,21 +77,30 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
         });
   };
 
-  const getSuggestionValue = suggestion => {
-    event(suggestion.id);
-    setSelected(suggestion.nombre);
-    return suggestion.nombre;
-  };
+  const getSuggestionValue = useCallback(
+    suggestion => {
+      event && event(suggestion.id);
+      setSelected(suggestion.nombre);
+      return suggestion.nombre;
+    },
+    [setSelected, event],
+  );
+  // const getSuggestionValue = suggestion => {
+  //   event && event(suggestion.id);
+  //   setSelected(suggestion.nombre);
+  //   return suggestion.nombre;
+  // };
 
   const renderSuggestion = suggestion => <div>{suggestion.nombre}</div>;
 
   const onChange = (event, { newValue }) => {
+    onChangeEvent && onChangeEvent(newValue);
     setValue(newValue);
   };
 
   const onBlur = () => {
     if (selected === "" && withStrict) {
-      event(null);
+      event && event(null);
       setValue("");
     }
   };
@@ -107,6 +113,26 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
     setSuggestions([]);
   };
 
+  useEffect(() => {
+    if (selected !== "" && selected !== value) {
+      setSelected("");
+    }
+    if (originalList !== list) {
+      setOriginalList(list);
+    }
+    if (value === "" && defaultValue) {
+      setValue(getSuggestionValue(defaultValue));
+    }
+  }, [
+    selected,
+    value,
+    withStrict,
+    list,
+    originalList,
+    defaultValue,
+    getSuggestionValue,
+  ]);
+
   const inputProps = {
     placeholder: "Ingrese la institución",
     value,
@@ -116,7 +142,7 @@ const InstitucionesAutocomplete = ({ list, event, withStrict }) => {
   return (
     <React.Fragment>
       <div className={classes.inputContainer}>
-        <PlaylistAddCheck />
+        <InstitucionIcon />
         <Autosuggest
           suggestions={suggestions}
           onSuggestionsFetchRequested={onSuggestionsFetchRequested}

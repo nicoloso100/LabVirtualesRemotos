@@ -11,14 +11,16 @@ import useStyles from "./styles";
 import PeticionesModals from "../../components/PeticionesModals/peticionesModals";
 import { rejectPeticiones } from "../../services/peticionesServices";
 
+const defaultStateModal = {
+  open: false,
+  option: 0,
+  list: [],
+}
+
 const Peticiones = () => {
   var classes = useStyles();
   const [peticionesArray, setPeticionesArray] = useState(null);
-  const [openModal, setOpenModal] = useState({
-    open: false,
-    option: 0,
-    list: [],
-  });
+  const [openModal, setOpenModal] = useState(defaultStateModal);
 
   const cols = [
     {
@@ -84,6 +86,7 @@ const Peticiones = () => {
       petition = acceptPeticiones(list);
     }
     petition.then(() => {
+      setOpenModal(defaultStateModal);
       getPeticionesRequest();
     });
   };

@@ -1,4 +1,4 @@
-const PeticionesDirectorConstants = (param1, param2) => {
+const PeticionesDirectorConstants = param => {
   return {
     searchError:
       "No se ha podido traer la información de las peticiones, por favor intentalo más tarde",
@@ -12,14 +12,10 @@ const PeticionesDirectorConstants = (param1, param2) => {
     noPeticiones: "No se han encontrado peticiones asociadas a esta cuenta",
     getAllError: "No se ha podido obtener la lista de peticiones",
     subjectMail: "Notificación de tu peticion para convertirte en Director",
-    textMail: `Lamentablemente hemos rechazado tu petición: ${param1}`,
-    rejectPetitionOk: `La petición para promover a director al usuario ${param1} ha sido rechazada`,
-    userNotFound: `El usuario ${param1} no existe!`,
-    alreadyDirector: `El usuario ${param1} ya es director`,
-    notSupportedRol: `El usuario ${param1} pertenece al rol '${param2}', por lo tanto no puede convertirse en administrador (Se necesita tener rol Visitante)`,
-    addDirectorOk: `la cuenta ${param1} se ha convertido en director`,
-    directorErrorCreate: "Ha ocurrido un error al crear el director",
-    getDirectorError: "No se ha podido obtener la informaciónd el administrador"
+    acceptMessage:
+      "Hemos evaluado tu petición y nos complace informar que tu cuenta ha sido promovia al rol Director",
+    rejectPetitionOk: `La petición para promover a director al usuario ${param} ha sido rechazada`,
+    acceptPetitionOk: `La petición para promover a director al usuario ${param} se ha completado satisfactoriamente`
   };
 };
 

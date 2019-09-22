@@ -1,11 +1,11 @@
 //Models
 const PeticionDirector = require("../models/peticionesDirector");
-const Director = require("../models/director");
 //Constants
 const peticionesDirectorConstants = require("../constants/peticionesDirectorConstants");
 //Services
 const emailServices = require("../applicationServices/emailServices");
 const usuarioServices = require("../applicationServices/usuarioServices");
+const directorService = require("../applicationServices/directorService");
 
 exports.getPeticiones = () => {
   return new Promise((resolve, reject) => {
@@ -63,51 +63,21 @@ exports.rejectPeticiones = (email, mensaje) => {
 
 exports.acceptPeticiones = (email, institucion) => {
   return new Promise((resolve, reject) => {
-    new Usuario()
-      .where("email", email)
-      .fetch({ withRelated: ["rol"] })
-      .then(result => {
-        if (result === null) {
-          reject(peticionesDirectorConstants(email).userNotFound);
-        }
-        let usuario = result.toJSON();
-        if (usuario.rol.id === 4) {
-          reject(peticionesDirectorConstants(email).alreadyDirector);
-        } else if (usuario.rol.id !== 1) {
-          reject(
-            peticionesDirectorConstants(email, usuario.rol.descripcion)
-              .notSupportedRol
-          );
-        }
-        peticionDirectorServices
-          .deletePeticionDirector(email)
+    usuarioServices
+      .getUsuario(email)
+      .then(response => {
+        directorService
+          .addDirector(email, institucion)
           .then(() => {
-            visitanteService
-              .deleteVisitante(email)
+            emailServices
+              .sendMail(
+                email,
+                peticionesDirectorConstants().subjectMail,
+                response.name,
+                peticionesDirectorConstants().acceptMessage
+              )
               .then(() => {
-                usuarioServices
-                  .changeUsuarioRol(email, 4)
-                  .then(() => {
-                    const director = new Director({
-                      email: email,
-                      institucion: institucion
-                    });
-                    director
-                      .save(null, { method: "insert" })
-                      .then(() => {
-                        resolve(
-                          peticionesDirectorConstants(email).addDirectorOk
-                        );
-                      })
-                      .catch(err => {
-                        reject(
-                          peticionesDirectorConstants().directorErrorCreate
-                        );
-                      });
-                  })
-                  .catch(err => {
-                    reject(err);
-                  });
+                resolve(peticionesDirectorConstants(email).acceptPetitionOk);
               })
               .catch(err => {
                 reject(err);
@@ -118,7 +88,7 @@ exports.acceptPeticiones = (email, institucion) => {
           });
       })
       .catch(err => {
-        reject(peticionesDirectorConstants().getDirectorError);
+        reject(err);
       });
   });
 };

@@ -67,28 +67,34 @@ const AddMessage = ({
     return data.find(item => item.email === email);
   };
 
+  const getDefaultInstitucionValue = institucion => {
+    return instituciones.find(item => item.nombre === institucion);
+  };
+
   const getSelected = selected => {
     let setItemList = [...itemList];
     setItemList[index] = { ...item, institucion: selected };
     setItem(setItemList);
   };
 
+  const institucionName = getInstitucion(item.email).institucion;
   return (
     <TableRow>
       <TableCell>{item.email}</TableCell>
-      <TableCell>{getInstitucion(item.email).institucion}</TableCell>
+      <TableCell>{institucionName}</TableCell>
       <TableCell>
         <InstitucionesAutocomplete
           event={getSelected}
           list={instituciones}
           withStrict={true}
+          defaultValue={getDefaultInstitucionValue(institucionName)}
         />
       </TableCell>
     </TableRow>
   );
 };
 
-const constructDeleteList = params => {
+const constructList = params => {
   let constList = [];
   params.list.forEach(element => {
     if (params.option === 0) {
@@ -109,7 +115,7 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setList(constructDeleteList(params));
+    setList(constructList(params));
     if (instituciones === null) {
       getInstituciones().then(res => {
         setInstituciones(res);

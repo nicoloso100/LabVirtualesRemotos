@@ -4,7 +4,7 @@ require("./institucion");
 const Director = db.Model.extend({
   idAttribute: "email",
   tableName: "directores",
-  institucion: function() {
+  institucion() {
     return this.belongsTo("Institucion", "institucion");
   }
 });
