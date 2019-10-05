@@ -8,6 +8,31 @@ const peticionDirectorServices = require("../applicationServices/peticionDirecto
 const visitanteServices = require("../applicationServices/visitanteServices");
 const usuarioServices = require("../applicationServices/usuarioServices");
 
+exports.getDirectoresList = institucion => {
+  return new Promise((resolve, reject) => {
+    new Director()
+      .query(function(qb) {
+        institucion && qb.where("institucion", institucion);
+      })
+      .fetchAll({
+        withRelated: [
+          "institucion",
+          {
+            usuario: function(qb) {
+              qb.select("email", "name", "surname");
+            }
+          }
+        ]
+      })
+      .then(admins => {
+        resolve(admins.toJSON());
+      })
+      .catch(err => {
+        reject(directorConstants().errorDirectorList);
+      });
+  });
+};
+
 exports.addDirector = (email, institucion) => {
   return new Promise((resolve, reject) => {
     new Usuario()

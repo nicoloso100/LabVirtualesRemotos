@@ -5,7 +5,9 @@ const DirectorConstants = (param1, param2) => {
     notSupportedRol: `El usuario ${param1} pertenece al rol '${param2}', por lo tanto no puede convertirse en director (Se necesita tener rol Visitante)`,
     addDirectorOk: `la cuenta ${param1} se ha convertido en director`,
     directorErrorCreate: "Ha ocurrido un error al crear el director",
-    getDirectorError: "No se ha podido obtener la informaciónd el administrador"
+    getDirectorError:
+      "No se ha podido obtener la informaciónd el administrador",
+    errorDirectorList: "No se ha podido obtener la lista de directores"
   };
 };
 

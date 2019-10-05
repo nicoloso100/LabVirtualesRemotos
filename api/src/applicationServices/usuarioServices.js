@@ -186,6 +186,16 @@ exports.getUsuariosLaboratorios = email => {
                 reject(err);
               });
             break;
+          case "3":
+            laboratoriosService
+              .getAllLaboratorios()
+              .then(result => {
+                resolve(result);
+              })
+              .catch(err => {
+                reject(err);
+              });
+            break;
           case "4":
             laboratoriosService
               .getAllLaboratorios()

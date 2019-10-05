@@ -5,6 +5,10 @@ exports.up = function(knex, Promise) {
       .inTable("usuarios")
       .notNull()
       .primary();
+    t.string("director")
+      .references("email")
+      .inTable("directores")
+      .notNull();
   });
 };
 

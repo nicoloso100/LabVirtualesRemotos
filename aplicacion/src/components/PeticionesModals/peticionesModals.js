@@ -68,7 +68,9 @@ const AddMessage = ({
   };
 
   const getDefaultInstitucionValue = institucion => {
-    return instituciones.find(item => item.nombre === institucion);
+    return instituciones
+      ? instituciones.find(item => item.nombre === institucion)
+      : undefined;
   };
 
   const getSelected = selected => {
@@ -108,20 +110,24 @@ const constructList = params => {
 
 const PeticionesModals = ({ data, params, setOpen, request }) => {
   var classes = useStyles();
-  const [list, setList] = useState([]);
+  const [list, setList] = useState(null);
   const [instituciones, setInstituciones] = useState(null);
   const [addInstitucion, setAddInstitucion] = useState(false);
   const [newInstValue, setNewInstValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setList(constructList(params));
+    if (list === null && params.open) {
+      setList(constructList(params));
+    } else if (list !== null && !params.open) {
+      setList(null);
+    }
     if (instituciones === null) {
       getInstituciones().then(res => {
         setInstituciones(res);
       });
     }
-  }, [instituciones, params]);
+  }, [instituciones, params, list]);
 
   const postSaveInstitucion = () => {
     if (newInstValue !== "") {
@@ -213,18 +219,19 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {list.map((item, index) => {
-                    return (
-                      <RemoveMessage
-                        key={index}
-                        classes={classes}
-                        index={index}
-                        item={item}
-                        itemList={list}
-                        setItem={setList}
-                      />
-                    );
-                  })}
+                  {list !== null &&
+                    list.map((item, index) => {
+                      return (
+                        <RemoveMessage
+                          key={index}
+                          classes={classes}
+                          index={index}
+                          item={item}
+                          itemList={list}
+                          setItem={setList}
+                        />
+                      );
+                    })}
                 </TableBody>
               </Table>
               <Button
@@ -262,19 +269,20 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {list.map((item, index) => {
-                    return (
-                      <AddMessage
-                        key={index}
-                        data={data}
-                        item={item}
-                        itemList={list}
-                        instituciones={instituciones}
-                        setItem={setList}
-                        index={index}
-                      />
-                    );
-                  })}
+                  {list !== null &&
+                    list.map((item, index) => {
+                      return (
+                        <AddMessage
+                          key={index}
+                          data={data}
+                          item={item}
+                          itemList={list}
+                          instituciones={instituciones}
+                          setItem={setList}
+                          index={index}
+                        />
+                      );
+                    })}
                 </TableBody>
               </Table>
               <Button

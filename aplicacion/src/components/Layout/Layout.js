@@ -20,6 +20,8 @@ import {
   Announcement as InfoIcon,
   SupervisedUserCircle as AdminsIcon,
   NotificationsActive as PendingIcon,
+  ViewList as DirectoresIcon,
+  School as ProfesoresIcon,
 } from "@material-ui/icons";
 
 // context
@@ -32,6 +34,8 @@ import {
 } from "../../context/UserContext";
 import { getDatosIniciales } from "../../services/DatosInicialesServices";
 import Peticiones from "../../pages/peticiones/peticiones";
+import Directores from "../../pages/directores/Directores";
+import Profesores from "../../pages/profesores/Profesores";
 
 function Layout(props) {
   var classes = useStyles();
@@ -71,11 +75,34 @@ function Layout(props) {
         link: "/app/peticiones",
         icon: <PendingIcon />,
       },
+      {
+        id: 3,
+        label: "Directores",
+        link: "/app/directores",
+        icon: <DirectoresIcon />,
+      },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/admins", component: Admins },
       { path: "/app/peticiones", component: Peticiones },
+      { path: "/app/directores", component: Directores },
+    ],
+  };
+
+  const structureDirector = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+      {
+        id: 1,
+        label: "Profesores",
+        link: "/app/profesores",
+        icon: <ProfesoresIcon />,
+      },
+    ],
+    route: [
+      { path: "/app/dashboard", component: Dashboard },
+      { path: "/app/profesores", component: Profesores },
     ],
   };
 
@@ -96,7 +123,8 @@ function Layout(props) {
         return structureVisitante;
       case "administrador":
         return structureAdministrador;
-
+      case "director":
+        return structureDirector;
       default:
         return structureBase;
     }

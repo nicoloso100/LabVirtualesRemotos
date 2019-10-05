@@ -10,6 +10,8 @@ const infoController = require("./controllers/infoController");
 const adminsController = require("./controllers/adminsController");
 const peticionesDirectorController = require("./controllers/peticionesDirectorController");
 const institucionesController = require("./controllers/institucionesController");
+const directoresController = require("./controllers/directoresController");
+const profesoresController = require("./controllers/profesoresController");
 
 //General
 router.post("/obtenerUsuarios", initialDataController.get_users);
@@ -49,5 +51,10 @@ router.post(
   peticionesDirectorController.accept_peticiones
 );
 router.post("/agregarInstitucion", institucionesController.add_instituciones);
+//Directores
+router.post("/obtenerDirectores", directoresController.get_directores);
+//Profesores
+router.post("/agregarProfesores", profesoresController.add_profesores);
+router.post("/obtenerProfesores", profesoresController.get_profesores);
 
 module.exports = router;

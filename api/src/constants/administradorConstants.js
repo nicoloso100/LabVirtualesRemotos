@@ -1,7 +1,7 @@
 const AdminsConstants = (param1, param2) => {
   return {
     addAdminOk: `la cuenta ${param1} se ha convertido en administradora`,
-    getAdminError: "No se ha podido obtener la informaciónd el administrador",
+    getAdminError: "No se ha podido obtener la información del administrador",
     errorAdminList: "No se ha podido obtener la lista de administradores",
     userNotFound: `El usuario ${param1} no existe!`,
     adminNotFound: `El administrador no existe!`,
