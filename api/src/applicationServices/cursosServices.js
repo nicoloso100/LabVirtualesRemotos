@@ -9,12 +9,24 @@ exports.getCursos = profesor => {
       .where("profesor", profesor)
       .fetchAll()
       .then(cursos => {
-        console.log(cursos);
         resolve(cursos.toJSON());
       })
       .catch(err => {
-        console.log(err);
         reject(cursosConstants().errorCursoList);
       });
+  });
+};
+
+exports.addCurso = profesor => {
+  return new Promise((resolve, reject) => {
+    // new Curso()
+    //   .where("profesor", profesor)
+    //   .fetchAll()
+    //   .then(cursos => {
+    //     resolve(cursos.toJSON());
+    //   })
+    //   .catch(err => {
+    //     reject(cursosConstants().errorCursoList);
+    //   });
   });
 };
