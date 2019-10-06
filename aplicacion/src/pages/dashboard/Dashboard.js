@@ -41,6 +41,7 @@ export default function Dashboard(props) {
         button={
           userInfo.rol === "visitante" ? "Habilitar más laboratorios" : null
         }
+        goToUrl="/app/info"
       />
       <Grid container spacing={4}>
         {laboratorios !== null &&

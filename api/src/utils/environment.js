@@ -1,5 +1,5 @@
 exports.knexConfig = {
-  host: "192.168.0.19",
+  host: "localhost",
   user: "root",
   password: "0315",
   database: "glvr"

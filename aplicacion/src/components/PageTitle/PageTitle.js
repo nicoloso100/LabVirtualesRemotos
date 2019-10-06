@@ -10,6 +10,15 @@ import { Typography } from "../Wrappers/Wrappers";
 
 const PageTitle = withRouter(props => {
   var classes = useStyles();
+
+  const setOnClick = () => {
+    if (props.goToUrl) {
+      props.history.push(props.goToUrl);
+    } else if (props.onButtonClick) {
+      props.onButtonClick();
+    }
+  };
+
   return (
     <div className={classes.pageTitleContainer}>
       <Typography className={classes.typo} variant="h1" size="sm">
@@ -21,7 +30,7 @@ const PageTitle = withRouter(props => {
           variant="contained"
           size="large"
           color="secondary"
-          onClick={() => props.history.push("/app/info")}
+          onClick={() => setOnClick()}
         >
           {props.button}
         </Button>

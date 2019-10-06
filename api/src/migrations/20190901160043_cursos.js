@@ -9,6 +9,8 @@ exports.up = function(knex, Promise) {
       .inTable("profesores")
       .notNull();
     t.string("nombre").notNull();
+    t.string("descripcion").notNull();
+    t.string("imagen").notNull();
     t.dateTime("year").notNull();
     t.string("periodo").notNull();
   });

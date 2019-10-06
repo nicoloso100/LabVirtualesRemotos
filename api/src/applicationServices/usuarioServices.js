@@ -74,6 +74,7 @@ exports.addUsuario = params => {
                 });
             })
             .catch(err => {
+              console.log(err);
               reject(usuarioConstants().errorUserCreate);
             });
         } else {

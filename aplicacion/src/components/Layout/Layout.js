@@ -22,6 +22,7 @@ import {
   NotificationsActive as PendingIcon,
   ViewList as DirectoresIcon,
   School as ProfesoresIcon,
+  AddToQueue as CursosIcon,
 } from "@material-ui/icons";
 
 // context
@@ -36,6 +37,7 @@ import { getDatosIniciales } from "../../services/DatosInicialesServices";
 import Peticiones from "../../pages/peticiones/peticiones";
 import Directores from "../../pages/directores/Directores";
 import Profesores from "../../pages/profesores/Profesores";
+import Cursos from "../../pages/cursos/cursos";
 
 function Layout(props) {
   var classes = useStyles();
@@ -117,6 +119,17 @@ function Layout(props) {
     ],
   };
 
+  const structureProfesor = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+      { id: 1, label: "Cursos", link: "/app/cursos", icon: <CursosIcon /> },
+    ],
+    route: [
+      { path: "/app/dashboard", component: Dashboard },
+      { path: "/app/cursos", component: Cursos },
+    ],
+  };
+
   const getStructure = () => {
     switch (userInfo.rol) {
       case "visitante":
@@ -125,6 +138,8 @@ function Layout(props) {
         return structureAdministrador;
       case "director":
         return structureDirector;
+      case "profesor":
+        return structureProfesor;
       default:
         return structureBase;
     }

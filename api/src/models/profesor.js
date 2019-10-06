@@ -9,6 +9,9 @@ const Profesor = db.Model.extend({
   },
   director() {
     return this.belongsTo("Director", "email");
+  },
+  curso() {
+    return this.hasMany("Curso", "email");
   }
 });
 
