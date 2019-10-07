@@ -6,7 +6,6 @@ import Stepper from "react-stepper-horizontal";
 // styles
 import useStyles from "./styles";
 import {
-  Button,
   Dialog,
   AppBar,
   Toolbar,
@@ -17,6 +16,8 @@ import {
 import { Close as CloseIcon } from "@material-ui/icons";
 import InformacionCurso from "./InformacionCurso";
 import ImagenCurso from "./ImagenCurso";
+import VincularLaboratorios from "./VincularLaboratorios";
+import VincularEstudiantes from "./VincularEstudiantes";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -24,7 +25,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Cursos = () => {
   var classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [step, setStep] = useState(0);
 
   const openCloseModal = open => {
@@ -45,7 +46,7 @@ const Cursos = () => {
       <div>
         <Dialog
           fullScreen
-          open={true}
+          open={open}
           onClose={() => openCloseModal(false)}
           TransitionComponent={Transition}
         >
@@ -62,9 +63,6 @@ const Cursos = () => {
               <Typography variant="h6" className={classes.title}>
                 Crear Curso
               </Typography>
-              <Button color="inherit" onClick={() => openCloseModal(false)}>
-                Guardar
-              </Button>
             </Toolbar>
           </AppBar>
           <div className={classes.StepperContainer}>
@@ -80,8 +78,11 @@ const Cursos = () => {
             />
           </div>
           <StepWizard>
+            <VincularLaboratorios setStep={setStep} />
             <InformacionCurso setStep={setStep} />
             <ImagenCurso setStep={setStep} />
+
+            <VincularEstudiantes setStep={setStep} />
           </StepWizard>
         </Dialog>
       </div>

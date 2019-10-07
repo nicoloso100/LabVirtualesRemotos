@@ -69,4 +69,29 @@ export default makeStyles(theme => ({
       padding: 10,
     },
   },
+  ImgButtonContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: 30,
+  },
+  LabsContainer: {
+    display: "flex",
+  },
+  LabsDroppable: {
+    width: "100% !important",
+    margin: "8px",
+    padding: "20px",
+    maxHeight: "80vh",
+    overflow: "auto",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around"
+  },
+  CardContainer:{
+    margin: "20px",
+  },
+  card: {
+    display: "flex",
+    flexDirection: "column",
+  },
 }));

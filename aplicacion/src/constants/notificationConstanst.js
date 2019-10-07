@@ -29,3 +29,13 @@ export const INSTITUCION_ADD_SUCCESS = {
   type: "success",
   message: "La institución se ha agregado correctamente",
 };
+
+export const IMAGE_NOT_SELECTED = {
+  type: "warning",
+  message: "No se ha seleccionado una imagen",
+};
+
+export const JUST_SINGLE_IMAGE = {
+  type: "warning",
+  message: "Solo se puede seleccionar una imágen",
+};
