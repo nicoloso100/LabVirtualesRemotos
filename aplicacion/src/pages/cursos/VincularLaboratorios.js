@@ -29,8 +29,6 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const grid = 8;
-
 const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
 });
@@ -68,7 +66,7 @@ const VincularLaboratorios = ({ setStep, nextStep, previousStep }) => {
 
   const onDragEnd = result => {
     const { source, destination } = result;
-    if (!destination) {
+    if (destination && source.droppableId === destination.droppableId) {
       return;
     }
     if (source.droppableId === destination.droppableId) {
@@ -139,13 +137,22 @@ const VincularLaboratorios = ({ setStep, nextStep, previousStep }) => {
                           {...provided.dragHandleProps}
                           className={classes.CardContainer}
                         >
-                          <Widget
-                              title={item.nombre}
-                              setOnClick={() => {}}
-                              image={baseURL + item.imagen}
-                              bodyClass={classes.fullHeightBody}
-                              className={classes.card}
-                            ></Widget>
+                          <div className={classes.card}>
+                            <div
+                              className={classes.widgetImage}
+                              style={{
+                                backgroundImage: `url(${baseURL +
+                                  item.imagen})`,
+                              }}
+                            />
+                            <Typography
+                              className={classes.titleCard}
+                              variant="h5"
+                              color="textSecondary"
+                            >
+                              {item.nombre}
+                            </Typography>
+                          </div>
                         </div>
                       )}
                     </Draggable>
@@ -169,19 +176,28 @@ const VincularLaboratorios = ({ setStep, nextStep, previousStep }) => {
                     >
                       {(provided, snapshot) => (
                         <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        className={classes.CardContainer}
-                      >
-                        <Widget
-                            title={item.nombre}
-                            setOnClick={() => {}}
-                            image={baseURL + item.imagen}
-                            bodyClass={classes.fullHeightBody}
-                            className={classes.card}
-                          ></Widget>
-                      </div>
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          className={classes.CardContainer}
+                        >
+                          <div className={classes.card}>
+                            <div
+                              className={classes.widgetImage}
+                              style={{
+                                backgroundImage: `url(${baseURL +
+                                  item.imagen})`,
+                              }}
+                            />
+                            <Typography
+                              className={classes.titleCard}
+                              variant="h5"
+                              color="textSecondary"
+                            >
+                              {item.nombre}
+                            </Typography>
+                          </div>
+                        </div>
                       )}
                     </Draggable>
                   ))}

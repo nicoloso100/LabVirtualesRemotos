@@ -78,11 +78,10 @@ const Cursos = () => {
             />
           </div>
           <StepWizard>
-            <VincularLaboratorios setStep={setStep} />
+            <VincularEstudiantes setStep={setStep} />
             <InformacionCurso setStep={setStep} />
             <ImagenCurso setStep={setStep} />
-
-            <VincularEstudiantes setStep={setStep} />
+            <VincularLaboratorios setStep={setStep} />
           </StepWizard>
         </Dialog>
       </div>

@@ -66,7 +66,7 @@ const renderInputComponent = inputProps => {
   return <BootstrapInput {...inputProps} />;
 };
 
-const UsersAutocomplete = ({ event }) => {
+const UsersAutocomplete = ({ event, noValidation }) => {
   // local
   var [isLoading, setIsLoading] = useState(false);
   var classes = useStyles();
@@ -181,7 +181,7 @@ const UsersAutocomplete = ({ event }) => {
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => setOpenDialog(true)}
+            onClick={() => (noValidation ? onEvent() : setOpenDialog(true))}
           >
             Agregar
           </Button>

@@ -83,15 +83,44 @@ export default makeStyles(theme => ({
     padding: "20px",
     maxHeight: "80vh",
     overflow: "auto",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around"
+    [theme.breakpoints.only("xs")]: {
+      padding: "5px",
+    },
   },
-  CardContainer:{
+  CardContainer: {
     margin: "20px",
+    [theme.breakpoints.only("xs")]: {
+      margin: "10px 0 10px 0",
+    },
   },
   card: {
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+    backgroundColor: "white",
+    borderRadius: "5px",
+    width: "100%",
+    height: "100px",
+    [theme.breakpoints.only("xs")]: {
+      flexDirection: "column",
+      height: "200px",
+    },
+  },
+  titleCard: {
+    flex: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    [theme.breakpoints.only("xs")]: {
+      flex: 1,
+    },
+  },
+  widgetImage: {
+    flex: 1,
+    width: "100%",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+  },
+  EstudiantesContainer: {
+    padding: 20,
   },
 }));

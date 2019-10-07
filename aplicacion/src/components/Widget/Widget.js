@@ -28,7 +28,7 @@ export default function Widget({
         <div
           className={classes.widgetImage}
           style={{ backgroundImage: `url(${image})` }}
-        ></div>
+        />
         <div className={classes.widgetHeader}>
           {header ? (
             header
