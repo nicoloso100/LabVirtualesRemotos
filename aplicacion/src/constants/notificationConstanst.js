@@ -39,3 +39,8 @@ export const JUST_SINGLE_IMAGE = {
   type: "warning",
   message: "Solo se puede seleccionar una imágen",
 };
+
+export const SELECT_ONE_LAB = {
+  type: "warning",
+  message: "Debe seleccionar mínimo un laboratorio",
+};

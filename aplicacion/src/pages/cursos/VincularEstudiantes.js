@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Typography, Button, withStyles, Grid } from "@material-ui/core";
+import { Typography, Button, withStyles, Grid, Paper } from "@material-ui/core";
 import useStyles from "./styles";
 import { green } from "@material-ui/core/colors";
 import UsersAutocomplete from "../../components/UsersAutoComplete/UsersAutocomplete";
@@ -15,7 +15,7 @@ const ColorButton = withStyles(theme => ({
   },
 }))(Button);
 
-const VincularEstudiantes = ({ setStep, previousStep }) => {
+const VincularEstudiantes = ({ setStep, previousStep, setConfig }) => {
   var classes = useStyles();
   const [estudiantesArray, setEstudiantesArray] = useState([]);
 
@@ -43,15 +43,19 @@ const VincularEstudiantes = ({ setStep, previousStep }) => {
   };
 
   const delEstudiante = estudianteList => {
+    let editArray = [...estudiantesArray];
     estudianteList.forEach(element => {
-      let newArray = [...estudiantesArray].filter(obj => {
+      let newArray = editArray.filter(obj => {
         return obj.email !== element;
       });
-      setEstudiantesArray(newArray);
+      editArray = newArray;
     });
+    setEstudiantesArray(editArray);
   };
 
-  const onSaveClick = () => {};
+  const onSaveClick = () => {
+    setConfig(estudiantesArray);
+  };
 
   return (
     <React.Fragment>
@@ -75,7 +79,7 @@ const VincularEstudiantes = ({ setStep, previousStep }) => {
           Guardar
         </ColorButton>
       </div>
-      <div className={classes.EstudiantesContainer}>
+      <Paper className={classes.EstudiantesContainer}>
         <UsersAutocomplete event={addStudent} noValidation />
         <br />
         {estudiantesArray.length > 0 && (
@@ -90,7 +94,7 @@ const VincularEstudiantes = ({ setStep, previousStep }) => {
             </Grid>
           </Grid>
         )}
-      </div>
+      </Paper>
     </React.Fragment>
   );
 };

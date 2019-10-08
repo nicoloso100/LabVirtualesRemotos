@@ -14,7 +14,7 @@ import useStyles from "./styles";
 import { ShowNotification } from "../../utils/utils";
 import { INVALID_FIELD } from "../../constants/notificationConstanst";
 
-const InformacionCurso = ({ setStep, nextStep }) => {
+const InformacionCurso = ({ setStep, nextStep, setConfig }) => {
   var classes = useStyles();
   const year = new Date().getFullYear();
   const years = Array.from(new Array(20), (val, index) => index + year);
@@ -27,6 +27,12 @@ const InformacionCurso = ({ setStep, nextStep }) => {
 
   const onClick = () => {
     if (validate()) {
+      setConfig({
+        nombre,
+        descripcion,
+        selectedYear,
+        selectedPeriodo,
+      });
       setStep(1);
       nextStep();
     } else {

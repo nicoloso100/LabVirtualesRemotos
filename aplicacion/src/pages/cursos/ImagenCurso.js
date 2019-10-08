@@ -8,7 +8,7 @@ import {
 } from "../../constants/notificationConstanst";
 import { Button, Typography } from "@material-ui/core";
 
-const ImagenCurso = ({ setStep, nextStep, previousStep }) => {
+const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
   var classes = useStyles();
   const [picture, setPicture] = useState([]);
 
@@ -26,6 +26,7 @@ const ImagenCurso = ({ setStep, nextStep, previousStep }) => {
 
   const onNextClick = () => {
     if (picture.length === 1) {
+      setConfig(picture[0]);
       setStep(2);
       nextStep();
     } else if (picture.length > 1) {

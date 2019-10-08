@@ -72,7 +72,9 @@ export default makeStyles(theme => ({
   ImgButtonContainer: {
     display: "flex",
     justifyContent: "space-between",
-    padding: 30,
+    width: "70%",
+    maxWidth: "1200px",
+    margin: "20px auto 20px auto",
   },
   LabsContainer: {
     display: "flex",
@@ -122,5 +124,8 @@ export default makeStyles(theme => ({
   },
   EstudiantesContainer: {
     padding: 20,
+    width: "70%",
+    maxWidth: "1000px",
+    margin: "10px auto 50px auto",
   },
 }));

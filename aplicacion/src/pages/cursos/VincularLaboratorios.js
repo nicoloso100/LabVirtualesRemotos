@@ -6,6 +6,8 @@ import { getLaboratorios } from "../../services/dashboardServices";
 import { useUserState } from "../../context/UserContext";
 import Widget from "../../components/Widget/Widget";
 import { baseURL } from "../../constants/URLs";
+import { ShowNotification } from "../../utils/utils";
+import { SELECT_ONE_LAB } from "../../constants/notificationConstanst";
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -33,7 +35,12 @@ const getListStyle = isDraggingOver => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
 });
 
-const VincularLaboratorios = ({ setStep, nextStep, previousStep }) => {
+const VincularLaboratorios = ({
+  setStep,
+  nextStep,
+  previousStep,
+  setConfig,
+}) => {
   var classes = useStyles();
   var user = useUserState();
   const [items, setItems] = useState(null);
@@ -53,8 +60,13 @@ const VincularLaboratorios = ({ setStep, nextStep, previousStep }) => {
   };
 
   const onNextClick = () => {
-    setStep(3);
-    nextStep();
+    if (selected.length > 0) {
+      setConfig(selected);
+      setStep(3);
+      nextStep();
+    } else {
+      ShowNotification(SELECT_ONE_LAB);
+    }
   };
 
   const id2List = {
