@@ -19,12 +19,18 @@ exports.get_cursos = (req, res) => {
 };
 
 exports.add_curso = (req, res) => {
-  if (!req.body.profesor) {
+  if (
+    !req.body.Profesor ||
+    !req.body.ImagenCurso ||
+    !req.body.InformacionCurso ||
+    !req.body.VincularEstudiantes ||
+    !req.body.VincularLaboratorios
+  ) {
     return res.status(500).send(generalConstants().missingFields);
   }
 
   cursosServices
-    .getCursos(req.body.profesor)
+    .addCurso(req.body)
     .then(result => {
       return res.send(result);
     })

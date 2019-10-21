@@ -17,6 +17,7 @@ exports.getUsuario = email => {
         let json = model.toJSON();
         resolve({
           name: json.name,
+          email: email,
           surname: json.surname,
           rol: json.rol.descripcion
         });

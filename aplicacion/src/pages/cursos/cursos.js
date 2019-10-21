@@ -23,6 +23,7 @@ import InformacionCurso from "./InformacionCurso";
 import ImagenCurso from "./ImagenCurso";
 import VincularLaboratorios from "./VincularLaboratorios";
 import VincularEstudiantes from "./VincularEstudiantes";
+import { useUserState } from "../../context/UserContext";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -32,26 +33,27 @@ const defaultConfig = {
   InformacionCurso: {
     nombre: "",
     descripcion: "",
-    ano: "",
+    year: "",
     periodo: "",
   },
-  ImagenCurso: {
-    imagen: "",
-  },
-  VincularLaboratorios: {
-    laboratorios: [],
-  },
-  VincularEstudiantes: {
-    estudiantes: [],
-  },
+  ImagenCurso: {},
+  VincularLaboratorios: [],
+  VincularEstudiantes: [],
+  Profesor: "",
 };
 
 const Cursos = () => {
+  //global
+  var user = useUserState();
+
   var classes = useStyles();
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
   const [step, setStep] = useState(0);
-  const [config, setConfig] = useState(defaultConfig);
+  const [config, setConfig] = useState({
+    ...defaultConfig,
+    Profesor: user.email,
+  });
 
   const openCloseModal = open => {
     setOpen(open);
@@ -67,7 +69,7 @@ const Cursos = () => {
       InformacionCurso: {
         nombre: newConfig.nombre,
         descripcion: newConfig.descripcion,
-        ano: newConfig.selectedYear,
+        year: newConfig.selectedYear,
         periodo: newConfig.selectedPeriodo,
       },
     });
@@ -75,25 +77,19 @@ const Cursos = () => {
   const modificaImagenCurso = newConfig => {
     setConfig({
       ...config,
-      ImagenCurso: {
-        imagen: newConfig,
-      },
+      ImagenCurso: newConfig,
     });
   };
   const modificaVincularLaboratorios = newConfig => {
     setConfig({
       ...config,
-      VincularLaboratorios: {
-        laboratorios: newConfig,
-      },
+      VincularLaboratorios: newConfig,
     });
   };
   const modificaVincularEstudiantes = newConfig => {
     setConfig({
       ...config,
-      VincularEstudiantes: {
-        estudiantes: newConfig,
-      },
+      VincularEstudiantes: newConfig,
     });
     setOpenConfirm(true);
   };
