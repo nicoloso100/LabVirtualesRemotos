@@ -80,7 +80,7 @@ const VincularEstudiantes = ({ setStep, previousStep, setConfig }) => {
         </ColorButton>
       </div>
       <Paper className={classes.EstudiantesContainer}>
-        <UsersAutocomplete event={addStudent} noValidation />
+        <UsersAutocomplete event={addStudent} userRol={2} noValidation />
         <br />
         {estudiantesArray.length > 0 && (
           <Grid container spacing={4}>

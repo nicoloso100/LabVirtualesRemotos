@@ -28,10 +28,13 @@ exports.getUsuario = email => {
   });
 };
 
-exports.getUsuariosList = () => {
+exports.getUsuariosList = rol => {
   return new Promise((resolve, reject) => {
     Usuario.query(function(qb) {
       qb.select("email", "name", "surname", "rol");
+      if (rol) {
+        qb.where("rol", rol).orWhere("rol", 1);
+      }
     })
       .fetchAll({ withRelated: ["rol"] })
       .then(model => {

@@ -24,6 +24,7 @@ import ImagenCurso from "./ImagenCurso";
 import VincularLaboratorios from "./VincularLaboratorios";
 import VincularEstudiantes from "./VincularEstudiantes";
 import { useUserState } from "../../context/UserContext";
+import { saveCurso } from "../../services/cursosServices";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -75,9 +76,22 @@ const Cursos = () => {
     });
   };
   const modificaImagenCurso = newConfig => {
+    var reader = new FileReader();
+    var fileByteArray = [];
+    reader.readAsArrayBuffer(newConfig);
+    reader.onloadend = evt => {
+      if (evt.target.readyState === FileReader.DONE) {
+        var arrayBuffer = evt.target.result,
+          array = new Uint8Array(arrayBuffer);
+        for (var i = 0; i < array.length; i++) {
+          fileByteArray.push(array[i]);
+        }
+      }
+    };
+    console.log(fileByteArray);
     setConfig({
       ...config,
-      ImagenCurso: newConfig,
+      ImagenCurso: fileByteArray,
     });
   };
   const modificaVincularLaboratorios = newConfig => {
@@ -95,7 +109,9 @@ const Cursos = () => {
   };
 
   const confirmSave = () => {
-    console.log(config);
+    saveCurso(config).then(() => {
+      setOpen(false);
+    });
     setOpenConfirm(false);
   };
 

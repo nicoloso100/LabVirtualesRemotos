@@ -1,4 +1,4 @@
-import { ProfesoresURLs } from "../constants/URLs";
+import { profesoresURLs } from "../constants/URLs";
 import swal from "sweetalert";
 import { baseError } from "../constants/notificationConstanst";
 import showLoading from "../components/loadingIcon/loading";
@@ -9,7 +9,7 @@ export const getProfesores = email => {
   showLoading(true);
   return new Promise(resolve => {
     axios
-      .post(ProfesoresURLs.getProfesores, { email: email })
+      .post(profesoresURLs.getProfesores, { email: email })
       .then(res => {
         showLoading(false);
         resolve(res.data);
@@ -26,7 +26,7 @@ export const addProfesor = (email, director, setIsLoading) => {
   setIsLoading(true);
   return new Promise(resolve => {
     axios
-      .post(ProfesoresURLs.addProfesor, {
+      .post(profesoresURLs.addProfesor, {
         email: email,
         director: director,
       })

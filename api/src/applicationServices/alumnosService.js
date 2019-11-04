@@ -3,6 +3,9 @@ const Alumno = require("../models/alumno");
 const Usuario = require("../models/usuario");
 //Constants
 const alumnoConstants = require("../constants/alumnoConstants");
+//Services
+const visitanteServices = require("../applicationServices/visitanteServices");
+const usuarioServices = require("../applicationServices/usuarioServices");
 
 exports.addAlumno = email => {
   return new Promise((resolve, reject) => {

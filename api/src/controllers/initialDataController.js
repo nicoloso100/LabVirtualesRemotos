@@ -20,7 +20,7 @@ exports.get_initialData = (req, res) => {
 
 exports.get_users = (req, res) => {
   usuarioService
-    .getUsuariosList()
+    .getUsuariosList(req.body.rol)
     .then(result => {
       return res.send(result);
     })

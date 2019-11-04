@@ -33,11 +33,11 @@ export const getDatosIniciales = (
     });
 };
 
-export const getUsuarios = () => {
+export const getUsuarios = userRol => {
   showLoading(true);
   return new Promise((resolve, reject) => {
     axios
-      .post(initialDataURLs.getUsuarios)
+      .post(initialDataURLs.getUsuarios, { rol: userRol })
       .then(res => {
         showLoading(false);
         resolve(res.data);

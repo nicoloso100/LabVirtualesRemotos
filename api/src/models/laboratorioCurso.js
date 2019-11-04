@@ -3,6 +3,7 @@ require("./laboratorio");
 require("./curso");
 
 const LaboratorioCurso = db.Model.extend({
+  idAttribute: ["curso", "laboratorio"],
   tableName: "cursos-laboratorios",
   laboratorio() {
     return this.belongsTo("Laboratorio", "laboratorio");

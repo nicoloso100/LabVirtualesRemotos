@@ -66,7 +66,7 @@ const renderInputComponent = inputProps => {
   return <BootstrapInput {...inputProps} />;
 };
 
-const UsersAutocomplete = ({ event, noValidation }) => {
+const UsersAutocomplete = ({ event, noValidation, userRol }) => {
   // local
   var [isLoading, setIsLoading] = useState(false);
   var classes = useStyles();
@@ -93,11 +93,11 @@ const UsersAutocomplete = ({ event, noValidation }) => {
       setSelected("");
     }
     if (originalList === null) {
-      getUsuarios().then(res => {
+      getUsuarios(userRol).then(res => {
         setOriginalList(res);
       });
     }
-  }, [originalList, selected, value]);
+  }, [originalList, selected, value, userRol]);
 
   const onEvent = () => {
     event(selected, setIsLoading, setValue);

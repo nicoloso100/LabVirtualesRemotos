@@ -28,54 +28,24 @@ exports.addCurso = infoCurso => {
       profesor: infoCurso.Profesor,
       nombre: infoCurso.InformacionCurso.nombre,
       descripcion: infoCurso.InformacionCurso.descripcion,
-      imagen: "",
       year: infoCurso.InformacionCurso.year,
-      periodo: infoCurso.InformacionCurso.periodo
+      periodo: infoCurso.InformacionCurso.periodo,
+      imagen: ""
     });
     curso
       .save(null, { method: "insert" })
       .then(newCurso => {
-        let labPromises = infoCurso.VincularLaboratorios.map(element => {
-          laboratoriosCursosService
-            .addLaboratorioCurso(element.id, newCurso.id)
-            .then()
-            .catch(err => {
-              reject(err);
-            });
+        let labPromises = infoCurso.VincularLaboratorios.map(laboratorio => {
+          return promiseLaboratoriosCursos(laboratorio.id, newCurso.id);
         });
         Promise.all(labPromises)
           .then(() => {
             let estudiantesPromises = infoCurso.VincularEstudiantes.map(
               alumno => {
-                usuarioServices
-                  .getUsuario(alumno.email)
-                  .then(getUsuario => {
-                    if (getUsuario.rol === "estudiante") {
-                      alumnosCursosService
-                        .addAlumnoCurso(getUsuario.email)
-                        .then()
-                        .catch(err => {
-                          reject(err);
-                        });
-                    } else {
-                      alumnosService
-                        .addAlumno(getUsuario.email)
-                        .then(newAlumno => {
-                          alumnosCursosService
-                            .addAlumnoCurso(newAlumno.email)
-                            .then()
-                            .catch(err => {
-                              reject(err);
-                            });
-                        })
-                        .catch(err => {
-                          reject(err);
-                        });
-                    }
-                  })
-                  .catch(err => {
-                    reject(err);
-                  });
+                return proimiseEstudiantesLaboratorios(
+                  alumno.email,
+                  newCurso.id
+                );
               }
             );
             Promise.all(estudiantesPromises)
@@ -83,18 +53,66 @@ exports.addCurso = infoCurso => {
                 resolve(cursosConstants().createCursoOk);
               })
               .catch(err => {
-                console.log(err);
                 reject(err);
               });
           })
           .catch(err => {
-            console.log(err);
             reject(err);
           });
       })
       .catch(err => {
-        console.log(err);
         reject(cursosConstants().errorCreateCurso);
+      });
+  });
+};
+
+const saveImage = () => {};
+
+const promiseLaboratoriosCursos = (idLab, idCurso) => {
+  return new Promise((resolve, reject) => {
+    laboratoriosCursosService
+      .addLaboratorioCurso(idLab, idCurso)
+      .then(() => {
+        resolve();
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
+};
+
+const proimiseEstudiantesLaboratorios = (emailAlumno, idCurso) => {
+  return new Promise((resolve, reject) => {
+    usuarioServices
+      .getUsuario(emailAlumno)
+      .then(getUsuario => {
+        if (getUsuario.rol === "estudiante") {
+          alumnosCursosService
+            .addAlumnoCurso(getUsuario.email, idCurso)
+            .then(() => {
+              resolve();
+            })
+            .catch(err => {
+              reject(err);
+            });
+        } else {
+          alumnosService
+            .addAlumno(getUsuario.email)
+            .then(() => {
+              alumnosCursosService
+                .addAlumnoCurso(getUsuario.email, idCurso)
+                .then()
+                .catch(err => {
+                  reject(err);
+                });
+            })
+            .catch(err => {
+              reject(err);
+            });
+        }
+      })
+      .catch(err => {
+        reject(err);
       });
   });
 };
