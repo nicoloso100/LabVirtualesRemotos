@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Button, Grid } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import useStyles from "./styles";
 import { getLaboratorios } from "../../services/dashboardServices";
 import { useUserState } from "../../context/UserContext";
-import Widget from "../../components/Widget/Widget";
 import { baseURL } from "../../constants/URLs";
 import { ShowNotification } from "../../utils/utils";
 import { SELECT_ONE_LAB } from "../../constants/notificationConstanst";

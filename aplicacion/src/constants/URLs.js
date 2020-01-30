@@ -48,5 +48,7 @@ export const profesoresURLs = {
   getProfesores: `${APIbaseURL}obtenerProfesores`,
 };
 export const cursosURLs = {
+  getCursos: `${APIbaseURL}obtenerCursos`,
   saveCurso: `${APIbaseURL}crearCurso`,
+  deleteCurso: `${APIbaseURL}eliminarCurso`,
 };

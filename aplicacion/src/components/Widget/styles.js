@@ -12,6 +12,11 @@ export default makeStyles(theme => ({
     height: "150px",
     backgroundSize: "cover",
     backgroundRepeat: "no-repeat",
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+  delIcon: {
+    margin: "5px",
   },
   widgetHeader: {
     padding: theme.spacing(3),
@@ -19,6 +24,15 @@ export default makeStyles(theme => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  widgetHeaderSubtitle: {
+    padding: theme.spacing(3),
+    paddingBottom: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+  },
+  period: {
+    textAlign: "right",
   },
   widgetRoot: {
     boxShadow: theme.customShadows.widget,

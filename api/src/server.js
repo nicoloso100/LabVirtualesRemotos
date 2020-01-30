@@ -11,7 +11,14 @@ const corsConfig = require("./utils/environment").corsConfig;
 const app = express();
 
 app.use(passport.initialize());
-app.use(parser.json());
+app.use(parser.json({ limit: "5mb" }));
+app.use(
+	parser.urlencoded({
+		limit: "5mb",
+		extended: true,
+		parameterLimit: 5000
+	})
+);
 app.use(cors(corsConfig));
 
 app.use("/", express.static("../PaginaPrincipal"));

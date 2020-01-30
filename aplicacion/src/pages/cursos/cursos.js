@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import StepWizard from "react-step-wizard";
 import Stepper from "react-stepper-horizontal";
@@ -17,6 +17,7 @@ import {
   DialogContentText,
   DialogActions,
   Button,
+  Grid,
 } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
 import InformacionCurso from "./InformacionCurso";
@@ -24,7 +25,13 @@ import ImagenCurso from "./ImagenCurso";
 import VincularLaboratorios from "./VincularLaboratorios";
 import VincularEstudiantes from "./VincularEstudiantes";
 import { useUserState } from "../../context/UserContext";
-import { saveCurso } from "../../services/cursosServices";
+import {
+  saveCurso,
+  getCursos,
+  deleteCurso,
+} from "../../services/cursosServices";
+import { baseURL } from "../../constants/URLs";
+import WidgetCursos from "../../components/Widget/WidgetCursos";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,13 +55,30 @@ const Cursos = () => {
   var user = useUserState();
 
   var classes = useStyles();
+  const [cursos, setCursos] = useState(null);
   const [open, setOpen] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState({
+    open: false,
+    idCurso: null,
+  });
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState({
     ...defaultConfig,
     Profesor: user.email,
   });
+
+  useEffect(() => {
+    if (cursos === null) {
+      getCursosAction();
+    }
+  });
+
+  const getCursosAction = () => {
+    getCursos(user.email).then(res => {
+      setCursos(res.data);
+    });
+  };
 
   const openCloseModal = open => {
     setOpen(open);
@@ -76,22 +100,9 @@ const Cursos = () => {
     });
   };
   const modificaImagenCurso = newConfig => {
-    var reader = new FileReader();
-    var fileByteArray = [];
-    reader.readAsArrayBuffer(newConfig);
-    reader.onloadend = evt => {
-      if (evt.target.readyState === FileReader.DONE) {
-        var arrayBuffer = evt.target.result,
-          array = new Uint8Array(arrayBuffer);
-        for (var i = 0; i < array.length; i++) {
-          fileByteArray.push(array[i]);
-        }
-      }
-    };
-    console.log(fileByteArray);
     setConfig({
       ...config,
-      ImagenCurso: fileByteArray,
+      ImagenCurso: newConfig,
     });
   };
   const modificaVincularLaboratorios = newConfig => {
@@ -110,6 +121,11 @@ const Cursos = () => {
 
   const confirmSave = () => {
     saveCurso(config).then(() => {
+      setConfig({
+        ...defaultConfig,
+        Profesor: user.email,
+      });
+      getCursosAction();
       setOpen(false);
     });
     setOpenConfirm(false);
@@ -117,6 +133,17 @@ const Cursos = () => {
 
   const cancelSave = () => {
     setOpenConfirm(false);
+  };
+
+  const confirmDelete = id => {
+    deleteCurso(id).then(() => {
+      getCursosAction();
+      setOpenConfirmDelete({ ...openConfirmDelete, open: false });
+    });
+  };
+
+  const cancelDelete = () => {
+    setOpenConfirmDelete({ ...openConfirmDelete, open: false });
   };
 
   return (
@@ -130,7 +157,6 @@ const Cursos = () => {
         <Dialog
           fullScreen
           open={open}
-          keepMounted
           onClose={() => openCloseModal(false)}
           TransitionComponent={Transition}
         >
@@ -154,8 +180,6 @@ const Cursos = () => {
             TransitionComponent={Transition}
             keepMounted
             onClose={cancelSave}
-            aria-labelledby="alert-dialog-slide-title"
-            aria-describedby="alert-dialog-slide-description"
           >
             <DialogTitle id="alert-dialog-slide-title">
               {"Atención"}
@@ -210,6 +234,62 @@ const Cursos = () => {
           </StepWizard>
         </Dialog>
       </div>
+      <Dialog
+        open={openConfirmDelete.open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={cancelSave}
+      >
+        <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            ¿Está seguro que desea eliminar el curso?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelDelete} color="primary">
+            Cancelar
+          </Button>
+          <Button
+            onClick={() => confirmDelete(openConfirmDelete.idCurso)}
+            color="primary"
+          >
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Grid container spacing={4}>
+        {cursos !== null &&
+          cursos.map(item => {
+            return (
+              <Grid
+                key={item.id}
+                className={classes.gridCard}
+                item
+                lg={3}
+                md={4}
+                sm={6}
+                xs={12}
+              >
+                <WidgetCursos
+                  title={item.nombre}
+                  subtitle={item.descripcion}
+                  period={`${item.year}-${item.periodo}`}
+                  setOnClick={() => console.log("Edit")}
+                  setOnDeleteClick={() =>
+                    setOpenConfirmDelete({
+                      open: true,
+                      idCurso: item.id,
+                    })
+                  }
+                  image={baseURL + item.imagen}
+                  bodyClass={classes.fullHeightBody}
+                  className={classes.cursosCard}
+                />
+              </Grid>
+            );
+          })}
+      </Grid>
     </React.Fragment>
   );
 };

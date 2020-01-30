@@ -128,4 +128,15 @@ export default makeStyles(theme => ({
     maxWidth: "1000px",
     margin: "10px auto 50px auto",
   },
+  cursosCard: {
+    minHeight: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  fullHeightBody: {
+    display: "flex",
+    flexGrow: 1,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
 }));

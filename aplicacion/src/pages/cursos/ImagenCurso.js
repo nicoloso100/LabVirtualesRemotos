@@ -24,9 +24,9 @@ const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
     previousStep();
   };
 
-  const onNextClick = () => {
+  const onNextClick = async () => {
     if (picture.length === 1) {
-      setConfig(picture[0]);
+      setConfig(await toBase64(picture[0]));
       setStep(2);
       nextStep();
     } else if (picture.length > 1) {
@@ -35,6 +35,14 @@ const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
       ShowNotification(IMAGE_NOT_SELECTED);
     }
   };
+
+  const toBase64 = file =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
 
   return (
     <React.Fragment>
