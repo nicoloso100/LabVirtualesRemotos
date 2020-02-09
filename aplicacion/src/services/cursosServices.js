@@ -40,6 +40,24 @@ export const saveCurso = newCurso => {
   });
 };
 
+export const editCurso = newCurso => {
+  showLoading(true);
+  return new Promise(resolve => {
+    axios
+      .post(cursosURLs.editCurso, newCurso)
+      .then(res => {
+        showLoading(false);
+        swal("Ok!", res.data, "success");
+        resolve();
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
+};
+
 export const deleteCurso = idCurso => {
   showLoading(true);
   return new Promise(resolve => {

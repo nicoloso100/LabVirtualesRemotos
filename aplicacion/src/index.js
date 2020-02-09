@@ -5,13 +5,13 @@ import { ThemeProvider } from "@material-ui/styles";
 import { CssBaseline } from "@material-ui/core";
 
 import Themes from "./themes";
-import App from "./components/App";
 import * as serviceWorker from "./serviceWorker";
 import { LayoutProvider } from "./context/LayoutContext";
 import { UserProvider } from "./context/UserContext";
 
 import "react-notifications/lib/notifications.css";
 import { NotificationContainer } from "react-notifications";
+import App from "./App";
 
 ReactDOM.render(
   <LayoutProvider>

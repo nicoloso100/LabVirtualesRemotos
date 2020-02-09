@@ -15,7 +15,12 @@ const ColorButton = withStyles(theme => ({
   },
 }))(Button);
 
-const VincularEstudiantes = ({ setStep, previousStep, setConfig }) => {
+const VincularEstudiantes = ({
+  setStep,
+  previousStep,
+  setConfig,
+  saveAllConfig,
+}) => {
   var classes = useStyles();
   const [estudiantesArray, setEstudiantesArray] = useState([]);
 
@@ -55,6 +60,7 @@ const VincularEstudiantes = ({ setStep, previousStep, setConfig }) => {
 
   const onSaveClick = () => {
     setConfig(estudiantesArray);
+    saveAllConfig();
   };
 
   return (

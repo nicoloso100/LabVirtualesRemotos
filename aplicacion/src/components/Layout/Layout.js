@@ -23,6 +23,7 @@ import {
   ViewList as DirectoresIcon,
   School as ProfesoresIcon,
   AddToQueue as CursosIcon,
+  Edit as EditIcon,
 } from "@material-ui/icons";
 
 // context
@@ -38,6 +39,7 @@ import Peticiones from "../../pages/peticiones/peticiones";
 import Directores from "../../pages/directores/Directores";
 import Profesores from "../../pages/profesores/Profesores";
 import Cursos from "../../pages/cursos/cursos";
+import ModificarCurso from "../../pages/cursos/modificarCurso";
 
 function Layout(props) {
   var classes = useStyles();
@@ -123,10 +125,17 @@ function Layout(props) {
     slider: [
       { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
       { id: 1, label: "Cursos", link: "/app/cursos", icon: <CursosIcon /> },
+      {
+        id: 2,
+        label: "Modificar cursos",
+        link: "/app/modificarCursos",
+        icon: <EditIcon />,
+      },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/cursos", component: Cursos },
+      { path: "/app/modificarCursos", component: ModificarCurso },
     ],
   };
 

@@ -75,6 +75,45 @@ exports.addCurso = infoCurso => {
 	});
 };
 
+exports.editCurso = infoCurso => {
+	return new Promise((resolve, reject) => {
+		Curso.where({ id: infoCurso.Id })
+			.save(
+				{
+					profesor: infoCurso.Profesor,
+					nombre: infoCurso.InformacionCurso.nombre,
+					descripcion: infoCurso.InformacionCurso.descripcion,
+					year: infoCurso.InformacionCurso.year,
+					periodo: infoCurso.InformacionCurso.periodo,
+					imagen: ""
+				},
+				{ method: "update" },
+				{ patch: true }
+			)
+			.then(() => {
+				saveImage(infoCurso.ImagenCurso, infoCurso.Id)
+					.then(path => {
+						Curso.where({ id: infoCurso.Id })
+							.save({ imagen: path }, { method: "update" }, { patch: true })
+							.then(() => {
+								resolve(cursosConstants().editCursoOk);
+							})
+							.catch(err => {
+								reject(cursosConstants().errorImage);
+							});
+					})
+					.catch(err => {
+						console.log(err);
+						reject(err);
+					});
+			})
+			.catch(err => {
+				console.log(err);
+				reject(cursosConstants().errorCreateCurso);
+			});
+	});
+};
+
 const saveImage = (image, id) => {
 	return new Promise((resolve, reject) => {
 		var base64Data = image.replace(/^data:image\/png;base64,/, "");

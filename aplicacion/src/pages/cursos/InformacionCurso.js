@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Title, Message, Today } from "@material-ui/icons";
 import {
   TextField,
@@ -14,9 +14,9 @@ import useStyles from "./styles";
 import { ShowNotification } from "../../utils/utils";
 import { INVALID_FIELD } from "../../constants/notificationConstanst";
 
-const InformacionCurso = ({ setStep, nextStep, setConfig }) => {
+const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
   var classes = useStyles();
-  const year = new Date().getFullYear();
+  const year = new Date().getFullYear() - 5;
   const years = Array.from(new Array(20), (val, index) => index + year);
   const periodos = ["01", "02", "03", "04"];
 
@@ -24,6 +24,13 @@ const InformacionCurso = ({ setStep, nextStep, setConfig }) => {
   const [descripcion, setDescripcion] = useState("");
   const [selectedYear, setSelectedYear] = useState(year);
   const [selectedPeriodo, setSelectedPeriodo] = useState(periodos[0]);
+
+  useEffect(() => {
+    setNombre(config.nombre);
+    setDescripcion(config.descripcion);
+    setSelectedYear(config.year);
+    setSelectedPeriodo(config.periodo);
+  }, [config]);
 
   const onClick = () => {
     if (validate()) {

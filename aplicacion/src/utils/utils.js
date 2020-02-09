@@ -45,3 +45,34 @@ export const createMessageList = (list, message) => {
   div.appendChild(ul);
   return div;
 };
+
+export const getDataUri = url => {
+  return new Promise((resolve, reject) => {
+    var image = new Image();
+    image.setAttribute("crossorigin", "anonymous");
+    image.onload = function() {
+      var canvas = document.createElement("canvas");
+      canvas.width = this.naturalWidth;
+      canvas.height = this.naturalHeight;
+      canvas.getContext("2d").drawImage(this, 0, 0);
+      let uri = canvas.toDataURL("image/png");
+      resolve(uri);
+    };
+    image.onerror = function() {
+      reject("Ha ocurrido un error al cargar la información del curso");
+    };
+    image.src = url;
+  });
+};
+
+export const dataURLtoFile = (dataurl, filename) => {
+  var arr = dataurl.split(","),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new File([u8arr], filename, { type: mime });
+};
