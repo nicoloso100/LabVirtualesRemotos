@@ -47,6 +47,7 @@ router.post("/obtenerProfesores", profesoresController.get_profesores);
 //Cursos
 router.post("/obtenerCursos", cursosController.get_cursos);
 router.post("/crearCurso", cursosController.add_curso);
+router.post("/modificarCurso", cursosController.edit_curso);
 router.post("/eliminarCurso", cursosController.delete_curso);
 
 module.exports = router;

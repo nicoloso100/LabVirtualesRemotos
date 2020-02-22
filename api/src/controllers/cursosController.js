@@ -31,6 +31,20 @@ exports.add_curso = (req, res) => {
 		});
 };
 
+exports.edit_curso = (req, res) => {
+	if (!req.body.Id || !req.body.Profesor || !req.body.ImagenCurso || !req.body.InformacionCurso) {
+		return res.status(500).send(generalConstants().missingFields);
+	}
+	cursosServices
+		.editCurso(req.body)
+		.then(result => {
+			return res.send(result);
+		})
+		.catch(err => {
+			return res.status(500).send(err);
+		});
+};
+
 exports.delete_curso = (req, res) => {
 	if (!req.body.idCurso) {
 		return res.status(500).send(generalConstants().missingFields);

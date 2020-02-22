@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import StepWizard from "react-step-wizard";
 import Stepper from "react-stepper-horizontal";
@@ -27,11 +27,15 @@ import VincularEstudiantes from "./VincularEstudiantes";
 import { useUserState } from "../../context/UserContext";
 import {
   saveCurso,
+  editCurso,
   getCursos,
   deleteCurso,
 } from "../../services/cursosServices";
 import { baseURL } from "../../constants/URLs";
 import WidgetCursos from "../../components/Widget/WidgetCursos";
+import { getDataUri } from "../../utils/utils";
+import showLoading from "../../components/loadingIcon/loading";
+import swal from "sweetalert";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -44,7 +48,7 @@ const defaultConfig = {
     year: "",
     periodo: "",
   },
-  ImagenCurso: {},
+  ImagenCurso: "",
   VincularLaboratorios: [],
   VincularEstudiantes: [],
   Profesor: "",
@@ -54,19 +58,25 @@ const Cursos = () => {
   //global
   var user = useUserState();
 
+  const constructDefaultConfig = useMemo(() => {
+    return {
+      ...defaultConfig,
+      Profesor: user.email,
+    };
+  }, [user.email]);
+
   var classes = useStyles();
   const [cursos, setCursos] = useState(null);
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [openConfirm, setOpenConfirm] = useState(false);
+  const [openEditConfirm, setOpenEditConfirm] = useState(false);
   const [openConfirmDelete, setOpenConfirmDelete] = useState({
     open: false,
     idCurso: null,
   });
   const [step, setStep] = useState(0);
-  const [config, setConfig] = useState({
-    ...defaultConfig,
-    Profesor: user.email,
-  });
+  const [config, setConfig] = useState(constructDefaultConfig);
 
   useEffect(() => {
     if (cursos === null) {
@@ -78,14 +88,6 @@ const Cursos = () => {
     getCursos(user.email).then(res => {
       setCursos(res.data);
     });
-  };
-
-  const openCloseModal = open => {
-    setOpen(open);
-  };
-
-  const onCrearCurso = () => {
-    openCloseModal(true);
   };
 
   const modificaInformacionCurso = newConfig => {
@@ -116,23 +118,24 @@ const Cursos = () => {
       ...config,
       VincularEstudiantes: newConfig,
     });
-    setOpenConfirm(true);
   };
 
   const confirmSave = () => {
     saveCurso(config).then(() => {
-      setConfig({
-        ...defaultConfig,
-        Profesor: user.email,
-      });
+      setConfig(constructDefaultConfig);
       getCursosAction();
       setOpen(false);
     });
     setOpenConfirm(false);
   };
 
-  const cancelSave = () => {
-    setOpenConfirm(false);
+  const confirmEdit = () => {
+    editCurso(config).then(() => {
+      setConfig(constructDefaultConfig);
+      getCursosAction();
+      setOpenEdit(false);
+    });
+    setOpenEditConfirm(false);
   };
 
   const confirmDelete = id => {
@@ -146,18 +149,48 @@ const Cursos = () => {
     setOpenConfirmDelete({ ...openConfirmDelete, open: false });
   };
 
+  const onCreate = () => {
+    setConfig(constructDefaultConfig);
+    setOpen(true);
+  };
+
+  const onEdit = item => {
+    showLoading(true);
+    getDataUri(baseURL + item.imagen)
+      .then(image => {
+        setConfig({
+          ...constructDefaultConfig,
+          Id: item.id,
+          InformacionCurso: {
+            ...constructDefaultConfig.InformacionCurso,
+            nombre: item.nombre,
+            descripcion: item.descripcion,
+            periodo: item.periodo,
+            year: item.year,
+          },
+          ImagenCurso: image,
+        });
+        showLoading(false);
+        setOpenEdit(true);
+      })
+      .catch(err => {
+        showLoading(false);
+        swal("Oops!", err, "warning");
+      });
+  };
+
   return (
     <React.Fragment>
       <PageTitle
         title="Cursos"
         button="Crear curso"
-        onButtonClick={onCrearCurso}
+        onButtonClick={() => onCreate()}
       />
       <div>
         <Dialog
           fullScreen
           open={open}
-          onClose={() => openCloseModal(false)}
+          onClose={() => setOpen(false)}
           TransitionComponent={Transition}
         >
           <AppBar className={classes.appBar}>
@@ -165,7 +198,7 @@ const Cursos = () => {
               <IconButton
                 edge="start"
                 color="inherit"
-                onClick={() => openCloseModal(false)}
+                onClick={() => setOpen(false)}
                 aria-label="close"
               >
                 <CloseIcon />
@@ -179,7 +212,7 @@ const Cursos = () => {
             open={openConfirm}
             TransitionComponent={Transition}
             keepMounted
-            onClose={cancelSave}
+            onClose={() => setOpenConfirm(false)}
           >
             <DialogTitle id="alert-dialog-slide-title">
               {"Atención"}
@@ -190,7 +223,7 @@ const Cursos = () => {
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={cancelSave} color="primary">
+              <Button onClick={() => setOpenConfirm(false)} color="primary">
                 Cancelar
               </Button>
               <Button onClick={confirmSave} color="primary">
@@ -230,15 +263,88 @@ const Cursos = () => {
               setStep={setStep}
               setConfig={modificaVincularEstudiantes}
               config={config.VincularEstudiantes}
+              saveAllConfig={() => setOpenConfirm(true)}
             />
           </StepWizard>
         </Dialog>
       </div>
+
+      <div>
+        <Dialog
+          fullScreen
+          open={openEdit}
+          onClose={() => setOpenEdit(false)}
+          TransitionComponent={Transition}
+        >
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={() => setOpenEdit(false)}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <Typography variant="h6" className={classes.title}>
+                Modificar Curso
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Dialog
+            open={openEditConfirm}
+            TransitionComponent={Transition}
+            keepMounted
+            onClose={() => setOpenEditConfirm(false)}
+          >
+            <DialogTitle id="alert-dialog-slide-title">
+              {"Atención"}
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-slide-description">
+                ¿Está seguro que desea modificar el curso?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpenEditConfirm(false)} color="primary">
+                Cancelar
+              </Button>
+              <Button onClick={confirmEdit} color="primary">
+                Modificar
+              </Button>
+            </DialogActions>
+          </Dialog>
+          <div className={classes.StepperContainer}>
+            <Stepper
+              titleFontSize={12}
+              steps={[
+                { title: "Información básica" },
+                { title: "Seleccionar imágen" },
+              ]}
+              activeStep={step}
+            />
+          </div>
+          <StepWizard>
+            <InformacionCurso
+              setStep={setStep}
+              setConfig={modificaInformacionCurso}
+              config={config.InformacionCurso}
+            />
+            <ImagenCurso
+              setStep={setStep}
+              setConfig={modificaImagenCurso}
+              config={config.ImagenCurso}
+              saveAllConfig={() => setOpenEditConfirm(true)}
+            />
+          </StepWizard>
+        </Dialog>
+      </div>
+
       <Dialog
         open={openConfirmDelete.open}
         TransitionComponent={Transition}
         keepMounted
-        onClose={cancelSave}
+        onClose={cancelDelete}
       >
         <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
         <DialogContent>
@@ -275,7 +381,7 @@ const Cursos = () => {
                   title={item.nombre}
                   subtitle={item.descripcion}
                   period={`${item.year}-${item.periodo}`}
-                  setOnClick={() => console.log("Edit")}
+                  setOnClick={() => onEdit(item)}
                   setOnDeleteClick={() =>
                     setOpenConfirmDelete({
                       open: true,

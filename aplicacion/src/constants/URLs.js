@@ -51,5 +51,6 @@ export const profesoresURLs = {
 export const cursosURLs = {
   getCursos: `${APIbaseURL}obtenerCursos`,
   saveCurso: `${APIbaseURL}crearCurso`,
+  editCurso: `${APIbaseURL}modificarCurso`,
   deleteCurso: `${APIbaseURL}eliminarCurso`,
 };

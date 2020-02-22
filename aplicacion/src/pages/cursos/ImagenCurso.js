@@ -1,21 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageUploader from "react-images-upload";
 import useStyles from "./styles";
-import { ShowNotification } from "../../utils/utils";
+import { ShowNotification, dataURLtoFile } from "../../utils/utils";
 import {
   IMAGE_NOT_SELECTED,
   JUST_SINGLE_IMAGE,
 } from "../../constants/notificationConstanst";
 import { Button, Typography } from "@material-ui/core";
 
-const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
+const ImagenCurso = ({
+  setStep,
+  nextStep,
+  previousStep,
+  setConfig,
+  config,
+  saveAllConfig,
+}) => {
   var classes = useStyles();
   const [picture, setPicture] = useState([]);
+  const [defaultPicture, setDefaultPicture] = useState(undefined);
+
+  useEffect(() => {
+    if (config !== "") {
+      setDefaultPicture([config]);
+      let pictureFIle = dataURLtoFile(config, "Imagen");
+      setPicture([pictureFIle]);
+    }
+  }, [config]);
 
   const onDrop = picture => {
     if (picture.length > 1) {
       ShowNotification(JUST_SINGLE_IMAGE);
     }
+    setDefaultPicture(undefined);
     setPicture(picture);
   };
 
@@ -26,9 +43,14 @@ const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
 
   const onNextClick = async () => {
     if (picture.length === 1) {
-      setConfig(await toBase64(picture[0]));
-      setStep(2);
-      nextStep();
+      let pic = await toBase64(picture[0]);
+      setConfig(pic);
+      if (saveAllConfig) {
+        saveAllConfig();
+      } else {
+        setStep(2);
+        nextStep();
+      }
     } else if (picture.length > 1) {
       ShowNotification(JUST_SINGLE_IMAGE);
     } else {
@@ -66,12 +88,13 @@ const ImagenCurso = ({ setStep, nextStep, previousStep, setConfig }) => {
         </Button>
       </div>
       <ImageUploader
+        defaultImages={defaultPicture}
         withIcon={true}
         withPreview={true}
         buttonText="Buscar..."
         label="Imagen del curso"
-        imgExtension={[".jpg", ".png"]}
-        maxFileSize={5242880}
+        imgExtension={[".jpg", ".png", ".jpeg"]}
+        maxFileSize={4242880}
         onChange={onDrop}
         buttonStyles={{ display: picture.length >= 1 ? "none" : "block" }}
       />

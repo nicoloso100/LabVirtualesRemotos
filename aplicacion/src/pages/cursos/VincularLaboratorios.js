@@ -135,39 +135,41 @@ const VincularLaboratorios = ({
                   style={getListStyle(snapshot.isDraggingOver)}
                   className={classes.LabsDroppable}
                 >
-                  {items.map((item, index) => (
-                    <Draggable
-                      key={item.id}
-                      draggableId={item.id}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className={classes.CardContainer}
-                        >
-                          <div className={classes.card}>
-                            <div
-                              className={classes.widgetImage}
-                              style={{
-                                backgroundImage: `url(${baseURL +
-                                  item.imagen})`,
-                              }}
-                            />
-                            <Typography
-                              className={classes.titleCard}
-                              variant="h5"
-                              color="textSecondary"
-                            >
-                              {item.nombre}
-                            </Typography>
+                  {items.map((item, index) => {
+                    return (
+                      <Draggable
+                        key={item.id}
+                        draggableId={item.id}
+                        index={index}
+                      >
+                        {(provided, snapshot) => (
+                          <div
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            className={classes.CardContainer}
+                          >
+                            <div className={classes.card}>
+                              <div
+                                className={classes.widgetImage}
+                                style={{
+                                  backgroundImage: `url(${baseURL +
+                                    item.imagen})`,
+                                }}
+                              />
+                              <Typography
+                                className={classes.titleCard}
+                                variant="h5"
+                                color="textSecondary"
+                              >
+                                {item.nombre}
+                              </Typography>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  ))}
+                        )}
+                      </Draggable>
+                    );
+                  })}
                   {provided.placeholder}
                 </div>
               )}
