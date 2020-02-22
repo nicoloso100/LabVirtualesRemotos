@@ -9,7 +9,7 @@ exports.seed = function(knex, Promise) {
 					id: 1,
 					nombre: "Experimento de Young",
 					descripcion: "descripcion experimento de young",
-					link: "https://andreslargo.com/GLV/",
+					link: "https://dev.andreslargo.com/young/",
 					tipo: 1,
 					imagen: "/public/images/laboratorios/lab_1.jpg"
 				},
@@ -17,7 +17,7 @@ exports.seed = function(knex, Promise) {
 					id: 2,
 					nombre: "Experimento de Young2",
 					descripcion: "descripcion experimento de young2",
-					link: "https://andreslargo.com/GLV/",
+					link: "https://dev.andreslargo.com/young/",
 					tipo: 1,
 					imagen: "/public/images/laboratorios/lab_1.jpg"
 				}
