@@ -39,6 +39,7 @@ const VincularEstudiantes = ({
   defaultList,
   saveAllConfig,
   onAdd,
+  onRemove,
 }) => {
   var classes = useStyles();
   const [estudiantesArray, setEstudiantesArray] = useState([]);
@@ -95,14 +96,18 @@ const VincularEstudiantes = ({
   };
 
   const delEstudiante = estudianteList => {
-    let editArray = [...estudiantesArray];
-    estudianteList.forEach(element => {
-      let newArray = editArray.filter(obj => {
-        return obj.email !== element;
+    if (onRemove) {
+      onRemove(estudianteList);
+    } else {
+      let editArray = [...estudiantesArray];
+      estudianteList.forEach(element => {
+        let newArray = editArray.filter(obj => {
+          return obj.email !== element;
+        });
+        editArray = newArray;
       });
-      editArray = newArray;
-    });
-    setEstudiantesArray(editArray);
+      setEstudiantesArray(editArray);
+    }
   };
 
   const onSaveClick = () => {

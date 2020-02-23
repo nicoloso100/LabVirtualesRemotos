@@ -1,7 +1,6 @@
-//export const baseURL = "http://54.89.149.33:5000";
 //export const baseURL = "http://192.168.0.34:5000";
-//export const baseURL = "http://192.168.0.19:5000";
-export const baseURL = "http://localhost:5000";
+export const baseURL = "http://192.168.0.19:5000";
+//export const baseURL = "http://localhost:5000";
 //export const baseURL = "http://5.189.175.156:5000";
 
 const APIbaseURL = `${baseURL}/api/`;
@@ -50,7 +49,10 @@ export const profesoresURLs = {
 };
 export const cursosURLs = {
   getCursos: `${APIbaseURL}obtenerCursos`,
+  getCursosEstudiantes: `${APIbaseURL}obtenerCursosConAlumnos`,
   saveCurso: `${APIbaseURL}crearCurso`,
   editCurso: `${APIbaseURL}modificarCurso`,
   deleteCurso: `${APIbaseURL}eliminarCurso`,
+  addEstudianteACurso: `${APIbaseURL}agregarEstudianteACurso`,
+  deleteEstudianteACurso: `${APIbaseURL}eliminarEstudianteACurso`,
 };

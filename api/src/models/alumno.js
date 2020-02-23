@@ -7,8 +7,8 @@ const Alumno = db.Model.extend({
   usuario() {
     return this.belongsTo("Usuario", "email");
   },
-  cursos(){
-    return this.belongsToMany("Curso", "email");
+  cursos() {
+    return this.belongsToMany("Curso");
   }
 });
 

@@ -22,7 +22,7 @@ exports.get_cursosAlumnos = (req, res) => {
     return res.status(500).send(generalConstants().missingFields);
   }
   cursosServices
-    .getCursos(req.body.profesor)
+    .getCursosEstudiantes(req.body.profesor)
     .then(result => {
       return res.send(result);
     })

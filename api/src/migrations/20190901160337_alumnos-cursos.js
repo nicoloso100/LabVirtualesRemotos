@@ -1,15 +1,15 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("alumnos-cursos", t => {
-    t.primary(["email", "curso"]);
-    t.string("email")
+  return knex.schema.createTable("alumnos_cursos", t => {
+    t.primary(["alumno_email", "curso_id"]);
+    t.string("alumno_email")
       .unsigned()
-      .references("alumnos.email")
-    t.bigInteger("curso")
+      .references("alumnos.email");
+    t.bigInteger("curso_id")
       .unsigned()
-      .references("cursos.id")
+      .references("cursos.id");
   });
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable("alumnos-cursos");
+  return knex.schema.dropTable("alumnos_cursos");
 };

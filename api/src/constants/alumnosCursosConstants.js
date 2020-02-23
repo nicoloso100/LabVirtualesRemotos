@@ -2,6 +2,7 @@ const AlumnosCursosConstants = param => {
   return {
     addAlumnCursoError:
       "Ha ocurrido un error al realizar la asociación de los estudiantes, por favor comuníquese con un administrador",
+    addAlumnCursoExists: `El estudiante ${param} ya está inscrito al curso`,
     deleteAlumnCursoOk: `se ha desvinculado correctamente el estudiante ${param} del curso`,
     deleteAlumnCursoNotExist: `El estudiante ${param} no está inscrito al curso`,
     deleteAlumnCursoError:

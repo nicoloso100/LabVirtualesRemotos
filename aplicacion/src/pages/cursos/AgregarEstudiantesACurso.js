@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { makeStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
@@ -6,9 +6,14 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { getCursos } from "../../services/cursosServices";
+import {
+  getCursosEstudiantes,
+  saveCursoEstudiante,
+  deleteCursoEstudiante,
+} from "../../services/cursosServices";
 import { useUserState } from "../../context/UserContext";
 import VincularEstudiantes from "./VincularEstudiantes";
+import { NotificationManager } from "react-notifications";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -23,6 +28,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     color: theme.palette.text.secondary,
   },
+  accordion: {
+    backgroundColor: "#F1F1F1",
+  },
 }));
 
 const AgregarEstudiantesACursos = ({ informacionCurso }) => {
@@ -31,14 +39,34 @@ const AgregarEstudiantesACursos = ({ informacionCurso }) => {
   const [cursos, setCursos] = useState(null);
   const [expanded, setExpanded] = React.useState(false);
 
-  useEffect(() => {
-    getCursos(user.email).then(res => {
+  const getInfoCursos = useCallback(() => {
+    getCursosEstudiantes(user.email).then(res => {
       setCursos(res.data);
     });
   }, [user]);
 
+  useEffect(() => {
+    getInfoCursos();
+  }, [getInfoCursos]);
+
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
+  };
+
+  const addEstudianteCurso = (emailAlumno, idCurso) => {
+    saveCursoEstudiante({
+      emailAlumno,
+      idCurso,
+    }).then(res => {
+      NotificationManager.success(res);
+      getInfoCursos();
+    });
+  };
+
+  const removeEstudianteCurso = (alumnosList, idCurso) => {
+    deleteCursoEstudiante(alumnosList, idCurso).then(res => {
+      getInfoCursos();
+    });
   };
 
   return (
@@ -55,10 +83,10 @@ const AgregarEstudiantesACursos = ({ informacionCurso }) => {
       {cursos !== null && (
         <div className={classes.root}>
           {cursos.map(curso => {
-            console.log(curso);
             return (
               <ExpansionPanel
                 key={curso.id}
+                className={classes.accordion}
                 expanded={expanded === curso.id}
                 onChange={handleChange(curso.id)}
               >
@@ -76,8 +104,11 @@ const AgregarEstudiantesACursos = ({ informacionCurso }) => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <VincularEstudiantes
-                    defaultList={[]}
-                    onAdd={config => console.log(config)}
+                    defaultList={curso.alumnos}
+                    onAdd={alumno => addEstudianteCurso(alumno, curso.id)}
+                    onRemove={alumnosList =>
+                      removeEstudianteCurso(alumnosList, curso.id)
+                    }
                   />
                 </ExpansionPanelDetails>
               </ExpansionPanel>

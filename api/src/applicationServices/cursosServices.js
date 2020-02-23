@@ -26,11 +26,12 @@ exports.getCursosEstudiantes = profesor => {
   return new Promise((resolve, reject) => {
     new Curso()
       .where("profesor", profesor)
-      .fetchAll({withRelated: ["alumnos"]})
+      .fetchAll({ withRelated: ["alumnos"] })
       .then(cursos => {
         resolve(cursos.toJSON());
       })
       .catch(err => {
+        console.log(err);
         reject(cursosConstants().errorCursoList);
       });
   });
@@ -67,7 +68,7 @@ exports.addCurso = infoCurso => {
                   .then(() => {
                     let estudiantesPromises = infoCurso.VincularEstudiantes.map(
                       alumno => {
-                        return addEstudiante(alumno.email, newCurso.id);
+                        return this.addEstudiante(alumno.email, newCurso.id);
                       }
                     );
                     Promise.all(estudiantesPromises)
@@ -75,22 +76,27 @@ exports.addCurso = infoCurso => {
                         resolve(cursosConstants().createCursoOk);
                       })
                       .catch(err => {
+                        console.log(err);
                         reject(err);
                       });
                   })
                   .catch(err => {
+                    console.log(err);
                     reject(err);
                   });
               })
               .catch(err => {
+                console.log(err);
                 reject(cursosConstants().errorImage);
               });
           })
           .catch(err => {
+            console.log(err);
             reject(err);
           });
       })
       .catch(err => {
+        console.log(err);
         reject(cursosConstants().errorCreateCurso);
       });
   });
@@ -174,6 +180,7 @@ exports.addEstudiante = (emailAlumno, idCurso) => {
               resolve(cursosConstants(getUsuario.email).addEstudianteOk);
             })
             .catch(err => {
+              console.log(err);
               reject(err);
             });
         } else {
@@ -186,15 +193,18 @@ exports.addEstudiante = (emailAlumno, idCurso) => {
                   resolve(cursosConstants(getUsuario.email).addEstudianteOk);
                 })
                 .catch(err => {
+                  console.log(err);
                   reject(err);
                 });
             })
             .catch(err => {
+              console.log(err);
               reject(err);
             });
         }
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       });
   });
@@ -235,6 +245,7 @@ exports.deleteEstudiante = (emailAlumno, idCurso) => {
         resolve(res);
       })
       .catch(err => {
+        console.log(err);
         reject(err);
       });
   });
