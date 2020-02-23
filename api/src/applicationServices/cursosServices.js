@@ -22,6 +22,20 @@ exports.getCursos = profesor => {
   });
 };
 
+exports.getCursosEstudiantes = profesor => {
+  return new Promise((resolve, reject) => {
+    new Curso()
+      .where("profesor", profesor)
+      .fetchAll({withRelated: ["alumnos"]})
+      .then(cursos => {
+        resolve(cursos.toJSON());
+      })
+      .catch(err => {
+        reject(cursosConstants().errorCursoList);
+      });
+  });
+};
+
 exports.addCurso = infoCurso => {
   return new Promise((resolve, reject) => {
     const curso = new Curso({

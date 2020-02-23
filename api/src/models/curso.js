@@ -4,6 +4,9 @@ const Curso = db.Model.extend({
   tableName: "cursos",
   profesor() {
     return this.belongsTo("Profesor", "profesor");
+  },
+  alumnos(){
+    return this.belongsToMany("Alumno", "id");
   }
 });
 

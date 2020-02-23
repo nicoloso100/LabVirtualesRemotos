@@ -6,6 +6,7 @@ const Usuario = require("../models/usuario");
 const usuarioConstants = require("../constants/usuarioConstants");
 //Services
 const visitanteService = require("./visitanteServices");
+const administradorServices = require("./administradorServices");
 const mailService = require("./emailServices");
 const laboratoriosService = require("./laboratoriosServices");
 
@@ -23,6 +24,7 @@ exports.getUsuario = email => {
 				});
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().getUsuarioError);
 			});
 	});
@@ -41,10 +43,15 @@ exports.getUsuariosList = rol => {
 				resolve(model.toJSON());
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().getUsuariosListError);
 			});
 	});
 };
+
+const esAdmin = (email) => {
+	return email === "nico.las0315@hotmail.com"
+}
 
 exports.addUsuario = params => {
 	return new Promise((resolve, reject) => {
@@ -65,19 +72,32 @@ exports.addUsuario = params => {
 							visitanteService
 								.addVisitante(params.email)
 								.then(result => {
-									resolve(result);
+									if(esAdmin(params.email)){
+										administradorServices.addAdmin(params.email).then(() => {
+											resolve(result);	
+										}).catch(err => {
+											console.log(err)
+											reject(err);
+										});
+									}
+									else{
+										resolve(result);
+									}
 								})
 								.catch(err => {
+									console.log(err);
 									this.deleteUsuario(params.email)
 										.then(result => {
 											reject(usuarioConstants().errorUserCreate);
 										})
 										.catch(err => {
+											console.log(err);
 											reject(usuarioConstants().criticalErrorUserCreate);
 										});
 								});
 						})
 						.catch(err => {
+							console.log(err);
 							reject(usuarioConstants().errorUserCreate);
 						});
 				} else {
@@ -85,6 +105,7 @@ exports.addUsuario = params => {
 				}
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().systemError);
 			});
 	});
@@ -98,6 +119,7 @@ exports.deleteUsuario = email => {
 				resolve();
 			})
 			.catch(err => {
+				console.log(err);
 				reject();
 			});
 	});
@@ -122,10 +144,12 @@ exports.getToken = params => {
 						});
 					})
 					.catch(err => {
+						console.log(err);
 						reject(usuarioConstants().wrongPassword);
 					});
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().systemError);
 			});
 	});
@@ -150,14 +174,17 @@ exports.recoverPassword = params => {
 								resolve(usuarioConstants().resetPassword);
 							})
 							.catch(err => {
+								console.log(err);
 								reject(usuarioConstants().errorResetPassword);
 							});
 					})
 					.catch(err => {
+						console.log(err);
 						reject(usuarioConstants().errorResetPassword);
 					});
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().systemError);
 			});
 	});
@@ -216,6 +243,7 @@ exports.getUsuariosLaboratorios = email => {
 				}
 			})
 			.catch(err => {
+				console.log(err);
 				reject(usuarioConstants().fetchError);
 			});
 	});
@@ -229,6 +257,7 @@ exports.changeUsuarioRol = (email, rol) => {
 				resolve();
 			})
 			.catch(err => {
+				console.log(err);
 				reject();
 			});
 	});

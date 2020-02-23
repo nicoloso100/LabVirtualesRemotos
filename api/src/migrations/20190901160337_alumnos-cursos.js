@@ -2,13 +2,11 @@ exports.up = function(knex, Promise) {
   return knex.schema.createTable("alumnos-cursos", t => {
     t.primary(["email", "curso"]);
     t.string("email")
-      .references("email")
-      .inTable("alumnos")
-      .notNull();
+      .unsigned()
+      .references("alumnos.email")
     t.bigInteger("curso")
-      .references("id")
-      .inTable("cursos")
-      .notNull();
+      .unsigned()
+      .references("cursos.id")
   });
 };
 
