@@ -1,5 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("cursos-laboratorios", t => {
+    t.primary(["curso", "laboratorio"]);
     t.bigInteger("curso")
       .references("id")
       .inTable("cursos")

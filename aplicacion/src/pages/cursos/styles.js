@@ -124,7 +124,7 @@ export default makeStyles(theme => ({
   },
   EstudiantesContainer: {
     padding: 20,
-    width: "70%",
+    width: "100%",
     maxWidth: "1000px",
     margin: "10px auto 50px auto",
   },

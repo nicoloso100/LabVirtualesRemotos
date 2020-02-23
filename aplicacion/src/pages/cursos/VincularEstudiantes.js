@@ -1,9 +1,26 @@
-import React, { useState, useMemo } from "react";
-import { Typography, Button, withStyles, Grid, Paper } from "@material-ui/core";
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  Typography,
+  Button,
+  withStyles,
+  Grid,
+  Paper,
+  Dialog,
+  Slide,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@material-ui/core";
 import useStyles from "./styles";
 import { green } from "@material-ui/core/colors";
 import UsersAutocomplete from "../../components/UsersAutoComplete/UsersAutocomplete";
 import DataTableComponent from "../../components/DataTable/DataTable";
+import { NotificationManager } from "react-notifications";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const ColorButton = withStyles(theme => ({
   root: {
@@ -19,10 +36,22 @@ const VincularEstudiantes = ({
   setStep,
   previousStep,
   setConfig,
+  defaultList,
   saveAllConfig,
+  onAdd,
 }) => {
   var classes = useStyles();
   const [estudiantesArray, setEstudiantesArray] = useState([]);
+  const [openAddConfirm, setOpenAddConfirm] = useState({
+    open: false,
+    callback: null,
+  });
+
+  useEffect(() => {
+    if (defaultList) {
+      setEstudiantesArray(defaultList);
+    }
+  }, [defaultList]);
 
   const columns = useMemo(
     () => [
@@ -41,10 +70,28 @@ const VincularEstudiantes = ({
   };
 
   const addStudent = (selected, setIsLoading, setValue) => {
-    let list = [...estudiantesArray];
-    list.push({ email: selected });
-    setEstudiantesArray(list);
-    setValue("");
+    if (onAdd) {
+      setOpenAddConfirm({
+        open: true,
+        callback: () => {
+          onAdd(selected);
+          setValue("");
+          setOpenAddConfirm({ open: false, callback: null });
+        },
+      });
+    } else {
+      let exists = estudiantesArray.find(x => x.email === selected);
+      if (exists) {
+        NotificationManager.warning(
+          "El estudiante seleccionado ya está agregado a  la lista",
+        );
+      } else {
+        let list = [...estudiantesArray];
+        list.push({ email: selected });
+        setEstudiantesArray(list);
+        setValue("");
+      }
+    }
   };
 
   const delEstudiante = estudianteList => {
@@ -65,26 +112,54 @@ const VincularEstudiantes = ({
 
   return (
     <React.Fragment>
-      <Typography className={classes.StepTitle}>
-        Vincular estudiantes al curso
-      </Typography>
-      <div className={classes.ImgButtonContainer}>
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={onBackClick}
-        >
-          Regresar
-        </Button>
-        <ColorButton
-          onClick={onSaveClick}
-          variant="contained"
-          color="primary"
-          className={classes.margin}
-        >
-          Guardar
-        </ColorButton>
-      </div>
+      <Dialog
+        open={openAddConfirm.open}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={() => setOpenAddConfirm({ open: false, callback: null })}
+      >
+        <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            ¿Está seguro que desea agregar el nuevo estudiante al curso?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => setOpenAddConfirm({ open: false, callback: null })}
+            color="primary"
+          >
+            Cancelar
+          </Button>
+          <Button onClick={() => openAddConfirm.callback()} color="primary">
+            Agregar
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {saveAllConfig && setStep && previousStep && (
+        <React.Fragment>
+          <Typography className={classes.StepTitle}>
+            Vincular estudiantes al curso
+          </Typography>
+          <div className={classes.ImgButtonContainer}>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={onBackClick}
+            >
+              Regresar
+            </Button>
+            <ColorButton
+              onClick={onSaveClick}
+              variant="contained"
+              color="primary"
+              className={classes.margin}
+            >
+              Guardar
+            </ColorButton>
+          </div>
+        </React.Fragment>
+      )}
       <Paper className={classes.EstudiantesContainer}>
         <UsersAutocomplete event={addStudent} userRol={2} noValidation />
         <br />

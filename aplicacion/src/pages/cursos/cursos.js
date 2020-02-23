@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import StepWizard from "react-step-wizard";
 import Stepper from "react-stepper-horizontal";
@@ -78,17 +78,15 @@ const Cursos = () => {
   const [step, setStep] = useState(0);
   const [config, setConfig] = useState(constructDefaultConfig);
 
-  useEffect(() => {
-    if (cursos === null) {
-      getCursosAction();
-    }
-  });
-
-  const getCursosAction = () => {
+  const getCursosAction = useCallback(() => {
     getCursos(user.email).then(res => {
       setCursos(res.data);
     });
-  };
+  }, [user]);
+
+  useEffect(() => {
+    getCursosAction();
+  }, [getCursosAction]);
 
   const modificaInformacionCurso = newConfig => {
     setConfig({

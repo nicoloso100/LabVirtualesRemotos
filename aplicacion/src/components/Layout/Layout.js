@@ -39,7 +39,7 @@ import Peticiones from "../../pages/peticiones/peticiones";
 import Directores from "../../pages/directores/Directores";
 import Profesores from "../../pages/profesores/Profesores";
 import Cursos from "../../pages/cursos/cursos";
-import ModificarCurso from "../../pages/cursos/modificarCurso";
+import AgregarEstudiantesACursos from "../../pages/cursos/AgregarEstudiantesACurso";
 
 function Layout(props) {
   var classes = useStyles();
@@ -128,14 +128,17 @@ function Layout(props) {
       {
         id: 2,
         label: "Modificar cursos",
-        link: "/app/modificarCursos",
+        link: "/app/AgregarEstudiantesACursos",
         icon: <EditIcon />,
       },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/cursos", component: Cursos },
-      { path: "/app/modificarCursos", component: ModificarCurso },
+      {
+        path: "/app/AgregarEstudiantesACursos",
+        component: AgregarEstudiantesACursos,
+      },
     ],
   };
 
