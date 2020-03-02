@@ -7,12 +7,11 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
-  getCursosEstudiantes,
-  saveCursoEstudiante,
-  deleteCursoEstudiante,
+  getCursosLaboratorios,
+  saveCursoLaboratorios,
 } from "../../services/cursosServices";
 import { useUserState } from "../../context/UserContext";
-import VincularEstudiantes from "./VincularEstudiantes";
+import VincularLaboratorios from "./VincularLaboratorios";
 import { NotificationManager } from "react-notifications";
 
 const useStyles = makeStyles(theme => ({
@@ -31,53 +30,47 @@ const useStyles = makeStyles(theme => ({
   accordion: {
     backgroundColor: "#F1F1F1",
   },
+  body: {
+    flexDirection: "column",
+  },
 }));
 
-const AgregarEstudiantesACursos = () => {
+const AgregarLaboratoriosACurso = () => {
   var user = useUserState();
   const classes = useStyles();
   const [cursos, setCursos] = useState(null);
   const [expanded, setExpanded] = React.useState(false);
 
-  const getInfoCursos = useCallback(() => {
-    getCursosEstudiantes(user.email).then(res => {
+  const getInfoLaboratorios = useCallback(() => {
+    getCursosLaboratorios(user.email).then(res => {
       setCursos(res.data);
     });
   }, [user]);
 
   useEffect(() => {
-    getInfoCursos();
-  }, [getInfoCursos]);
+    getInfoLaboratorios();
+  }, [getInfoLaboratorios]);
 
   const handleChange = panel => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  const addEstudianteCurso = (emailAlumno, idCurso) => {
-    saveCursoEstudiante({
-      emailAlumno,
-      idCurso,
-    }).then(res => {
+  const saveLaboratorios = (labList, idCurso) => {
+    saveCursoLaboratorios(labList, idCurso).then(res => {
       NotificationManager.success(res);
-      getInfoCursos();
-    });
-  };
-
-  const removeEstudianteCurso = (alumnosList, idCurso) => {
-    deleteCursoEstudiante(alumnosList, idCurso).then(res => {
-      getInfoCursos();
+      getInfoLaboratorios();
     });
   };
 
   return (
     <React.Fragment>
       <PageTitle
-        title="Agregar estudiantes a cursos"
+        title="Agregar laboratorios a laboratorios"
         onButtonClick={() => {}}
       />
       <Typography>
-        A continuación despliegue el curso al cual desea modificar los
-        estudiantes inscritos
+        A continuación despliegue el laboratorio al cual desea modificar los
+        laboratorios asociados
       </Typography>
       <br />
       {cursos !== null && (
@@ -102,13 +95,10 @@ const AgregarEstudiantesACursos = () => {
                     {curso.descripcion}
                   </Typography>
                 </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                  <VincularEstudiantes
-                    defaultList={curso.alumnos}
-                    onAdd={alumno => addEstudianteCurso(alumno, curso.id)}
-                    onRemove={alumnosList =>
-                      removeEstudianteCurso(alumnosList, curso.id)
-                    }
+                <ExpansionPanelDetails className={classes.body}>
+                  <VincularLaboratorios
+                    defaultList={curso.laboratorios}
+                    onSave={labList => saveLaboratorios(labList, curso.id)}
                   />
                 </ExpansionPanelDetails>
               </ExpansionPanel>
@@ -120,4 +110,4 @@ const AgregarEstudiantesACursos = () => {
   );
 };
 
-export default AgregarEstudiantesACursos;
+export default AgregarLaboratoriosACurso;

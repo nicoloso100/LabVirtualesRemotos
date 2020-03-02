@@ -76,6 +76,13 @@ export default makeStyles(theme => ({
     maxWidth: "1200px",
     margin: "20px auto 20px auto",
   },
+  ImgButtonSelfContainer: {
+    display: "flex",
+    width: "70%",
+    maxWidth: "1200px",
+    margin: "20px auto 20px auto",
+    justifyContent: "flex-end",
+  },
   LabsContainer: {
     display: "flex",
   },

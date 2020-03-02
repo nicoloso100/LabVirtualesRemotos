@@ -38,7 +38,9 @@ const VincularLaboratorios = ({
   setStep,
   nextStep,
   previousStep,
+  defaultList,
   setConfig,
+  onSave,
 }) => {
   var classes = useStyles();
   var user = useUserState();
@@ -48,10 +50,18 @@ const VincularLaboratorios = ({
   useEffect(() => {
     if (items === null) {
       getLaboratorios(user.email).then(res => {
-        setItems(res.data);
+        let labList = res.data;
+        if (defaultList) {
+          defaultList.forEach(element => {
+            let filteredList = labList.filter(x => x.id !== element.id);
+            labList = filteredList;
+          });
+          setSelected(defaultList);
+        }
+        setItems(labList);
       });
     }
-  });
+  }, [defaultList, items, user.email]);
 
   const onBackClick = () => {
     setStep(1);
@@ -63,6 +73,14 @@ const VincularLaboratorios = ({
       setConfig(selected);
       setStep(3);
       nextStep();
+    } else {
+      ShowNotification(SELECT_ONE_LAB);
+    }
+  };
+
+  const setOnSave = () => {
+    if (selected.length > 0) {
+      onSave(selected);
     } else {
       ShowNotification(SELECT_ONE_LAB);
     }
@@ -106,25 +124,41 @@ const VincularLaboratorios = ({
 
   return (
     <React.Fragment>
-      <Typography className={classes.StepTitle}>
-        Vincular laboratorios al curso
-      </Typography>
-      <div className={classes.ImgButtonContainer}>
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={onBackClick}
-        >
-          Regresar
-        </Button>
-        <Button
-          variant="contained"
-          className={classes.button}
-          onClick={onNextClick}
-        >
-          Continuar
-        </Button>
-      </div>
+      {setStep && nextStep && previousStep ? (
+        <React.Fragment>
+          <Typography className={classes.StepTitle}>
+            Vincular laboratorios al curso
+          </Typography>
+          <div className={classes.ImgButtonContainer}>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={onBackClick}
+            >
+              Regresar
+            </Button>
+            <Button
+              variant="contained"
+              className={classes.button}
+              onClick={onNextClick}
+            >
+              Continuar
+            </Button>
+          </div>
+        </React.Fragment>
+      ) : (
+        <div className={classes.ImgButtonSelfContainer}>
+          <Button
+            color="primary"
+            variant="contained"
+            className={classes.button}
+            onClick={setOnSave}
+          >
+            Guardar
+          </Button>
+        </div>
+      )}
+
       {items !== null && (
         <DragDropContext onDragEnd={onDragEnd}>
           <div className={classes.LabsContainer}>

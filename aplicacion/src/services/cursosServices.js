@@ -40,6 +40,23 @@ export const getCursosEstudiantes = email => {
   });
 };
 
+export const getCursosLaboratorios = email => {
+  showLoading(true);
+  return new Promise(resolve => {
+    axios
+      .post(cursosURLs.getCursosLaboratorios, { profesor: email })
+      .then(res => {
+        showLoading(false);
+        resolve(res);
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
+};
+
 export const saveCurso = newCurso => {
   showLoading(true);
   return new Promise(resolve => {
@@ -140,6 +157,26 @@ export const deleteCursoEstudiante = (alumnosList, idCurso) => {
           icon: "success",
         });
         resolve();
+      })
+      .catch(err => {
+        showLoading(false);
+        var error = err.response;
+        swal("Oops!", error ? error.data : baseError, "warning");
+      });
+  });
+};
+
+export const saveCursoLaboratorios = (labList, idCurso) => {
+  showLoading(true);
+  return new Promise(resolve => {
+    axios
+      .post(cursosURLs.saveLaboratorios, {
+        listaLaboratorios: labList,
+        idCurso: idCurso,
+      })
+      .then(res => {
+        showLoading(false);
+        resolve(res.data);
       })
       .catch(err => {
         showLoading(false);

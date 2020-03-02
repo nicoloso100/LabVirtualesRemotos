@@ -115,4 +115,19 @@ export default makeStyles(theme => ({
     fontSize: "18px !important",
     marginLeft: theme.spacing(1),
   },
+  tabsContainer: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: theme.palette.background.paper,
+  },
+  bannerImage: {
+    height: "150px",
+    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    backgroundPosition: "center",
+  },
+  bannerContainer: {
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+  },
 }));

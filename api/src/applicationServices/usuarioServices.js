@@ -9,6 +9,7 @@ const visitanteService = require("./visitanteServices");
 const administradorServices = require("./administradorServices");
 const mailService = require("./emailServices");
 const laboratoriosService = require("./laboratoriosServices");
+const alumnosService = require("./alumnosService");
 
 exports.getUsuario = email => {
 	return new Promise((resolve, reject) => {
@@ -49,9 +50,9 @@ exports.getUsuariosList = rol => {
 	});
 };
 
-const esAdmin = (email) => {
-	return email === "nico.las0315@hotmail.com"
-}
+const esAdmin = email => {
+	return email === "nico.las0315@hotmail.com";
+};
 
 exports.addUsuario = params => {
 	return new Promise((resolve, reject) => {
@@ -72,15 +73,17 @@ exports.addUsuario = params => {
 							visitanteService
 								.addVisitante(params.email)
 								.then(result => {
-									if(esAdmin(params.email)){
-										administradorServices.addAdmin(params.email).then(() => {
-											resolve(result);	
-										}).catch(err => {
-											console.log(err)
-											reject(err);
-										});
-									}
-									else{
+									if (esAdmin(params.email)) {
+										administradorServices
+											.addAdmin(params.email)
+											.then(() => {
+												resolve(result);
+											})
+											.catch(err => {
+												console.log(err);
+												reject(err);
+											});
+									} else {
 										resolve(result);
 									}
 								})
@@ -201,6 +204,16 @@ exports.getUsuariosLaboratorios = email => {
 					case "1":
 						visitanteService
 							.getVisitanteLaboratorios(json.email)
+							.then(result => {
+								resolve(result);
+							})
+							.catch(err => {
+								reject(err);
+							});
+						break;
+					case "2":
+						alumnosService
+							.getCursosAlumno(json.email)
 							.then(result => {
 								resolve(result);
 							})

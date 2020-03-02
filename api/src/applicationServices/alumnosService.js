@@ -53,3 +53,18 @@ exports.addAlumno = email => {
 			});
 	});
 };
+
+exports.getCursosAlumno = emailAlumno => {
+	return new Promise((resolve, reject) => {
+		new Alumno()
+			.where("email", emailAlumno)
+			.fetch({ withRelated: ["cursos", "cursos.laboratorios"] })
+			.then(cursos => {
+				resolve(cursos.toJSON());
+			})
+			.catch(err => {
+				console.log(err);
+				reject(cursosConstants().errorCursoList);
+			});
+	});
+};

@@ -20,11 +20,7 @@ router.post("/obtenerInstituciones", institucionesController.get_instituciones);
 //Mailer
 router.post("/sendMail", emailController.send_email);
 //Authentication
-router.get(
-  "/getUser",
-  passport.authenticate("jwt", { session: false }),
-  authController.get_user
-);
+router.get("/getUser", passport.authenticate("jwt", { session: false }), authController.get_user);
 router.post("/addUser", authController.add_user);
 router.post("/getToken", authController.get_token);
 router.post("/recoverPassword", authController.recover_password);
@@ -39,18 +35,9 @@ router.post("/obtenerAdmins", adminsController.get_admins);
 router.post("/crearAdmin", adminsController.add_admin);
 router.post("/eliminarAdmin", adminsController.rollback_admin);
 //Peticiones
-router.post(
-  "/consultarPeticiones",
-  peticionesDirectorController.get_peticiones
-);
-router.post(
-  "/rechazaPeticiones",
-  peticionesDirectorController.reject_peticiones
-);
-router.post(
-  "/aceptarPeticiones",
-  peticionesDirectorController.accept_peticiones
-);
+router.post("/consultarPeticiones", peticionesDirectorController.get_peticiones);
+router.post("/rechazaPeticiones", peticionesDirectorController.reject_peticiones);
+router.post("/aceptarPeticiones", peticionesDirectorController.accept_peticiones);
 router.post("/agregarInstitucion", institucionesController.add_instituciones);
 //Directores
 router.post("/obtenerDirectores", directoresController.get_directores);
@@ -60,10 +47,12 @@ router.post("/obtenerProfesores", profesoresController.get_profesores);
 //Cursos
 router.post("/obtenerCursos", cursosController.get_cursos);
 router.post("/obtenerCursosConAlumnos", cursosController.get_cursosAlumnos);
+router.post("/obtenerCursosConLaboratorios", cursosController.get_cursosLaboratorios);
 router.post("/crearCurso", cursosController.add_curso);
 router.post("/modificarCurso", cursosController.edit_curso);
 router.post("/eliminarCurso", cursosController.delete_curso);
 router.post("/agregarEstudianteACurso", cursosController.add_estudiante);
 router.post("/eliminarEstudianteACurso", cursosController.delete_estudiante);
+router.post("/actualizarLaboratorios", cursosController.add_laboratorios);
 
 module.exports = router;

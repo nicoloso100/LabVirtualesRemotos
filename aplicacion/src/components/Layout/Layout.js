@@ -23,7 +23,8 @@ import {
   ViewList as DirectoresIcon,
   School as ProfesoresIcon,
   AddToQueue as CursosIcon,
-  Edit as EditIcon,
+  PersonAdd as AddAlumnoCursoIcon,
+  LibraryAdd as AddLabCursoIcon,
 } from "@material-ui/icons";
 
 // context
@@ -40,6 +41,8 @@ import Directores from "../../pages/directores/Directores";
 import Profesores from "../../pages/profesores/Profesores";
 import Cursos from "../../pages/cursos/cursos";
 import AgregarEstudiantesACursos from "../../pages/cursos/AgregarEstudiantesACurso";
+import AgregarLaboratoriosACurso from "../../pages/cursos/AgregarLaboratoriosACurso";
+import DashboardAlumnos from "../../pages/dashboard/DashboardAlumnos";
 
 function Layout(props) {
   var classes = useStyles();
@@ -127,9 +130,15 @@ function Layout(props) {
       { id: 1, label: "Cursos", link: "/app/cursos", icon: <CursosIcon /> },
       {
         id: 2,
-        label: "Modificar cursos",
+        label: "Cursos alumnos",
         link: "/app/AgregarEstudiantesACursos",
-        icon: <EditIcon />,
+        icon: <AddAlumnoCursoIcon />,
+      },
+      {
+        id: 3,
+        label: "Cursos laboratorios",
+        link: "/app/AgregarLaboratoriosACursos",
+        icon: <AddLabCursoIcon />,
       },
     ],
     route: [
@@ -139,7 +148,18 @@ function Layout(props) {
         path: "/app/AgregarEstudiantesACursos",
         component: AgregarEstudiantesACursos,
       },
+      {
+        path: "/app/AgregarLaboratoriosACursos",
+        component: AgregarLaboratoriosACurso,
+      },
     ],
+  };
+
+  const structureEstudiante = {
+    slider: [
+      { id: 0, label: "Inicio", link: "/app/dashboard", icon: <HomeIcon /> },
+    ],
+    route: [{ path: "/app/dashboard", component: DashboardAlumnos }],
   };
 
   const getStructure = () => {
@@ -152,6 +172,8 @@ function Layout(props) {
         return structureDirector;
       case "profesor":
         return structureProfesor;
+      case "estudiante":
+        return structureEstudiante;
       default:
         return structureBase;
     }
