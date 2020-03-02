@@ -146,8 +146,8 @@ const DataTableComponent = ({
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             {option === 0
-              ? "¿Estás seguro que borrar los registros seleccionados?"
-              : "¿Estás seguro que deseas aceptar los registros seleccionados?"}
+              ? "¿Está seguro que borrar los registros seleccionados?"
+              : "¿Está seguro que deseas aceptar los registros seleccionados?"}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

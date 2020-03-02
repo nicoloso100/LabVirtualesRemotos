@@ -14,7 +14,7 @@ import { withRouter } from "react-router-dom";
 import useStyles from "./styles";
 
 // logo
-import logo from "./logo.svg";
+import logo from "../../assets/images/Logo.png";
 
 // context
 import { useUserDispatch } from "../../context/UserContext";
@@ -216,7 +216,8 @@ function Login(props) {
                 </Typography>
                 <br />
                 <Typography variant="h2" className={classes.subGreeting}>
-                  Ingresa los siguientes datos para crear tu cuenta de visitante
+                  Ingrese los siguientes datos para crear una cuenta de
+                  visitante
                 </Typography>
                 <TextField
                   id="name"

@@ -29,4 +29,13 @@ export default makeStyles(theme => ({
     width: "150px",
     justifyContent: "space-between",
   },
+  imageContainer: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+  },
+  imageComp: {
+    width: "100%",
+    maxWidth: "600px",
+  },
 }));

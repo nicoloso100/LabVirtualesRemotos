@@ -146,7 +146,7 @@ const UsersAutocomplete = ({ event, noValidation, userRol }) => {
         <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {`¿Estás seguro que deseas convertir la cuenta ${selected} en administradora?`}
+            {`¿Está seguro que deseas convertir la cuenta ${selected} en administradora?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

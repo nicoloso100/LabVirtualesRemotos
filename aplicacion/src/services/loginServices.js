@@ -99,7 +99,7 @@ export const sendPasswordRecover = (email, setIsResetLoading, handleClose) => {
     .then(res => {
       setIsResetLoading(false);
       handleClose();
-      swal("Revisa tu correo!", res.data, "success");
+      swal("Revise su correo electrónico!", res.data, "success");
     })
     .catch(err => {
       setIsResetLoading(false);
