@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
+import { ArrowBackIos } from "@material-ui/icons";
 
 // styles
 import useStyles from "./styles";
@@ -34,6 +35,7 @@ import {
   signIn,
   sendPasswordRecover,
 } from "../../services/loginServices";
+import { baseURL } from "../../constants/URLs";
 
 function Login(props) {
   var classes = useStyles();
@@ -122,6 +124,12 @@ function Login(props) {
         isResetLoading={isResetLoading}
       />
       <Grid container className={classes.container}>
+        <div
+          className={classes.returnNavBar}
+          onClick={() => window.open(baseURL)}
+        >
+          <ArrowBackIos />
+        </div>
         <div className={classes.logotypeContainer}>
           <img src={logo} alt="logo" className={classes.logotypeImage} />
           <Typography className={classes.logotypeText}>

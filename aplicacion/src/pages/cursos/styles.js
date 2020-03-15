@@ -86,12 +86,23 @@ export default makeStyles(theme => ({
   LabsContainer: {
     display: "flex",
   },
-  LabsDroppable: {
+  LabsDroppable1: {
     width: "100% !important",
     margin: "8px",
     padding: "20px",
     maxHeight: "80vh",
     overflow: "auto",
+    [theme.breakpoints.only("xs")]: {
+      padding: "5px",
+    },
+  },
+  LabsDroppable2: {
+    width: "100% !important",
+    margin: "8px",
+    padding: "20px",
+    maxHeight: "80vh",
+    overflow: "auto",
+    backgroundColor: "#856666 !important",
     [theme.breakpoints.only("xs")]: {
       padding: "5px",
     },
@@ -145,5 +156,28 @@ export default makeStyles(theme => ({
     flexGrow: 1,
     flexDirection: "column",
     justifyContent: "space-between",
+  },
+  selectLabHelpCont: {
+    display: "flex",
+    flexDirection: "column",
+    paddingTop: 5,
+    paddingBottom: 5,
+  },
+  selectLabHelp: {
+    display: "flex",
+    alignContent: "center",
+    marginLeft: 8,
+  },
+  selectLabHelpColor1: {
+    width: 20,
+    height: 20,
+    backgroundColor: "lightgrey",
+    marginRight: 5,
+  },
+  selectLabHelpColor2: {
+    width: 20,
+    height: 20,
+    backgroundColor: "#856666",
+    marginRight: 5,
   },
 }));

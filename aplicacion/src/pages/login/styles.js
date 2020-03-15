@@ -147,4 +147,19 @@ export default makeStyles(theme => ({
       bottom: theme.spacing(2),
     },
   },
+  returnNavBar: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: 10,
+    color: "white",
+    cursor: "pointer",
+    transitionDuration: "0.2s",
+    "&:hover": {
+      paddingLeft: 5,
+    },
+    [theme.breakpoints.down("md")]: {
+      color: "#851A1A",
+    },
+  },
 }));

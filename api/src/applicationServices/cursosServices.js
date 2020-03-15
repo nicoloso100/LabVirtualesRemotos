@@ -7,6 +7,7 @@ const laboratoriosCursosService = require("../applicationServices/laboratoriosCu
 const alumnosCursosService = require("../applicationServices/alumnosCursosService");
 const usuarioServices = require("../applicationServices/usuarioServices");
 const alumnosService = require("../applicationServices/alumnosService");
+const SplitBase64 = require("../utils/image/splitBase64");
 
 exports.getCursos = profesor => {
 	return new Promise((resolve, reject) => {
@@ -151,8 +152,8 @@ exports.editCurso = infoCurso => {
 
 const saveImage = (image, id) => {
 	return new Promise((resolve, reject) => {
-		var base64Data = image.replace(/^data:image\/png;base64,/, "");
-		let path = `public/images/cursos/curso_${id}.jpg`;
+		var base64Data = SplitBase64(image);
+		let path = `public/cursos/curso_${id}.png`;
 		require("fs").writeFile(path, base64Data, "base64", err => {
 			if (err) {
 				reject(cursosConstants().errorImage);

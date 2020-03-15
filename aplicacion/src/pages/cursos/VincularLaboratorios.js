@@ -159,6 +159,19 @@ const VincularLaboratorios = ({
         </div>
       )}
 
+      <div className={classes.selectLabHelpCont}>
+        <div className={classes.selectLabHelp}>
+          <div className={classes.selectLabHelpColor1} />
+          <Typography className={classes.heading}>
+            Cursos disponibles
+          </Typography>
+        </div>
+        <div className={classes.selectLabHelp}>
+          <div className={classes.selectLabHelpColor2} />
+          <Typography className={classes.heading}>Cursos vinculados</Typography>
+        </div>
+      </div>
+
       {items !== null && (
         <DragDropContext onDragEnd={onDragEnd}>
           <div className={classes.LabsContainer}>
@@ -167,7 +180,7 @@ const VincularLaboratorios = ({
                 <div
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
-                  className={classes.LabsDroppable}
+                  className={classes.LabsDroppable1}
                 >
                   {items.map((item, index) => {
                     return (
@@ -213,7 +226,7 @@ const VincularLaboratorios = ({
                 <div
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
-                  className={classes.LabsDroppable}
+                  className={classes.LabsDroppable2}
                 >
                   {selected.map((item, index) => (
                     <Draggable

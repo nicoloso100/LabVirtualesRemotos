@@ -100,6 +100,7 @@ const DataTableComponent = ({
   data,
   columns,
   selectedEvent,
+  expandableRowsComponent,
   acceptButton = false,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -184,10 +185,12 @@ const DataTableComponent = ({
         subHeader
         subHeaderComponent={<Filter onFilter={value => setFilterText(value)} />}
         selectableRows={selectedEvent ? true : false}
-        selectableRowsComponent={CheckBox}
+        selectableRowsComponent={selectedEvent ? CheckBox : undefined}
         clearSelectedRows={clearRows}
         pagination
         highlightOnHover
+        expandableRows={expandableRowsComponent ? true : false}
+        expandableRowsComponent={expandableRowsComponent}
       />
     </React.Fragment>
   );

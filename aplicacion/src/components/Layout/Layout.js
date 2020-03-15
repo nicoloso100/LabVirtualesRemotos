@@ -21,6 +21,7 @@ import {
   SupervisedUserCircle as AdminsIcon,
   NotificationsActive as PendingIcon,
   ViewList as DirectoresIcon,
+  GroupAdd as AgregarProfesoresIcon,
   School as ProfesoresIcon,
   AddToQueue as CursosIcon,
   PersonAdd as AddAlumnoCursoIcon,
@@ -43,6 +44,8 @@ import Cursos from "../../pages/cursos/cursos";
 import AgregarEstudiantesACursos from "../../pages/cursos/AgregarEstudiantesACurso";
 import AgregarLaboratoriosACurso from "../../pages/cursos/AgregarLaboratoriosACurso";
 import DashboardAlumnos from "../../pages/dashboard/DashboardAlumnos";
+import ProfesoresDetallado from "../../pages/profesores/ProfesoresDetallado";
+import ProfesoresDetalladoPorDirector from "../../pages/profesores/profesoresDetalladoPorDirector";
 
 function Layout(props) {
   var classes = useStyles();
@@ -88,12 +91,19 @@ function Layout(props) {
         link: "/app/directores",
         icon: <DirectoresIcon />,
       },
+      {
+        id: 4,
+        label: "Profesores",
+        link: "/app/profesores",
+        icon: <ProfesoresIcon />,
+      },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/admins", component: Admins },
       { path: "/app/peticiones", component: Peticiones },
       { path: "/app/directores", component: Directores },
+      { path: "/app/profesores", component: ProfesoresDetallado },
     ],
   };
 
@@ -104,12 +114,22 @@ function Layout(props) {
         id: 1,
         label: "Profesores",
         link: "/app/profesores",
+        icon: <AgregarProfesoresIcon />,
+      },
+      {
+        id: 2,
+        label: "Profesores detalle",
+        link: "/app/detallePorDirectorProfesores",
         icon: <ProfesoresIcon />,
       },
     ],
     route: [
       { path: "/app/dashboard", component: Dashboard },
       { path: "/app/profesores", component: Profesores },
+      {
+        path: "/app/detallePorDirectorProfesores",
+        component: ProfesoresDetalladoPorDirector,
+      },
     ],
   };
 

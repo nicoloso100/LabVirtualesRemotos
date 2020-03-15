@@ -44,6 +44,8 @@ router.post("/obtenerDirectores", directoresController.get_directores);
 //Profesores
 router.post("/agregarProfesores", profesoresController.add_profesores);
 router.post("/obtenerProfesores", profesoresController.get_profesores);
+router.post("/obtenerProfesoresDetallado", profesoresController.get_profesoresDetallado);
+router.post("/obtenerProfesoresDetalladoPorDirector", profesoresController.get_profesoresDetalladoPorDirector);
 //Cursos
 router.post("/obtenerCursos", cursosController.get_cursos);
 router.post("/obtenerCursosConAlumnos", cursosController.get_cursosAlumnos);

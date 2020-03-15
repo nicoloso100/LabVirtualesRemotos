@@ -130,4 +130,7 @@ export default makeStyles(theme => ({
   bannerContainer: {
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
   },
+  smallButtonText: {
+    fontSize: "0.75rem",
+  },
 }));

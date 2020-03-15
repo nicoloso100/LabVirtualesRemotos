@@ -31,12 +31,15 @@ exports.getUsuario = email => {
 	});
 };
 
-exports.getUsuariosList = rol => {
+exports.getUsuariosList = (rol, strict) => {
 	return new Promise((resolve, reject) => {
 		Usuario.query(function(qb) {
 			qb.select("email", "name", "surname", "rol");
 			if (rol) {
-				qb.where("rol", rol).orWhere("rol", 1);
+				qb.where("rol", rol);
+			}
+			if (!strict) {
+				qb.orWhere("rol", 1);
 			}
 		})
 			.fetchAll({ withRelated: ["rol"] })

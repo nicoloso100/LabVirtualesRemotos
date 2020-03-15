@@ -66,7 +66,13 @@ const renderInputComponent = inputProps => {
   return <BootstrapInput {...inputProps} />;
 };
 
-const UsersAutocomplete = ({ event, noValidation, userRol }) => {
+const UsersAutocomplete = ({
+  event,
+  noValidation,
+  userRol,
+  strict,
+  customButtonText,
+}) => {
   // local
   var [isLoading, setIsLoading] = useState(false);
   var classes = useStyles();
@@ -93,11 +99,11 @@ const UsersAutocomplete = ({ event, noValidation, userRol }) => {
       setSelected("");
     }
     if (originalList === null) {
-      getUsuarios(userRol).then(res => {
+      getUsuarios(userRol, strict).then(res => {
         setOriginalList(res);
       });
     }
-  }, [originalList, selected, value, userRol]);
+  }, [originalList, selected, value, userRol, strict]);
 
   const onEvent = () => {
     event(selected, setIsLoading, setValue);
@@ -146,7 +152,7 @@ const UsersAutocomplete = ({ event, noValidation, userRol }) => {
         <DialogTitle id="alert-dialog-slide-title">{"Atención"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            {`¿Está seguro que deseas convertir la cuenta ${selected} en administradora?`}
+            {`¿Está seguro que desea cambiar el rol a la cuenta ${selected}?`}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -183,7 +189,7 @@ const UsersAutocomplete = ({ event, noValidation, userRol }) => {
             className={classes.button}
             onClick={() => (noValidation ? onEvent() : setOpenDialog(true))}
           >
-            Agregar
+            {customButtonText ? customButtonText : "Agregar"}
           </Button>
         )}
       </div>

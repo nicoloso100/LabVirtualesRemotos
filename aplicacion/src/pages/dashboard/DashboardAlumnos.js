@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Grid,
   Typography,
   Box,
   AppBar,
@@ -12,13 +11,13 @@ import {
 import useStyles from "./styles";
 
 // components
-import Widget from "../../components/Widget/Widget";
 import PageTitle from "../../components/PageTitle/PageTitle";
 import { useInfoUserState, useUserState } from "../../context/UserContext";
 import { getLaboratorios } from "../../services/dashboardServices";
 import { baseURL } from "../../constants/URLs";
 import { useTheme } from "@material-ui/styles";
 import SwipeableViews from "react-swipeable-views";
+import LaboratorioList from "./laboratorioList";
 
 const TabPanel = ({ children, value, index, ...other }) => {
   return (
@@ -69,11 +68,6 @@ export default function DashboardAlumnos(props) {
       });
     }
   });
-
-  const onClick = link => {
-    var win = window.open(link, "_blank");
-    win.focus();
-  };
 
   return (
     <>
@@ -140,36 +134,22 @@ export default function DashboardAlumnos(props) {
                             color="textSecondary"
                             component="p"
                           >
-                            {curso.profesor}
+                            {curso.profesor.usuario.name}{" "}
+                            {curso.profesor.usuario.surname}
+                          </Typography>
+                          <Typography
+                            variant="body2"
+                            color="textSecondary"
+                            component="p"
+                          >
+                            {curso.profesor.email}
                           </Typography>
                         </CardContent>
                       </CardContent>
                     </div>
 
                     <TabPanel value={value} index={index}>
-                      <Grid container spacing={4}>
-                        {curso.laboratorios.map(item => {
-                          return (
-                            <Grid
-                              key={item.id}
-                              className={classes.gridCard}
-                              item
-                              lg={3}
-                              md={4}
-                              sm={6}
-                              xs={12}
-                            >
-                              <Widget
-                                title={item.nombre}
-                                setOnClick={() => onClick(item.link)}
-                                image={baseURL + item.imagen}
-                                bodyClass={classes.fullHeightBody}
-                                className={classes.card}
-                              ></Widget>
-                            </Grid>
-                          );
-                        })}
-                      </Grid>
+                      <LaboratorioList laboratorios={curso.laboratorios} />
                     </TabPanel>
                   </div>
                 );

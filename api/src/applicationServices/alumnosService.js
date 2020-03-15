@@ -58,7 +58,7 @@ exports.getCursosAlumno = emailAlumno => {
 	return new Promise((resolve, reject) => {
 		new Alumno()
 			.where("email", emailAlumno)
-			.fetch({ withRelated: ["cursos", "cursos.laboratorios"] })
+			.fetch({ withRelated: ["cursos", "cursos.laboratorios", "cursos.profesor.usuario"] })
 			.then(cursos => {
 				resolve(cursos.toJSON());
 			})

@@ -65,6 +65,13 @@ export const getDataUri = url => {
   });
 };
 
+const blobToFile = (theBlob, fileName) => {
+  let b = theBlob;
+  b.lastModifiedDate = new Date();
+  b.name = fileName;
+  return b;
+};
+
 export const dataURLtoFile = (dataurl, filename) => {
   var arr = dataurl.split(","),
     mime = arr[0].match(/:(.*?);/)[1],
@@ -74,5 +81,11 @@ export const dataURLtoFile = (dataurl, filename) => {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], filename, { type: mime });
+  if (!navigator.msSaveBlob) {
+    return new File([u8arr], filename, { type: mime });
+  } else {
+    let file = new Blob([u8arr], { type: mime });
+    file = blobToFile(file, filename);
+    return file;
+  }
 };

@@ -46,6 +46,8 @@ export const DirectoresURLs = {
 export const profesoresURLs = {
   addProfesor: `${APIbaseURL}agregarProfesores`,
   getProfesores: `${APIbaseURL}obtenerProfesores`,
+  getProfesoresDetallado: `${APIbaseURL}obtenerProfesoresDetallado`,
+  getProfesoresDetalladoPorDirector: `${APIbaseURL}obtenerProfesoresDetalladoPorDirector`,
 };
 export const cursosURLs = {
   getCursos: `${APIbaseURL}obtenerCursos`,
