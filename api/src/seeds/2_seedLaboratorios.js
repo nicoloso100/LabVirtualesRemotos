@@ -1,8 +1,8 @@
-exports.seed = function(knex, Promise) {
+exports.seed = function (knex, Promise) {
 	// Deletes ALL existing entries
 	return knex("laboratorios")
 		.del()
-		.then(function() {
+		.then(function () {
 			// Inserts seed entries
 			return knex("laboratorios").insert([
 				{
@@ -13,10 +13,10 @@ exports.seed = function(knex, Promise) {
 					tipo: 1,
 					tema: "Física Óptica y Ondulatoria",
 					objetivo: "Calcular la longitud de onda de la luz de un puntero de diodo láser utilizando una rejilla de difracción",
-					comoRecolectarDatos: "/public/laboratorios/experimentoYoug/guia.pdf",
-					guiaDeMontaje: "/public/laboratorios/experimentoYoug/guia.pdf",
-					guiaPractica: "/public/laboratorios/experimentoYoug/guia.pdf",
-					imagen: "/public/laboratorios/experimentoYoug/imagen.jpg"
+					comoRecolectarDatos: "",
+					guiaDeMontaje: "/public/laboratorios/experimentoYoug/GuiaMontaje.pdf",
+					guiaPractica: "/public/laboratorios/experimentoYoug/GuiaPractica.pdf",
+					imagen: "/public/laboratorios/experimentoYoug/imagen.jpg",
 				},
 				{
 					id: 2,
@@ -27,11 +27,11 @@ exports.seed = function(knex, Promise) {
 					tema: "Física Electricidad y Magnetismo",
 					objetivo:
 						"Determinar experimentalmente las líneas de campo eléctrico para una determinada configuración de electrodos y verificar la dependencia de la forma de las líneas de campo eléctrico.",
-					comoRecolectarDatos: "/public/laboratorios/campoElectrico/guia.pdf",
-					guiaDeMontaje: "/public/laboratorios/campoElectrico/guia.pdf",
-					guiaPractica: "/public/laboratorios/campoElectrico/guia.pdf",
-					imagen: "/public/laboratorios/campoElectrico/imagen.jpg"
-				}
+					comoRecolectarDatos: "",
+					guiaDeMontaje: "",
+					guiaPractica: "",
+					imagen: "/public/laboratorios/campoElectrico/imagen.jpg",
+				},
 			]);
 		});
 };

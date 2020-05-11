@@ -18,6 +18,7 @@ import useStyles from "./styles";
 import Widget from "../../components/Widget/Widget";
 //import { Typography } from "../../components/Wrappers/Wrappers";
 import { baseURL } from "../../constants/URLs";
+import { IsNotEmptyField } from "../../utils/utils";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -30,17 +31,17 @@ const LaboratorioList = ({ laboratorios }) => {
   const [open, setOpen] = useState(false);
   const [selectedInfo, setSelectedInfo] = useState(null);
 
-  const onClick = item => {
+  const onClick = (item) => {
     setSelectedInfo(item);
     setOpen(true);
   };
 
-  const iniciarClick = link => {
+  const iniciarClick = (link) => {
     var win = window.open(link, "_blank");
     win.focus();
   };
 
-  const pdfClick = link => {
+  const pdfClick = (link) => {
     var win = window.open(baseURL + link, "_blank");
     win.focus();
   };
@@ -93,19 +94,23 @@ const LaboratorioList = ({ laboratorios }) => {
                 color="primary"
                 aria-label="small outlined button group"
               >
+                {console.log(selectedInfo.guiaPractica)}
                 <Button
+                  disabled={!IsNotEmptyField(selectedInfo.guiaPractica)}
                   className={classes.smallButtonText}
                   onClick={() => pdfClick(selectedInfo.guiaPractica)}
                 >
                   Guia de práctica
                 </Button>
                 <Button
+                  disabled={!IsNotEmptyField(selectedInfo.guiaDeMontaje)}
                   className={classes.smallButtonText}
                   onClick={() => pdfClick(selectedInfo.guiaDeMontaje)}
                 >
                   Guía de montaje
                 </Button>
                 <Button
+                  disabled={!IsNotEmptyField(selectedInfo.comoRecolectarDatos)}
                   className={classes.smallButtonText}
                   onClick={() => pdfClick(selectedInfo.comoRecolectarDatos)}
                 >
@@ -118,7 +123,7 @@ const LaboratorioList = ({ laboratorios }) => {
       </Dialog>
       <Grid container spacing={4}>
         {laboratorios !== null &&
-          laboratorios.map(item => {
+          laboratorios.map((item) => {
             return (
               <Grid
                 key={item.id}
