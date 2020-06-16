@@ -7,34 +7,40 @@ const emailServices = require("../applicationServices/emailServices");
 const usuarioServices = require("../applicationServices/usuarioServices");
 const directorService = require("../applicationServices/directorService");
 
+/**
+ * Servicio para obtener la lista de peticiones de visitantes para convertirse en directores
+ */
 exports.getPeticiones = () => {
   return new Promise((resolve, reject) => {
     PeticionDirector.fetchAll({
       withRelated: [
         {
-          visitante: function(qb) {
+          visitante: function (qb) {
             qb.select("email");
           },
-          "visitante.usuario": function(qb) {
+          "visitante.usuario": function (qb) {
             qb.select("email", "name", "surname");
-          }
-        }
-      ]
+          },
+        },
+      ],
     })
-      .then(model => {
+      .then((model) => {
         resolve(model.toJSON());
       })
-      .catch(err => {
+      .catch((err) => {
         reject(peticionesDirectorConstants().getAllError);
       });
   });
 };
 
+/**
+ * Servicio para rechazar las peticiones a directores
+ */
 exports.rejectPeticiones = (email, mensaje) => {
   return new Promise((resolve, reject) => {
     usuarioServices
       .getUsuario(email)
-      .then(response => {
+      .then((response) => {
         this.deletePeticionDirector(email)
           .then(() => {
             emailServices
@@ -47,25 +53,28 @@ exports.rejectPeticiones = (email, mensaje) => {
               .then(() => {
                 resolve(peticionesDirectorConstants(email).rejectPetitionOk);
               })
-              .catch(err => {
+              .catch((err) => {
                 reject(err);
               });
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
 };
 
+/**
+ * Servicio para aceptar las peticiones a directores
+ */
 exports.acceptPeticiones = (email, institucion) => {
   return new Promise((resolve, reject) => {
     usuarioServices
       .getUsuario(email)
-      .then(response => {
+      .then((response) => {
         directorService
           .addDirector(email, institucion)
           .then(() => {
@@ -79,68 +88,71 @@ exports.acceptPeticiones = (email, institucion) => {
               .then(() => {
                 resolve(peticionesDirectorConstants(email).acceptPetitionOk);
               })
-              .catch(err => {
+              .catch((err) => {
                 reject(err);
               });
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
 };
 
-exports.addPeticionesDirector = params => {
+/**
+ * Servicio para crear una nueva petición para convertirse en director
+ */
+exports.addPeticionesDirector = (params) => {
   return new Promise((resolve, reject) => {
     PeticionDirector.where("email", params.email)
       .fetch()
-      .then(peticion => {
+      .then((peticion) => {
         if (peticion === null) {
           const peticionDirector = new PeticionDirector({
             email: params.email,
             institucion: params.institucion,
-            mensaje: params.mensaje
+            mensaje: params.mensaje,
           });
           peticionDirector
             .save(null, { method: "insert" })
             .then(() => {
               resolve(peticionesDirectorConstants().OK);
             })
-            .catch(err => {
+            .catch((err) => {
               reject(peticionesDirectorConstants().error);
             });
         } else {
           reject(peticionesDirectorConstants().alreadyExists);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(peticionesDirectorConstants().searchError);
       });
   });
 };
 
-exports.deletePeticionDirector = email => {
+exports.deletePeticionDirector = (email) => {
   return new Promise((resolve, reject) => {
     PeticionDirector.where("email", email)
       .fetch()
-      .then(peticion => {
+      .then((peticion) => {
         if (peticion !== null) {
           peticion
             .destroy()
             .then(() => {
               resolve(peticionesDirectorConstants().deleteOk);
             })
-            .catch(err => {
+            .catch((err) => {
               reject(peticionesDirectorConstants().deleteError);
             });
         } else {
           resolve(peticionesDirectorConstants().noPeticiones);
         }
       })
-      .catch(err => {
+      .catch((err) => {
         reject(peticionesDirectorConstants().searchError);
       });
   });

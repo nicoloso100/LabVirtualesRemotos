@@ -8,37 +8,43 @@ const peticionDirectorServices = require("../applicationServices/peticionDirecto
 const visitanteServices = require("../applicationServices/visitanteServices");
 const usuarioServices = require("../applicationServices/usuarioServices");
 
-exports.getDirectoresList = institucion => {
+/**
+ * Servicio para obtener los directores
+ */
+exports.getDirectoresList = (institucion) => {
   return new Promise((resolve, reject) => {
     new Director()
-      .query(function(qb) {
+      .query(function (qb) {
         institucion && qb.where("institucion", institucion);
       })
       .fetchAll({
         withRelated: [
           "institucion",
           {
-            usuario: function(qb) {
+            usuario: function (qb) {
               qb.select("email", "name", "surname");
-            }
-          }
-        ]
+            },
+          },
+        ],
       })
-      .then(admins => {
+      .then((admins) => {
         resolve(admins.toJSON());
       })
-      .catch(err => {
+      .catch((err) => {
         reject(directorConstants().errorDirectorList);
       });
   });
 };
 
+/**
+ * Servicio para agregar un nuevo director
+ */
 exports.addDirector = (email, institucion) => {
   return new Promise((resolve, reject) => {
     new Usuario()
       .where("email", email)
       .fetch({ withRelated: ["rol"] })
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           reject(directorConstants(email).userNotFound);
         }
@@ -61,30 +67,30 @@ exports.addDirector = (email, institucion) => {
                   .then(() => {
                     const director = new Director({
                       email: email,
-                      institucion: institucion
+                      institucion: institucion,
                     });
                     director
                       .save(null, { method: "insert" })
                       .then(() => {
                         resolve(directorConstants(email).addDirectorOk);
                       })
-                      .catch(err => {
+                      .catch((err) => {
                         reject(directorConstants().directorErrorCreate);
                       });
                   })
-                  .catch(err => {
+                  .catch((err) => {
                     reject(err);
                   });
               })
-              .catch(err => {
+              .catch((err) => {
                 reject(err);
               });
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         reject(directorConstants().getDirectorError);
       });
   });

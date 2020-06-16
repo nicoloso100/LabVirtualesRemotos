@@ -8,33 +8,39 @@ const visitanteService = require("./visitanteServices");
 const usuarioServices = require("./usuarioServices");
 const peticionDirectorServices = require("./peticionDirectorServices");
 
+/**
+ * Servicio para obtener la lista de administradores
+ */
 exports.getAdminsList = () => {
   return new Promise((resolve, reject) => {
     new Administrador()
       .fetchAll({
         withRelated: [
           {
-            usuario: function(qb) {
+            usuario: function (qb) {
               qb.select("email", "name", "surname");
-            }
-          }
-        ]
+            },
+          },
+        ],
       })
-      .then(admins => {
+      .then((admins) => {
         resolve(admins.toJSON());
       })
-      .catch(err => {
+      .catch((err) => {
         reject(administradorConstants().errorAdminList);
       });
   });
 };
 
-exports.addAdmin = email => {
+/**
+ * Servicio para crear un administrador
+ */
+exports.addAdmin = (email) => {
   return new Promise((resolve, reject) => {
     new Usuario()
       .where("email", email)
       .fetch({ withRelated: ["rol"] })
-      .then(result => {
+      .then((result) => {
         if (result === null) {
           reject(administradorConstants(email).userNotFound);
         }
@@ -57,36 +63,39 @@ exports.addAdmin = email => {
                   .changeUsuarioRol(email, 5)
                   .then(() => {
                     const administrador = new Administrador({
-                      email: email
+                      email: email,
                     });
                     administrador
                       .save(null, { method: "insert" })
                       .then(() => {
                         resolve(administradorConstants(email).addAdminOk);
                       })
-                      .catch(err => {
+                      .catch((err) => {
                         reject(administradorConstants().adminErrorCreate);
                       });
                   })
-                  .catch(err => {
+                  .catch((err) => {
                     reject(err);
                   });
               })
-              .catch(err => {
+              .catch((err) => {
                 reject(err);
               });
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         reject(administradorConstants().getAdminError);
       });
   });
 };
 
-exports.rollbackAdmin = email => {
+/**
+ * Servicio para quitar el rol de admin
+ */
+exports.rollbackAdmin = (email) => {
   return new Promise((resolve, reject) => {
     this.deleteAdmin(email)
       .then(() => {
@@ -98,28 +107,31 @@ exports.rollbackAdmin = email => {
               .then(() => {
                 resolve(administradorConstants(email).rollbackSuccess);
               })
-              .catch(err => {
+              .catch((err) => {
                 reject(err);
               });
           })
-          .catch(err => {
+          .catch((err) => {
             reject(err);
           });
       })
-      .catch(err => {
+      .catch((err) => {
         reject(err);
       });
   });
 };
 
-exports.deleteAdmin = email => {
+/**
+ * Servicio para borrar una cuenta de admin
+ */
+exports.deleteAdmin = (email) => {
   return new Promise((resolve, reject) => {
     Administrador.where("email", email)
       .destroy()
       .then(() => {
         resolve();
       })
-      .catch(err => {
+      .catch((err) => {
         reject(administradorConstants().adminNotFound);
       });
   });
