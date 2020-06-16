@@ -18,6 +18,9 @@ import {
   toggleSidebar,
 } from "../../context/LayoutContext";
 
+/**
+ * Componente de Slidebar del menú a la izquierda de la página
+ */
 function Sidebar({ location, structure }) {
   var classes = useStyles();
   var theme = useTheme();
@@ -29,7 +32,7 @@ function Sidebar({ location, structure }) {
   // local
   var [isPermanent, setPermanent] = useState(true);
 
-  useEffect(function() {
+  useEffect(function () {
     window.addEventListener("resize", handleWindowWidthChange);
     handleWindowWidthChange();
     return function cleanup() {
@@ -63,7 +66,7 @@ function Sidebar({ location, structure }) {
         </IconButton>
       </div>
       <List className={classes.sidebarList}>
-        {structure.map(link => (
+        {structure.map((link) => (
           <SidebarLink
             key={link.id}
             location={location}

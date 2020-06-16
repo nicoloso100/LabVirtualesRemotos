@@ -13,11 +13,11 @@ const app = express();
 app.use(passport.initialize());
 app.use(parser.json({ limit: "5mb" }));
 app.use(
-	parser.urlencoded({
-		limit: "5mb",
-		extended: true,
-		parameterLimit: 5000
-	})
+  parser.urlencoded({
+    limit: "5mb",
+    extended: true,
+    parameterLimit: 5000,
+  })
 );
 app.use(cors(corsConfig));
 
@@ -28,8 +28,8 @@ app.use("/app", express.static("../aplicacion/build/"));
 
 app.use("/api", routes);
 
-var server = app.listen(5000);
+var server = app.listen(25841);
 
 server.timeout = 10000;
 
-console.log(`Server is listening at :${5000}`);
+console.log(`Server is listening at :${25841}`);

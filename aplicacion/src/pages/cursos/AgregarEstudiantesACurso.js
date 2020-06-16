@@ -15,7 +15,7 @@ import { useUserState } from "../../context/UserContext";
 import VincularEstudiantes from "./VincularEstudiantes";
 import { NotificationManager } from "react-notifications";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
@@ -33,6 +33,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * Sección para agregar estudiantes a los diferentes cursos que tenga creado el docente
+ */
+
 const AgregarEstudiantesACursos = () => {
   var user = useUserState();
   const classes = useStyles();
@@ -40,7 +44,7 @@ const AgregarEstudiantesACursos = () => {
   const [expanded, setExpanded] = React.useState(false);
 
   const getInfoCursos = useCallback(() => {
-    getCursosEstudiantes(user.email).then(res => {
+    getCursosEstudiantes(user.email).then((res) => {
       setCursos(res.data);
     });
   }, [user]);
@@ -49,7 +53,7 @@ const AgregarEstudiantesACursos = () => {
     getInfoCursos();
   }, [getInfoCursos]);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
@@ -57,14 +61,14 @@ const AgregarEstudiantesACursos = () => {
     saveCursoEstudiante({
       emailAlumno,
       idCurso,
-    }).then(res => {
+    }).then((res) => {
       NotificationManager.success(res);
       getInfoCursos();
     });
   };
 
   const removeEstudianteCurso = (alumnosList, idCurso) => {
-    deleteCursoEstudiante(alumnosList, idCurso).then(res => {
+    deleteCursoEstudiante(alumnosList, idCurso).then((res) => {
       getInfoCursos();
     });
   };
@@ -82,7 +86,7 @@ const AgregarEstudiantesACursos = () => {
       <br />
       {cursos !== null && (
         <div className={classes.root}>
-          {cursos.map(curso => {
+          {cursos.map((curso) => {
             return (
               <ExpansionPanel
                 key={curso.id}
@@ -105,8 +109,8 @@ const AgregarEstudiantesACursos = () => {
                 <ExpansionPanelDetails>
                   <VincularEstudiantes
                     defaultList={curso.alumnos}
-                    onAdd={alumno => addEstudianteCurso(alumno, curso.id)}
-                    onRemove={alumnosList =>
+                    onAdd={(alumno) => addEstudianteCurso(alumno, curso.id)}
+                    onRemove={(alumnosList) =>
                       removeEstudianteCurso(alumnosList, curso.id)
                     }
                   />

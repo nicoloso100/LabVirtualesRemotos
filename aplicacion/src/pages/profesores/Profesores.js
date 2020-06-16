@@ -9,6 +9,9 @@ import { ShowNotification } from "../../utils/utils";
 import DataTableComponent from "../../components/DataTable/DataTable";
 import { useUserState } from "../../context/UserContext";
 
+/**
+ * Página para listar, agregar o eliminar profesores, solo se accede desde el rol de director
+ */
 const Profesores = () => {
   var { email } = useUserState();
   const [profesoresArray, setProfesoresArray] = useState(null);
@@ -36,7 +39,7 @@ const Profesores = () => {
   );
 
   const fillProfesores = useCallback(() => {
-    getProfesores(email).then(res => {
+    getProfesores(email).then((res) => {
       setProfesoresArray(res);
     });
   }, [email]);
@@ -48,14 +51,14 @@ const Profesores = () => {
   }, [fillProfesores, profesoresArray]);
 
   const createProfesor = (selected, setIsLoading, setValue) => {
-    addProfesor(selected, email, setIsLoading).then(response => {
+    addProfesor(selected, email, setIsLoading).then((response) => {
       ShowNotification({ type: "success", message: response });
       setValue("");
       fillProfesores();
     });
   };
 
-  const delProfesor = adminList => {
+  const delProfesor = (adminList) => {
     console.log(adminList);
   };
 

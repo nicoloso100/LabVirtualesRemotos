@@ -13,7 +13,10 @@ const spinner = document.createElement("div");
 spinner.className = "loaderSpinner";
 container.appendChild(spinner);
 
-const showLoading = loading => {
+/**
+ * Pantalla de carga, esta pantalla ocupa todo el ancho y alto impidiendo que el usuario interactúe con la pantalla
+ */
+const showLoading = (loading) => {
   var imported = document.querySelector(".loader");
   if (loading && !document.body.contains(imported)) {
     body.appendChild(container);

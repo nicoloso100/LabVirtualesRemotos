@@ -11,7 +11,7 @@ import useStyles from "./styles";
 import { School as InstitucionIcon } from "@material-ui/icons";
 import { InputBase, withStyles } from "@material-ui/core";
 
-const BootstrapInput = withStyles(theme => ({
+const BootstrapInput = withStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "300px",
@@ -47,10 +47,13 @@ const BootstrapInput = withStyles(theme => ({
   },
 }))(InputBase);
 
-const renderInputComponent = inputProps => {
+const renderInputComponent = (inputProps) => {
   return <BootstrapInput {...inputProps} />;
 };
 
+/**
+ * Input de autocompletado para las instituciones, despliega una lista para seleccionar instituciones registradas
+ */
 const InstitucionesAutocomplete = ({
   list,
   event,
@@ -66,7 +69,7 @@ const InstitucionesAutocomplete = ({
   const [suggestions, setSuggestions] = useState([]);
   const [originalList, setOriginalList] = useState(null);
 
-  const getSuggestions = value => {
+  const getSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
@@ -78,7 +81,7 @@ const InstitucionesAutocomplete = ({
   };
 
   const getSuggestionValue = useCallback(
-    suggestion => {
+    (suggestion) => {
       event && event(suggestion.id);
       setSelected(suggestion.nombre);
       return suggestion.nombre;
@@ -91,7 +94,7 @@ const InstitucionesAutocomplete = ({
   //   return suggestion.nombre;
   // };
 
-  const renderSuggestion = suggestion => <div>{suggestion.nombre}</div>;
+  const renderSuggestion = (suggestion) => <div>{suggestion.nombre}</div>;
 
   const onChange = (event, { newValue }) => {
     onChangeEvent && onChangeEvent(newValue);

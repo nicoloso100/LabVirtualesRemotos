@@ -41,6 +41,10 @@ const typesIcons = {
   disc: <DiscIcon />,
 };
 
+/**
+ * Complemento del Header para notificaciones
+ */
+
 export default function Notification({ variant, ...props }) {
   var classes = useStyles();
   var theme = useTheme();

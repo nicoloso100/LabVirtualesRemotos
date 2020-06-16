@@ -6,6 +6,9 @@ import { useInfoUserState, useUserState } from "../../context/UserContext";
 import { getLaboratorios } from "../../services/dashboardServices";
 import LaboratorioList from "./laboratorioList";
 
+/**
+ * Página inicial donde se muestran los laboratorios que puede acceder, esta se utiliza en todos los roles menos estudiantes
+ */
 export default function Dashboard(props) {
   //global
   var user = useUserState();
@@ -16,7 +19,7 @@ export default function Dashboard(props) {
 
   useEffect(() => {
     if (laboratorios === null) {
-      getLaboratorios(user.email).then(res => {
+      getLaboratorios(user.email).then((res) => {
         setLaboratorios(res.data);
       });
     }

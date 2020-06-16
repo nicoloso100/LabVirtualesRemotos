@@ -12,6 +12,9 @@ import {
 import { ShowNotification } from "../../utils/utils";
 import DataTableComponent from "../../components/DataTable/DataTable";
 
+/**
+ * Página para mostrar la lista de administradores, vincularlos y desvincularlos
+ */
 const Admins = () => {
   const [adminArray, setAdminArray] = useState(null);
 
@@ -38,7 +41,7 @@ const Admins = () => {
   );
 
   const fillAdmins = () => {
-    getAdmins().then(res => {
+    getAdmins().then((res) => {
       setAdminArray(res);
     });
   };
@@ -50,14 +53,14 @@ const Admins = () => {
   }, [adminArray]);
 
   const createAdmin = (selected, setIsLoading, setValue) => {
-    addAdmin(selected, setIsLoading).then(response => {
+    addAdmin(selected, setIsLoading).then((response) => {
       ShowNotification({ type: "success", message: response });
       setValue("");
       fillAdmins();
     });
   };
 
-  const delAdmin = adminList => {
+  const delAdmin = (adminList) => {
     deleteAdmin(adminList).then(() => {
       fillAdmins();
     });

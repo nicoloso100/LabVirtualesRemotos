@@ -29,7 +29,7 @@ import {
 import { saveInstitucion } from "../../services/peticionesServices";
 
 const RemoveMessage = ({ index, item, itemList, setItem, classes }) => {
-  const onItemChanged = text => {
+  const onItemChanged = (text) => {
     let setItemList = [...itemList];
     setItemList[index] = { ...item, mensaje: text };
     setItem(setItemList);
@@ -44,7 +44,7 @@ const RemoveMessage = ({ index, item, itemList, setItem, classes }) => {
           label="Mensaje..."
           multiline
           value={item.mensaje}
-          onChange={arg => onItemChanged(arg.target.value)}
+          onChange={(arg) => onItemChanged(arg.target.value)}
           className={classes.ListField}
           margin="normal"
           variant="filled"
@@ -63,17 +63,17 @@ const AddMessage = ({
   index,
   setItem,
 }) => {
-  const getInstitucion = email => {
-    return data.find(item => item.email === email);
+  const getInstitucion = (email) => {
+    return data.find((item) => item.email === email);
   };
 
-  const getDefaultInstitucionValue = institucion => {
+  const getDefaultInstitucionValue = (institucion) => {
     return instituciones
-      ? instituciones.find(item => item.nombre === institucion)
+      ? instituciones.find((item) => item.nombre === institucion)
       : undefined;
   };
 
-  const getSelected = selected => {
+  const getSelected = (selected) => {
     let setItemList = [...itemList];
     setItemList[index] = { ...item, institucion: selected };
     setItem(setItemList);
@@ -96,9 +96,9 @@ const AddMessage = ({
   );
 };
 
-const constructList = params => {
+const constructList = (params) => {
   let constList = [];
-  params.list.forEach(element => {
+  params.list.forEach((element) => {
     if (params.option === 0) {
       constList.push({ email: element, mensaje: "" });
     } else {
@@ -108,6 +108,9 @@ const constructList = params => {
   return constList;
 };
 
+/**
+ * Modal para aceptar o rechazar peticiones para promover cuentas a directoras, este componente se utiliza en el panel de administradores
+ */
 const PeticionesModals = ({ data, params, setOpen, request }) => {
   var classes = useStyles();
   const [list, setList] = useState(null);
@@ -123,7 +126,7 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
       setList(null);
     }
     if (instituciones === null) {
-      getInstituciones().then(res => {
+      getInstituciones().then((res) => {
         setInstituciones(res);
       });
     }
@@ -131,7 +134,7 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
 
   const postSaveInstitucion = () => {
     if (newInstValue !== "") {
-      saveInstitucion(newInstValue, setIsLoading).then(res => {
+      saveInstitucion(newInstValue, setIsLoading).then((res) => {
         ShowNotification(INSTITUCION_ADD_SUCCESS);
         setAddInstitucion(false);
         setInstituciones(null);
@@ -145,13 +148,13 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
   const validateExtraInfo = (list, option) => {
     let correct = true;
     if (option === 0) {
-      list.forEach(element => {
+      list.forEach((element) => {
         if (element.mensaje === "") {
           correct = false;
         }
       });
     } else {
-      list.forEach(element => {
+      list.forEach((element) => {
         if (element.institucion === null) {
           correct = false;
         }
@@ -178,7 +181,7 @@ const PeticionesModals = ({ data, params, setOpen, request }) => {
             label="Nombre de la institución"
             fullWidth
             value={newInstValue}
-            onChange={arg => setNewInstValue(arg.target.value)}
+            onChange={(arg) => setNewInstValue(arg.target.value)}
           />
         </DialogContent>
         <DialogActions>

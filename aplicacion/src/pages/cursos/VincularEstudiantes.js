@@ -22,7 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ColorButton = withStyles(theme => ({
+const ColorButton = withStyles((theme) => ({
   root: {
     color: "white",
     backgroundColor: green[500],
@@ -31,6 +31,10 @@ const ColorButton = withStyles(theme => ({
     },
   },
 }))(Button);
+
+/**
+ * Sección donde se vinculan estudiantes al curso que se está creando
+ */
 
 const VincularEstudiantes = ({
   setStep,
@@ -81,7 +85,7 @@ const VincularEstudiantes = ({
         },
       });
     } else {
-      let exists = estudiantesArray.find(x => x.email === selected);
+      let exists = estudiantesArray.find((x) => x.email === selected);
       if (exists) {
         NotificationManager.warning(
           "El estudiante seleccionado ya está agregado a  la lista",
@@ -95,13 +99,13 @@ const VincularEstudiantes = ({
     }
   };
 
-  const delEstudiante = estudianteList => {
+  const delEstudiante = (estudianteList) => {
     if (onRemove) {
       onRemove(estudianteList);
     } else {
       let editArray = [...estudiantesArray];
-      estudianteList.forEach(element => {
-        let newArray = editArray.filter(obj => {
+      estudianteList.forEach((element) => {
+        let newArray = editArray.filter((obj) => {
           return obj.email !== element;
         });
         editArray = newArray;

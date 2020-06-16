@@ -37,6 +37,9 @@ import {
 } from "../../services/loginServices";
 import { baseURL } from "../../constants/URLs";
 
+/**
+ * Página de login
+ */
 function Login(props) {
   var classes = useStyles();
 
@@ -107,7 +110,7 @@ function Login(props) {
     }
   };
 
-  const handleSendPassword = email => {
+  const handleSendPassword = (email) => {
     if (IsValidEmail(email)) {
       sendPasswordRecover(email, setIsResetLoading, handleClose);
     } else {
@@ -166,7 +169,7 @@ function Login(props) {
                     },
                   }}
                   value={emailValue}
-                  onChange={e => setEmailValue(e.target.value)}
+                  onChange={(e) => setEmailValue(e.target.value)}
                   margin="normal"
                   placeholder="Correo electrónico"
                   type="email"
@@ -181,7 +184,7 @@ function Login(props) {
                     },
                   }}
                   value={passwordValue}
-                  onChange={e => setPasswordValue(e.target.value)}
+                  onChange={(e) => setPasswordValue(e.target.value)}
                   margin="normal"
                   placeholder="Contraseña"
                   type="password"
@@ -236,7 +239,7 @@ function Login(props) {
                     },
                   }}
                   value={nameValue}
-                  onChange={e => setNameValue(e.target.value)}
+                  onChange={(e) => setNameValue(e.target.value)}
                   margin="normal"
                   placeholder="Nombre"
                   type="text"
@@ -251,7 +254,7 @@ function Login(props) {
                     },
                   }}
                   value={surnameValue}
-                  onChange={e => setSurnameValue(e.target.value)}
+                  onChange={(e) => setSurnameValue(e.target.value)}
                   margin="normal"
                   placeholder="Apellidos"
                   type="text"
@@ -266,7 +269,7 @@ function Login(props) {
                     },
                   }}
                   value={emailValue}
-                  onChange={e => setEmailValue(e.target.value)}
+                  onChange={(e) => setEmailValue(e.target.value)}
                   margin="normal"
                   placeholder="Correo Electrónico"
                   type="email"
@@ -281,7 +284,7 @@ function Login(props) {
                     },
                   }}
                   value={passwordValue}
-                  onChange={e => setPasswordValue(e.target.value)}
+                  onChange={(e) => setPasswordValue(e.target.value)}
                   margin="normal"
                   placeholder="Contraseña"
                   type="password"

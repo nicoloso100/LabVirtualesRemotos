@@ -47,6 +47,10 @@ import DashboardAlumnos from "../../pages/dashboard/DashboardAlumnos";
 import ProfesoresDetallado from "../../pages/profesores/ProfesoresDetallado";
 import ProfesoresDetalladoPorDirector from "../../pages/profesores/profesoresDetalladoPorDirector";
 
+/**
+ * Componente base que construye el menú dependiendo del rol ingresado
+ */
+
 function Layout(props) {
   var classes = useStyles();
 

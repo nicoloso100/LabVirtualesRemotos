@@ -27,7 +27,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const BootstrapInput = withStyles(theme => ({
+const BootstrapInput = withStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "300px",
@@ -62,10 +62,13 @@ const BootstrapInput = withStyles(theme => ({
   },
 }))(InputBase);
 
-const renderInputComponent = inputProps => {
+const renderInputComponent = (inputProps) => {
   return <BootstrapInput {...inputProps} />;
 };
 
+/**
+ * Input para autocompletar los usuarios por roles
+ */
 const UsersAutocomplete = ({
   event,
   noValidation,
@@ -83,7 +86,7 @@ const UsersAutocomplete = ({
   const [suggestions, setSuggestions] = useState([]);
   const [originalList, setOriginalList] = useState(null);
 
-  const getSuggestions = value => {
+  const getSuggestions = (value) => {
     const inputValue = value.trim().toLowerCase();
     const inputLength = inputValue.length;
 
@@ -99,7 +102,7 @@ const UsersAutocomplete = ({
       setSelected("");
     }
     if (originalList === null) {
-      getUsuarios(userRol, strict).then(res => {
+      getUsuarios(userRol, strict).then((res) => {
         setOriginalList(res);
       });
     }
@@ -110,12 +113,12 @@ const UsersAutocomplete = ({
     setOpenDialog(false);
   };
 
-  const getSuggestionValue = suggestion => {
+  const getSuggestionValue = (suggestion) => {
     setSelected(suggestion.email);
     return suggestion.email;
   };
 
-  const renderSuggestion = suggestion => (
+  const renderSuggestion = (suggestion) => (
     <div>
       {suggestion.email} ({suggestion.name} {suggestion.surname})
     </div>

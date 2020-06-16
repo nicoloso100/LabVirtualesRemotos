@@ -54,6 +54,9 @@ const defaultConfig = {
   Profesor: "",
 };
 
+/**
+ * Página principal de los cursos, en esta se crean, modifican o eliminan cursos, se accede desde el panel del docente
+ */
 const Cursos = () => {
   //global
   var user = useUserState();
@@ -79,7 +82,7 @@ const Cursos = () => {
   const [config, setConfig] = useState(constructDefaultConfig);
 
   const getCursosAction = useCallback(() => {
-    getCursos(user.email).then(res => {
+    getCursos(user.email).then((res) => {
       setCursos(res.data);
     });
   }, [user]);
@@ -88,7 +91,7 @@ const Cursos = () => {
     getCursosAction();
   }, [getCursosAction]);
 
-  const modificaInformacionCurso = newConfig => {
+  const modificaInformacionCurso = (newConfig) => {
     setConfig({
       ...config,
       InformacionCurso: {
@@ -99,19 +102,19 @@ const Cursos = () => {
       },
     });
   };
-  const modificaImagenCurso = newConfig => {
+  const modificaImagenCurso = (newConfig) => {
     setConfig({
       ...config,
       ImagenCurso: newConfig,
     });
   };
-  const modificaVincularLaboratorios = newConfig => {
+  const modificaVincularLaboratorios = (newConfig) => {
     setConfig({
       ...config,
       VincularLaboratorios: newConfig,
     });
   };
-  const modificaVincularEstudiantes = newConfig => {
+  const modificaVincularEstudiantes = (newConfig) => {
     setConfig({
       ...config,
       VincularEstudiantes: newConfig,
@@ -136,7 +139,7 @@ const Cursos = () => {
     setOpenEditConfirm(false);
   };
 
-  const confirmDelete = id => {
+  const confirmDelete = (id) => {
     deleteCurso(id).then(() => {
       getCursosAction();
       setOpenConfirmDelete({ ...openConfirmDelete, open: false });
@@ -152,10 +155,10 @@ const Cursos = () => {
     setOpen(true);
   };
 
-  const onEdit = item => {
+  const onEdit = (item) => {
     showLoading(true);
     getDataUri(baseURL + item.imagen)
-      .then(image => {
+      .then((image) => {
         setConfig({
           ...constructDefaultConfig,
           Id: item.id,
@@ -171,7 +174,7 @@ const Cursos = () => {
         showLoading(false);
         setOpenEdit(true);
       })
-      .catch(err => {
+      .catch((err) => {
         showLoading(false);
         swal("Oops!", err, "warning");
       });
@@ -364,7 +367,7 @@ const Cursos = () => {
       </Dialog>
       <Grid container spacing={4}>
         {cursos !== null &&
-          cursos.map(item => {
+          cursos.map((item) => {
             return (
               <Grid
                 key={item.id}

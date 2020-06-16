@@ -11,6 +11,9 @@ import Login from "./pages/login/Login";
 // context
 import { useUserState } from "./context/UserContext";
 
+/**
+ * Función principal de la app
+ */
 export default function App() {
   // global
   var { isAuthenticated } = useUserState();
@@ -37,7 +40,7 @@ export default function App() {
     return (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           isAuthenticated ? (
             React.createElement(component, props)
           ) : (
@@ -59,7 +62,7 @@ export default function App() {
     return (
       <Route
         {...rest}
-        render={props =>
+        render={(props) =>
           isAuthenticated ? (
             <Redirect
               to={{

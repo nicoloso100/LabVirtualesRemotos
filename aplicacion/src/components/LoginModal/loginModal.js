@@ -8,7 +8,10 @@ import { TextField, Button, CircularProgress } from "@material-ui/core";
 // styles
 import useStyles from "./styles";
 
-const LoginModal = props => {
+/**
+ * Modal para recuperación de contraseña en la pantalla de login
+ */
+const LoginModal = (props) => {
   const classes = useStyles();
 
   var [email, setLoginValue] = useState("");
@@ -45,7 +48,7 @@ const LoginModal = props => {
               },
             }}
             value={email}
-            onChange={e => setLoginValue(e.target.value)}
+            onChange={(e) => setLoginValue(e.target.value)}
             margin="normal"
             placeholder="Usuario o correo electrónico"
             type="email"

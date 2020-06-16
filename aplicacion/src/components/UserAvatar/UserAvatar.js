@@ -7,13 +7,16 @@ import useStyles from "./styles";
 // components
 import { Typography } from "../Wrappers/Wrappers";
 
+/**
+ * Componente para insertar el avatar o la imágen de perfil del usuario
+ */
 export default function UserAvatar({ color = "primary", ...props }) {
   var classes = useStyles();
   var theme = useTheme();
 
   var letters = props.name
     .split(" ")
-    .map(word => word[0])
+    .map((word) => word[0])
     .join("");
 
   return (

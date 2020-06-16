@@ -30,10 +30,13 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return result;
 };
 
-const getListStyle = isDraggingOver => ({
+const getListStyle = (isDraggingOver) => ({
   background: isDraggingOver ? "lightblue" : "lightgrey",
 });
 
+/**
+ * Sección donde se vinculan laboratorios al curso que se está creando
+ */
 const VincularLaboratorios = ({
   setStep,
   nextStep,
@@ -49,11 +52,11 @@ const VincularLaboratorios = ({
 
   useEffect(() => {
     if (items === null) {
-      getLaboratorios(user.email).then(res => {
+      getLaboratorios(user.email).then((res) => {
         let labList = res.data;
         if (defaultList) {
-          defaultList.forEach(element => {
-            let filteredList = labList.filter(x => x.id !== element.id);
+          defaultList.forEach((element) => {
+            let filteredList = labList.filter((x) => x.id !== element.id);
             labList = filteredList;
           });
           setSelected(defaultList);
@@ -91,9 +94,9 @@ const VincularLaboratorios = ({
     droppable2: selected,
   };
 
-  const getList = id => id2List[id];
+  const getList = (id) => id2List[id];
 
-  const onDragEnd = result => {
+  const onDragEnd = (result) => {
     const { source, destination } = result;
     if (destination && source.droppableId === destination.droppableId) {
       return;
@@ -200,8 +203,9 @@ const VincularLaboratorios = ({
                               <div
                                 className={classes.widgetImage}
                                 style={{
-                                  backgroundImage: `url(${baseURL +
-                                    item.imagen})`,
+                                  backgroundImage: `url(${
+                                    baseURL + item.imagen
+                                  })`,
                                 }}
                               />
                               <Typography
@@ -245,8 +249,9 @@ const VincularLaboratorios = ({
                             <div
                               className={classes.widgetImage}
                               style={{
-                                backgroundImage: `url(${baseURL +
-                                  item.imagen})`,
+                                backgroundImage: `url(${
+                                  baseURL + item.imagen
+                                })`,
                               }}
                             />
                             <Typography

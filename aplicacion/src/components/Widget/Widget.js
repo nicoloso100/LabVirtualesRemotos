@@ -5,6 +5,9 @@ import classnames from "classnames";
 // styles
 import useStyles from "./styles";
 
+/**
+ * Componente de card para mostrar los laboratorios
+ */
 export default function Widget({
   children,
   title,

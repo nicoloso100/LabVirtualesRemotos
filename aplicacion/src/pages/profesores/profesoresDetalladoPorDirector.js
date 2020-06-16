@@ -59,6 +59,10 @@ const ExpandedComponent = ({ data, classes }) => {
   );
 };
 
+/**
+ * Sección para mostrar la información detallada de cada profesor, como cursos y alumnos vinculados, buscada mediante un director
+ */
+
 const ProfesoresDetalladoPorDirector = () => {
   //Global
   var { email } = useUserState();
@@ -95,7 +99,7 @@ const ProfesoresDetalladoPorDirector = () => {
   );
 
   const fillProfesores = useCallback(() => {
-    getProfesoresDetalladoPorDirector(email).then(res => {
+    getProfesoresDetalladoPorDirector(email).then((res) => {
       setProfesoresArray(res);
     });
   }, [email]);

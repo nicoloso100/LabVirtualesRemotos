@@ -14,7 +14,7 @@ import { useUserState } from "../../context/UserContext";
 import VincularLaboratorios from "./VincularLaboratorios";
 import { NotificationManager } from "react-notifications";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
   },
@@ -35,6 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+/**
+ * Sección para agregar laboratorios a los diferentes cursos que tenga creado el docente
+ */
 const AgregarLaboratoriosACurso = () => {
   var user = useUserState();
   const classes = useStyles();
@@ -42,7 +45,7 @@ const AgregarLaboratoriosACurso = () => {
   const [expanded, setExpanded] = React.useState(false);
 
   const getInfoLaboratorios = useCallback(() => {
-    getCursosLaboratorios(user.email).then(res => {
+    getCursosLaboratorios(user.email).then((res) => {
       setCursos(res.data);
     });
   }, [user]);
@@ -51,12 +54,12 @@ const AgregarLaboratoriosACurso = () => {
     getInfoLaboratorios();
   }, [getInfoLaboratorios]);
 
-  const handleChange = panel => (event, isExpanded) => {
+  const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
 
   const saveLaboratorios = (labList, idCurso) => {
-    saveCursoLaboratorios(labList, idCurso).then(res => {
+    saveCursoLaboratorios(labList, idCurso).then((res) => {
       NotificationManager.success(res);
       getInfoLaboratorios();
     });
@@ -75,7 +78,7 @@ const AgregarLaboratoriosACurso = () => {
       <br />
       {cursos !== null && (
         <div className={classes.root}>
-          {cursos.map(curso => {
+          {cursos.map((curso) => {
             return (
               <ExpansionPanel
                 key={curso.id}
@@ -98,7 +101,7 @@ const AgregarLaboratoriosACurso = () => {
                 <ExpansionPanelDetails className={classes.body}>
                   <VincularLaboratorios
                     defaultList={curso.laboratorios}
-                    onSave={labList => saveLaboratorios(labList, curso.id)}
+                    onSave={(labList) => saveLaboratorios(labList, curso.id)}
                   />
                 </ExpansionPanelDetails>
               </ExpansionPanel>

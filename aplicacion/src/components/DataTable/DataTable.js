@@ -35,7 +35,7 @@ const contextActions = memoize((handleClick, acceptButton) => (
   </React.Fragment>
 ));
 
-const BootstrapInput = withStyles(theme => ({
+const BootstrapInput = withStyles((theme) => ({
   root: {
     width: "100%",
     maxWidth: "300px",
@@ -76,7 +76,7 @@ const Filter = ({ onFilter }) => {
     <div className={classes.inputContainer}>
       <BootstrapInput
         placeholder="Filtrar por email"
-        onChange={e => onFilter(e.target.value)}
+        onChange={(e) => onFilter(e.target.value)}
       />
     </div>
   );
@@ -95,6 +95,10 @@ const CheckBox = forwardRef((checkboxProps, ref) => {
   );
 });
 
+/**
+ * Componente de data table utilizado en la mayoría de las páginas
+ * Al ser un componente general recibe varios parámetros requeridos para definir sus datos y su comportamiento
+ */
 const DataTableComponent = ({
   title,
   data,
@@ -109,13 +113,13 @@ const DataTableComponent = ({
   const [option, setOption] = useState(0);
   const [clearRows, setClearRows] = useState(false);
 
-  const handleChange = useCallback(state => {
+  const handleChange = useCallback((state) => {
     setClearRows(false);
     setSelectedRows(state.selectedRows);
   }, []);
 
-  const getSelectedRows = op => {
-    const rows = selectedRows.map(r => r.email);
+  const getSelectedRows = (op) => {
+    const rows = selectedRows.map((r) => r.email);
     setClearRows(true);
     setOpenDialog(false);
     selectedEvent(rows, op);
@@ -128,7 +132,7 @@ const DataTableComponent = ({
         })
       : [];
 
-  const contextActionEvent = option => {
+  const contextActionEvent = (option) => {
     setOption(option);
     setOpenDialog(true);
   };
@@ -167,7 +171,7 @@ const DataTableComponent = ({
         columns={columns}
         onRowSelected={handleChange}
         contextActions={contextActions(
-          option => contextActionEvent(option),
+          (option) => contextActionEvent(option),
           acceptButton,
         )}
         contextTitle={
@@ -183,7 +187,9 @@ const DataTableComponent = ({
         fixedHeader
         fixedHeaderScrollHeight="300px"
         subHeader
-        subHeaderComponent={<Filter onFilter={value => setFilterText(value)} />}
+        subHeaderComponent={
+          <Filter onFilter={(value) => setFilterText(value)} />
+        }
         selectableRows={selectedEvent ? true : false}
         selectableRowsComponent={selectedEvent ? CheckBox : undefined}
         clearSelectedRows={clearRows}

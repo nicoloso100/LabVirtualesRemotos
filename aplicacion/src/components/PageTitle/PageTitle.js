@@ -8,7 +8,10 @@ import useStyles from "./styles";
 // components
 import { Typography } from "../Wrappers/Wrappers";
 
-const PageTitle = withRouter(props => {
+/**
+ * Componente de título principal de todas las pantallas dentro de la navegación del menú
+ */
+const PageTitle = withRouter((props) => {
   var classes = useStyles();
 
   const setOnClick = () => {

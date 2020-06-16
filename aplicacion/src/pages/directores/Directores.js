@@ -12,6 +12,9 @@ import useStyles from "./styles";
 import { getDirectores } from "../../services/directoresServices";
 import { getInstituciones } from "../../services/DatosInicialesServices";
 
+/**
+ * Página para listar, agregar o eliminar directores, esta solo se puede acceder desde el rol de administrador
+ */
 const Directores = () => {
   var classes = useStyles();
   const [directoresArray, setDirectoresArray] = useState(null);
@@ -45,8 +48,8 @@ const Directores = () => {
     [],
   );
 
-  const fetchDirectores = institucion => {
-    getDirectores(institucion).then(response => {
+  const fetchDirectores = (institucion) => {
+    getDirectores(institucion).then((response) => {
       setDirectoresArray(response);
     });
   };
@@ -56,17 +59,17 @@ const Directores = () => {
       fetchDirectores();
     }
     if (instituciones === null) {
-      getInstituciones().then(response => {
+      getInstituciones().then((response) => {
         setInstituciones(response);
       });
     }
   }, [directoresArray, instituciones]);
 
-  const selectInstitucion = selected => {
+  const selectInstitucion = (selected) => {
     setInstitucionSelected(selected);
   };
 
-  const delDirectores = list => {
+  const delDirectores = (list) => {
     console.log(list);
   };
 

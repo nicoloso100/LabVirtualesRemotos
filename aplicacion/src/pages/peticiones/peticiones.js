@@ -15,8 +15,11 @@ const defaultStateModal = {
   open: false,
   option: 0,
   list: [],
-}
+};
 
+/**
+ * Página para visualizar, aceptar o rechazar peticiones de visitantes que quieran tener una cuenta de director, esta página solo es accedida desde el rol de administrador
+ */
 const Peticiones = () => {
   var classes = useStyles();
   const [peticionesArray, setPeticionesArray] = useState(null);
@@ -27,13 +30,13 @@ const Peticiones = () => {
       name: "Email",
       selector: "email",
       sortable: true,
-      cell: row => <p className={classes.wrapText}>{row.email}</p>,
+      cell: (row) => <p className={classes.wrapText}>{row.email}</p>,
     },
     {
       name: "Nombres",
       selector: "visitante.usuario.name",
       sortable: true,
-      cell: row => (
+      cell: (row) => (
         <p className={classes.wrapText}>{row.visitante.usuario.name}</p>
       ),
     },
@@ -41,7 +44,7 @@ const Peticiones = () => {
       name: "Apellidos",
       selector: "visitante.usuario.surname",
       sortable: true,
-      cell: row => (
+      cell: (row) => (
         <p className={classes.wrapText}>{row.visitante.usuario.surname}</p>
       ),
     },
@@ -49,21 +52,21 @@ const Peticiones = () => {
       name: "Institución",
       selector: "institucion",
       sortable: true,
-      cell: row => <p className={classes.wrapText}>{row.institucion}</p>,
+      cell: (row) => <p className={classes.wrapText}>{row.institucion}</p>,
     },
     {
       name: "Mensaje",
       selector: "mensaje",
       sortable: false,
       grow: 2,
-      cell: row => <p className={classes.wrapText}>{row.mensaje}</p>,
+      cell: (row) => <p className={classes.wrapText}>{row.mensaje}</p>,
     },
   ];
 
   const columns = useMemo(() => cols, [cols]);
 
   const getPeticionesRequest = () => {
-    getPeticiones().then(result => {
+    getPeticiones().then((result) => {
       setPeticionesArray(result);
     });
   };

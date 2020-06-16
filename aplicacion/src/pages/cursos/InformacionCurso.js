@@ -14,6 +14,10 @@ import useStyles from "./styles";
 import { ShowNotification } from "../../utils/utils";
 import { INVALID_FIELD } from "../../constants/notificationConstanst";
 
+/**
+ * Sección donde se ingresa la información básica del curso quue se está creando
+ */
+
 const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
   var classes = useStyles();
   const year = new Date().getFullYear() - 5;
@@ -71,7 +75,7 @@ const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
             <Title className={classes.InputIcon} />
             <TextField
               value={nombre}
-              onChange={evt => setNombre(evt.target.value)}
+              onChange={(evt) => setNombre(evt.target.value)}
               className={classes.Input}
               id="input-with-icon-grid"
               label="Nombre"
@@ -82,7 +86,7 @@ const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
             <TextField
               multiline
               value={descripcion}
-              onChange={evt => setDescripcion(evt.target.value)}
+              onChange={(evt) => setDescripcion(evt.target.value)}
               className={classes.Input}
               id="input-with-icon-grid"
               label="Descripción"
@@ -94,7 +98,7 @@ const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
               <InputLabel>Año</InputLabel>
               <Select
                 value={selectedYear}
-                onChange={evt => setSelectedYear(evt.target.value)}
+                onChange={(evt) => setSelectedYear(evt.target.value)}
                 className={classes.Input}
               >
                 {years.map((item, index) => {
@@ -113,7 +117,7 @@ const InformacionCurso = ({ setStep, nextStep, setConfig, config }) => {
               <InputLabel>Periodo</InputLabel>
               <Select
                 value={selectedPeriodo}
-                onChange={evt => setSelectedPeriodo(evt.target.value)}
+                onChange={(evt) => setSelectedPeriodo(evt.target.value)}
                 className={classes.Input}
               >
                 {periodos.map((item, index) => {

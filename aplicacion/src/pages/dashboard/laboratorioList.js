@@ -24,6 +24,10 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
+/**
+ * Componente para listar los laboratorios para los dashboards
+ */
+
 const LaboratorioList = ({ laboratorios }) => {
   var classes = useStyles();
 

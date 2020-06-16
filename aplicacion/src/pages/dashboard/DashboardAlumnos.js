@@ -41,6 +41,9 @@ function a11yProps(index) {
   };
 }
 
+/**
+ * Página inicial donde se muestran los cursos y laboratorios que puede acceder, esta solo se utiliza en el panel de estudiantes
+ */
 export default function DashboardAlumnos(props) {
   var classes = useStyles();
   const theme = useTheme();
@@ -57,13 +60,13 @@ export default function DashboardAlumnos(props) {
     setValue(newValue);
   };
 
-  const handleChangeIndex = index => {
+  const handleChangeIndex = (index) => {
     setValue(index);
   };
 
   useEffect(() => {
     if (infoAdicional === null) {
-      getLaboratorios(user.email).then(res => {
+      getLaboratorios(user.email).then((res) => {
         setInfoAdicional(res.data);
       });
     }

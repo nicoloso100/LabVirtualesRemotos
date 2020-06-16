@@ -6,6 +6,9 @@ import { Delete as DeleteIcon } from "@material-ui/icons";
 // styles
 import useStyles from "./styles";
 
+/**
+ * Componente de card para mostrar los cursos
+ */
 export default function WidgetCursos({
   title,
   subtitle,
@@ -33,7 +36,7 @@ export default function WidgetCursos({
             color="secondary"
             size="small"
             aria-label="delete"
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
               setOnDeleteClick();
             }}

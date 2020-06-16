@@ -42,7 +42,7 @@ const columns = [
   },
   {
     name: "Director",
-    cell: row => (
+    cell: (row) => (
       <div>
         {row.director.usuario.name} {row.director.usuario.surname}
       </div>
@@ -91,12 +91,15 @@ const ExpandedComponent = ({ data, classes }) => {
   );
 };
 
+/**
+ * Sección para mostrar la información detallada de cada profesor, como cursos y alumnos vinculados
+ */
 const ProfesoresDetallado = () => {
   var classes = useStyles();
   const [profesoresArray, setProfesoresArray] = useState(null);
 
   const fillProfesores = useCallback(() => {
-    getProfesoresDetallado().then(res => {
+    getProfesoresDetallado().then((res) => {
       setProfesoresArray(res);
     });
   }, []);

@@ -8,6 +8,9 @@ import {
 } from "../../constants/notificationConstanst";
 import { Button, Typography } from "@material-ui/core";
 
+/**
+ * Sección para seleccionar una imagen para el curso que se está creando
+ */
 const ImagenCurso = ({
   setStep,
   nextStep,
@@ -28,7 +31,7 @@ const ImagenCurso = ({
     }
   }, [config]);
 
-  const onDrop = picture => {
+  const onDrop = (picture) => {
     if (picture.length > 1) {
       ShowNotification(JUST_SINGLE_IMAGE);
     }
@@ -58,12 +61,12 @@ const ImagenCurso = ({
     }
   };
 
-  const toBase64 = file =>
+  const toBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
+      reader.onerror = (error) => reject(error);
     });
 
   return (

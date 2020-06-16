@@ -37,7 +37,10 @@ import profesor2 from "../../assets/info/profesor-2.png";
 import estudiante1 from "../../assets/info/estudiante-1.png";
 import estudiante2 from "../../assets/info/estudiante-2.png";
 
-const Info = props => {
+/**
+ * Sección para mostrar la ayuda de la página, se muestra un tutorial de como obtener una cuenta de estudiante, profesor o director, esta página solo se muestra en el rol de visitante
+ */
+const Info = (props) => {
   //local
   const classes = useStyles();
   const el = useRef(null);
@@ -153,7 +156,7 @@ const SoyDirector = ({ onFinish }) => {
 
   const sendInformation = (institucion, mensaje, setIsLoading) => {
     if (IsNotEmptyField(institucion) && IsNotEmptyField(mensaje)) {
-      sendInfo(email, institucion, mensaje, setIsLoading).then(res => {
+      sendInfo(email, institucion, mensaje, setIsLoading).then((res) => {
         swal(
           "Ok!",
           "La solicitud se ha enviado correctamente, esté atento al correo para notificarle el estado de su solicitud",
@@ -169,7 +172,7 @@ const SoyDirector = ({ onFinish }) => {
 
   useEffect(() => {
     if (instituciones === null) {
-      getInstituciones().then(res => {
+      getInstituciones().then((res) => {
         setInstituciones(res);
       });
     }
@@ -206,7 +209,7 @@ const SoyDirector = ({ onFinish }) => {
             id="input-with-icon-grid"
             placeholder="Mensaje"
             value={mensaje}
-            onChange={arg => setMensaje(arg.target.value)}
+            onChange={(arg) => setMensaje(arg.target.value)}
             fullWidth
             multiline
           />
