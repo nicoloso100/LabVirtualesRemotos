@@ -10,7 +10,7 @@
     "develop": "nodemon src/server.js"
   },
   "dependencies": {
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "bookshelf": "^0.13.3",
     "bookshelf-secure-password": "^3.0.1",
